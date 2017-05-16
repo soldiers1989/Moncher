@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="renderer" content="webkit">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<base href="<?php echo base_url();?>" />
+<title>CADA云数聚-品牌添加</title>
+<!--引入jauery文件-->
+<script src="static/global/js/jquery.1.11.3.min.js"></script>
+<!--引用框架样式文件-->
+<link href="static/global/plugins/Bootstrap/css/bootstrap.css" rel="stylesheet">
+<!--引入框架脚本文件-->
+<script src="static/global/plugins/Bootstrap/js/bootstrap.min.js"></script>
+<!--引入全局CSS文件-->
+<link href="static/admin/css/cada-admin-min.css" rel="stylesheet">
+<!--引入弹框脚本文件-->
+<script src="static/global/plugins/Layer/layer.js"></script>
+<!--引用字体样式文件-->
+<link href="static/global/plugins/FontAwesome/css/font-awesome.css" rel="stylesheet">
+<!--引入全局脚本文件-->
+<script src="static/admin/js/cada-admin.js"></script>
+</head>
+<!--内部脚本-->
+<script>
+/*获取二级菜单选项*/
+var U = $('base').attr('href');
+var error="";
+/**是否含有中文（也包含日文和韩文）*/
+function isChar(str){   
+   var reg = /[\u4E00-\u9FA5\uF900-\uFA2D]/;
+   return reg.test(str);
+}
+/**异步请求数据方法*/
+function Fa(url, data) {
+	var message;
+	$.ajax({type: "POST",url: U + 'index.php/' + url,async: false,
+		data: data,success: function(msg) {message = msg;}});
+	return message;
+}
+/**判断必填项是否完成*/
+function status(){
+	if($.trim($("#b-type").val()).length <= 0){
+	  	layer.msg('请选择车系', {icon:2,time: 2000});
+	   return false;
+	}
+	if($.trim($("#b-id").val()).length <= 0){
+		   layer.msg('请选择品牌', {icon:2,time: 2000});
+	      return false;
+	}
+	if($.trim($("#b-name").val()).length <= 0){
+		   layer.msg('请填写汽车名称', {icon:2,time: 2000});
+	       return false;
+	}
+	if($.trim($("#b-code").val()).length>0 && isChar($("#b-code").val())){
+		   layer.msg('简码不能输入中文', {icon:2,time: 2000});
+	       return false;
+	}
+	return true;
+}
+/**程序执行*/
+$(function(){
+   /**切换菜单*/
+	$('#b-type').change(function(){
+		$("#b-id").find('option').remove();
+		if($.trim($(this).val()).length>0 && $(this).val()!="5"){
+			var select = eval('(' + Fa('admin/brand/getBrands', 'id='+$(this).val()) + ')'); 
+			$("#b-id").append('<option value="0">全新品牌</option>');
+			$.each(select,function(x,item){
+				$("#b-id").append('<option value="'+item.id+'">'+item.name+'</option>');
+			});
+		}else{
+			$("#b-id").append('<option value="0">全新品牌</option>');
+		}
+	});
+	$('.layer_button').click(function(){
+	    status()  && $('.layer_form').submit();
+	});
+});
+</script>
+<body>
+<div id="cada-admin-menu" class="cada-admin-layer">
+<form class="layer_form" method="post" action="index.php/admin/brand/added" enctype="multipart/form-data">
+<ul>
+	<li>
+		<label for="menu-url">汽车车系&nbsp;&nbsp;</label>
+		 <select class="form-control length-min" id="b-type" name="series">
+		  <option value="5">选择车系</option>
+		  <option value="1">美系</option>
+		  <option value="2">日系</option>
+		  <option value="3">德系</option>
+		  <option value="4">韩系</option>
+		  <option value="6">自主</option>
+		  <option value="7">欧系</option>
+		  <option value="0">其他</option>
+		</select>
+		<div class="clear"></div>
+	</li>
+	<li>
+		<label for="menu-url">汽车品牌&nbsp;&nbsp;</label>
+		 <select class="form-control length-min" name="parentId" id="b-id">
+		  <option value="0">全新品牌</option>
+		</select>
+		<div class="clear"></div>
+	</li>
+<li>
+    <label for="menu-name" >汽车名称&nbsp;&nbsp;</label>
+    <input type="text" class="form-control length-min" id="b-name" placeholder="汽车名称"  name="name" maxlength="16">
+    <div class="clear"></div>
+</li>
+<li>
+    <label for="menu-url" >汽车简码&nbsp;&nbsp;</label>
+    <input type="text" class="form-control length-min" id="b-code" placeholder="汽车简码"  name="shortCode" maxlength="16">
+    <div class="clear"></div>
+</li>
+<li>
+	<label for="menu-url">品牌定位&nbsp;&nbsp;</label>
+	 <select class="form-control length-min" id="b-type" name="rank">、
+	  <option value="">无定位</option>
+	  <option value="1">高档</option>
+	  <option value="2">中档</option>
+	  <option value="3">自主</option>
+	</select>
+	<div class="clear"></div>
+</li>
+<li>
+<label for="menu-name" >选择图片&nbsp;&nbsp;</label>
+<div class="imgFile" id="providerManagediv">
+<input type="file"    class="files"  onchange="javascript:Fimg(this,'Gi1','GH1')"/>
+<input type="hidden" name="logoUrl" id="GH1"/>
+</div>
+<div class="clear"></div>
+</li>
+<div class="clear"></div>
+</ul>
+<div class="playDiv"><button type="reset" class="btn btn-default" >输入重置</button><button type="button" class="btn btn-info layer_button" >保存信息</button></div>
+</form>
+</div>
+</body>
+</html>

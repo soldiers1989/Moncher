@@ -1,0 +1,145 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+<meta name="renderer" content="webkit">
+<meta charset="utf-8">
+<base href="<?php echo base_url();?>" />
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<!--引入jauery文件-->
+<script src="static/global/js/jquery.1.11.3.min.js"></script>
+<!--引入弹框脚本文件-->
+<script src="static/global/plugins/Layer/layer.js"></script>
+<!--引入全局CSS文件-->
+<link href="static/merchant/css/cada-merchant-base.css" rel="stylesheet">
+<title>我的桌面</title>
+</head>
+<body style="background:#FFF;">
+<form action="index.php/merchant/Information/updated" method="post" id="myform" name="myform" enctype="multipart/form-data">
+<input type="hidden"  name="id" value="<?php echo $one['id'];?>"/>
+<input type="hidden" name="isCompany" value="<?php echo $one['isCompany'];?>"/>
+<div class="baseinfo">
+<h2>基础信息</h2>
+<div class="basemain">
+<div class="title"><div class="redTitle"><span><div>基础信息</div></span></div></div>
+<ul>
+<li><span class="wowo">区域:</span><?php echo $one['area'];?></li>
+<li><span class="wowo">品牌:</span><?php echo $one['brand'];?></li>
+<li><span class="wowo">行业资质:</span><?php  echo $one['qualification'];?></li>
+<li><span class="wowo">所属集团:</span><?php  echo $one['groupName'];?></li>
+<div class="clear"></div>
+</ul>
+<div class="title"><div class="redTitle"><span><div>联系人信息</div></span></div></div>
+<div class="main-left">
+<p><span class="wowo">联系人:</span><input type="text" name="personName"  value="<?php echo $one['personName'];?>"/></p>
+<p><span class="wowo">微信号:</span><input type="text" name="wechat"  value="<?php echo $one['wechat'];?>"/></p>
+<p><span class="wowo">联系电话:</span><input type="text" name="telePhone"  value="<?php echo $one['telePhone'];?>"/></p>
+</div>
+<div class="main-right" >
+<p class="text-indent">二维码:</p>
+<p><img src="http://qr.liantu.com/api.php?text=<?php echo base_url();?>Wechat/basis?openid=<?php echo $one['id'];?>&w=512&logo=http://123.57.156.76/car/We/cadalogo.png" width="100" height="100"/>
+		<a href="http://qr.liantu.com/api.php?text=<?php echo base_url();?>Wechat/basis?openid=<?php echo $one['id'];?>&w=512&logo=http://123.57.156.76/car/We/cadalogo.png" style="margin-top:-20px;pading:0;margin-left:14px;">下载</a>
+</p>
+<div class="clear"></div>
+</div>
+<div class="clear"></div>
+<div class="title"><div class="redTitle"><span><div>公司信息</div></span></div></div></div>
+<ul>
+<li><span class="wowo">公司名称:</span><input type="text" name="name"  value="<?php echo $one['name'];?>"/></li>
+<li><span class="wowo">联系电话:</span><input type="text" name="cellPhone"  value="<?php echo $one['cellPhone'];?>"/></li>
+<li><span class="wowo">公司地址:</span><input type="text" name="addrRess"  value="<?php echo $one['addrRess'];?>"/></li>
+<li><span class="wowo">营业时间:</span><input type="text" name="openTime"  value="<?php echo $one['openTime'];?>"/></li>
+<li><span class="wowo">公司面积:</span><input type="text" name="acreage"      value="<?php echo $one['acreage'];?>"/ style="width:30px;">平米</li>
+<li><span class="wowo">员工数量:</span><input type="text" name="employeeNumber"  value="<?php echo $one['employeeNumber'];?>" style="width:30px;" />个</li>
+<li><span class="wowo">工位数量:</span><input type="text" name="stationNum"  value="<?php echo $one['stationNum'];?>" style="width:30px;" />个</li>
+<li><span class="wowo">成立时间:</span><input type="text" name="openingTime"  value="<?php echo $one['openingTime'];?>"/></li>
+<div class="clear"></div>
+</ul>
+<div class="sysroom">
+<label>服务信息:</label>
+<div class="checkbox">
+<input type="checkbox" name="serviceDescription[]" value="洗车"  <?php  if(in_array('洗车',explode(';', $one['serviceDescription']))) echo 'checked';?>/>
+洗车
+<input type="checkbox" name="serviceDescription[]" value="美容"  <?php  if(in_array('美容',explode(';', $one['serviceDescription']))) echo 'checked';?>/>
+美容
+<input type="checkbox" name="serviceDescription[]" value="装饰"  <?php  if(in_array('装饰',explode(';', $one['serviceDescription']))) echo 'checked';?>/>
+装饰
+<input type="checkbox" name="serviceDescription[]" value="总成大修"  <?php  if(in_array('总成大修',explode(';', $one['serviceDescription']))) echo 'checked';?>/>
+总成大修
+<input type="checkbox" name="serviceDescription[]" value="保养"   <?php  if(in_array('保养',explode(';', $one['serviceDescription']))) echo 'checked';?>/>
+保养
+<input type="checkbox" name="serviceDescription[]" value="快修"  <?php  if(in_array('快修',explode(';', $one['serviceDescription']))) echo 'checked';?>/>
+快修
+<input type="checkbox" name="serviceDescription[]" value="四轮定位"  <?php  if(in_array('四轮定位',explode(';', $one['serviceDescription']))) echo 'checked';?>/>
+四轮定位
+<input type="checkbox" name="serviceDescription[]" value="制动检测" <?php  if(in_array('制动检测',explode(';', $one['serviceDescription']))) echo 'checked';?>/>
+制动检测
+<input type="checkbox" name="serviceDescription[]" value="喷漆"  <?php  if(in_array('喷漆',explode(';', $one['serviceDescription']))) echo 'checked';?>/>
+喷漆
+<input type="checkbox" name="serviceDescription[]" value="钣金"  <?php  if(in_array('钣金',explode(';', $one['serviceDescription']))) echo 'checked';?>/>
+钣金
+<input type="checkbox" name="serviceDescription[]" value="轮胎"  <?php  if(in_array('轮胎',explode(';', $one['serviceDescription']))) echo 'checked';?>/>
+轮胎
+<input type="checkbox" name="serviceDescription[]" value="车险" <?php  if(in_array('车险',explode(';', $one['serviceDescription']))) echo 'checked';?>/>
+车险
+<input type="checkbox" name="serviceDescription[]" value="道路救援"  <?php  if(in_array('道路救援',explode(';', $one['serviceDescription']))) echo 'checked';?>/>
+道路救援
+<input type="checkbox" name="serviceDescription[]" value="车品销售"  <?php  if(in_array('车品销售',explode(';', $one['serviceDescription']))) echo 'checked';?>/>
+车品销售
+<input type="checkbox" name="serviceDescription[]" value="茶饮" <?php  if(in_array('茶饮',explode(';', $one['serviceDescription']))) echo 'checked';?>/>
+茶饮
+<input type="checkbox" name="serviceDescription[]" value="WIFI" <?php  if(in_array('WIFI',explode(';', $one['serviceDescription']))) echo 'checked';?>/>
+WIFI
+<input type="checkbox" name="serviceDescription[]" value="休息区" <?php  if(in_array('休息区',explode(';', $one['serviceDescription']))) echo 'checked';?>/>
+休息区 
+<input type="checkbox" name="serviceDescription[]" value="简餐"  <?php  if(in_array('简餐',explode(';', $one['serviceDescription']))) echo 'checked';?>/>
+简餐
+<input type="checkbox" name="serviceDescription[]" value="尾气检测" <?php  if(in_array('尾气检测',explode(';', $one['serviceDescription']))) echo 'checked';?> />
+尾气检测
+<input type="checkbox" name="serviceDescription[]" value="接送车"  <?php  if(in_array('接送车',explode(';', $one['serviceDescription']))) echo 'checked';?>/>
+接送车
+<input type="checkbox" name="serviceDescription[]" value="代验车" <?php  if(in_array('代验车',explode(';', $one['serviceDescription']))) echo 'checked';?>/>
+代验车
+</div>
+<div class="clear"></div>
+</div>
+
+<div class="sysroom">
+<label>商户描述:</label>
+<textarea rows="5" cols="62" name="descriPtion"><?php echo $one['descriPtion'];?></textarea>
+<div class="clear"></div>
+</div>
+
+<div class="title"><div class="redTitle"><span><div>认证信息</div></span></div></div>
+
+<div class="sysroom">
+<label>商户Logo:</label>
+<div class="checkbox"><img src="upload/merchant/images/<?php echo $one['logo'];?>" width="100" height="100"/></div>
+<div class="clear"></div>
+</div>
+
+<div class="sysroom">
+<label>焦点大图:</label>
+<div class="checkbox"><img src="upload/merchant/images/<?php echo $one['picture'];?>" width="400" height="248"/></div>
+<div class="clear"></div>
+</div>
+
+<div class="sysroom">
+<label>营业执照:</label>
+<div class="checkbox"><img src="upload/merchant/images/<?php echo $one['revenue'];?>" width="400" height="248"/></div>
+<div class="clear"></div>
+</div>
+
+<div class="sysroom">
+<label>资质证书:</label>
+<div class="checkbox"><img src="upload/merchant/images/<?php echo $one['license'];?>" width="400" height="248"/></div>
+<div class="clear"></div>
+</div>
+<div class="sysroom"><input type="submit" value="保存信息"/></div>
+</div>
+</div>
+</form>
+</body>
+</html>

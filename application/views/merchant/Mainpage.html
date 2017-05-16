@@ -1,0 +1,191 @@
+<?php  $this->load->view('merchant/head.html');?>
+<!-- highchart插件 -->
+<script src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script>
+<script src="http://cdn.hcharts.cn/highcharts/modules/exporting.js"></script>
+<script src="static/merchant/js/height_one.js"></script>
+<script src="static/merchant/js/height_two.js"></script>
+   <!--引入js部分  -->
+<script src="static/merchant/js/storemain.js"></script>
+<!-- 本页css -->
+<link href="static/merchant/css/storemain.css" rel="stylesheet">
+<!-- 外层div -->
+<div class="main">
+<!-- 头部总体///////////////// -->
+	<div class="total">
+		<!-- 总分-->
+		<div class="tot_score" style="float:left;">
+		<div class="amount_tit">总分</div>
+		<div class="rank"><span style="color:#FFB012;">80</span>/100分</div>
+			<div id="total_score" style="min-width:100%;height:200px"></div>
+		</div>
+		<!-- 排行 -->
+		<div class="tot_rand"style="float:left;">
+		<div class="amount_tit">排行</div>
+			<div class="rank"><span>12</span>/222名</div>
+			<div id="rank_all" style="min-width:100%;height:200px"></div>
+		</div>
+		<!--总用户参与样本量  -->
+		<div class="tot_amount"style="float:left;">
+		<div class="amount_tit" style="float:left;">总用户参与样本量</div>
+			<div class="num" style="float:left;">
+				<span style="float:left;">12069</span>
+				<span  style="float:left;">(本门店)</span>
+				<span  style="float:left;">用户参与样本量</span>
+			</div>
+			<div class="ind_num" style="float:left;">
+				<span style="float:left;">160895</span>
+				<span  style="float:left;">(平台全部)</span>
+				<span  style="float:left;">用户参与样本量</span>
+			</div>
+		</div>
+	</div>
+<!-- 关键指标分析 --/////////////-->
+<div class="important_index">
+	<!--标题  -->
+	<div class="imp_tit"style="float:left;">关键指标分析</div>
+	<!-- 一次修复率 -->
+	<div class="one_index" style="float:left;">
+			<div id="xf_index" style="width:100%;height:200px"></div>  
+	</div>
+	<!-- nps -->
+	<div class="two_index" style="float:left;">
+		<div id="nps_index" style="width:100%;height:200px"></div>  
+	</div>
+	<!-- 忠诚度 -->
+	<div class="three_index" style="float:left;">
+		<div id="loyal_index" style="width:100%;height:200px"></div> 
+	</div>
+</div>
+<!-- 参与量&样本&得分&环比-- //////////////-->
+<div class="amount_sam_score">
+	<!-- 参与样本量 & 平均得分 -->
+	<div class="amount_score" style="float:left;">
+	<!-- 参与量 -->
+	<div class="amount" style="float:left;">
+		<div class="score_tit">
+			<span>本月用户参与样本量</span>
+			<span>查看详情</span>
+		</div>
+				<div class="before_month">
+				<div class="model_score">
+						<div class="me_tit" style="float:left;margin-left:5%;font-size:12px;color:#5D5050;">服务顾问</div>
+						<div style="width:60%;background:#CDCCCB;float:left;margin-left:12px;border-radius:4px;height:14px;">
+						<div class="gl_sty"   style="position:relative;left:0;width:80%;background-color:#0064AE;display:block;float:left;font-siez:12px;color:#fff;border-radius:4px;height:14px;"></div>
+						</div>
+						<div style="float:left;display:block;margin-left:5%;font-size:12px;color:#5D5050;">80</div>
+				</div>
+		<div class="clear"></div>
+					<div class="model_score">
+						<div class="me_tit" style="float:left;margin-left:5%;font-size:12px;color:#5D5050;">服务设施</div>
+						<div style="width:60%;background:#CDCCCB;float:left;margin-left:12px;border-radius:4px;height:14px;">
+						<div class="gl_sty"   style="position:relative;left:0;width:80%;background-color:#01A8B0;display:block;float:left;font-siez:12px;color:#fff;border-radius:4px;height:14px;"></div>
+						</div>
+						<div style="float:left;display:block;margin-left:5%;font-size:12px;color:#5D5050;">80</div>
+				</div>
+		<div class="clear"></div>
+						<div class="model_score">
+						<div class="me_tit" style="float:left;margin-left:5%;font-size:12px;color:#5D5050;">维修质量</div>
+						<div style="width:60%;background:#CDCCCB;float:left;margin-left:12px;border-radius:4px;height:14px;">
+						<div class="gl_sty"   style="position:relative;left:0;width:80%;background-color:#019E47;display:block;float:left;font-siez:12px;color:#fff;border-radius:4px;height:14px;"></div>
+						</div>
+						<div style="float:left;display:block;margin-left:5%;font-size:12px;color:#5D5050;">80</div>
+				</div>
+		<div class="clear"></div>	
+						<div class="model_score">
+						<div class="me_tit" style="float:left;margin-left:5%;font-size:12px;color:#5D5050;">维修价格</div>
+						<div style="width:60%;background:#CDCCCB;float:left;margin-left:12px;border-radius:4px;height:14px;">
+						<div class="gl_sty"   style="position:relative;left:0;width:80%;background-color:#E45A02;display:block;float:left;font-siez:12px;color:#fff;border-radius:4px;height:14px;"></div>
+						</div>
+						<div style="float:left;display:block;margin-left:5%;font-size:12px;color:#5D5050;">80</div>
+				</div>
+		<div class="clear"></div>	
+						<div class="model_score">
+						<div class="me_tit" style="float:left;margin-left:5%;font-size:12px;color:#5D5050;">维修时间</div>
+						<div style="width:60%;background:#CDCCCB;float:left;margin-left:12px;border-radius:4px;height:14px;">
+						<div class="gl_sty"   style="position:relative;left:0;width:80%;background-color:#E18901;display:block;float:left;font-siez:12px;color:#fff;border-radius:4px;height:14px;"></div>
+						</div>
+						<div style="float:left;display:block;margin-left:5%;font-size:12px;color:#5D5050;">80</div>
+				</div>			
+			</div>
+	
+	
+	</div>
+	<!-- 得分 -->
+	<div class="score" style="float:left;">
+	<div class="score_tit">
+			<span>本月平均得分</span>
+			<span>查看详情</span>
+		</div>
+		<!-- 服务顾问 -->
+		<div id="fwgw_score" style="width:20%;height:120px;float:left;"></div>
+		<!-- 服务设施 -->
+		<div id="fwss_score" style="width:20%;height:120px;float:left;"></div>
+		<!-- 维修质量 -->
+		<div id="fwzl_score" style="width:20%;height:120px;float:left;"></div>
+		<!-- 维修价格 -->
+		<div id="wxjg_score" style="width:20%;height:120px;float:left;"></div>
+		<!-- 维修时间 -->
+		<div id="wxss_score" style="width:20%;height:120px;float:left;"></div>
+		<!-- 标题 -->
+		<div class="model_tit" style="float:left;">服务顾问</div>
+		<div class="model_tit" style="float:left;">服务设施</div>
+		<div class="model_tit" style="float:left;">维修质量</div>
+		<div class="model_tit" style="float:left;">维修价格</div>
+		<div class="model_tit" style="float:left;">维修时间</div>
+	</div>
+	</div>
+	<!-- 环比数据对比 -->
+	<div class="smple" style="float:left;">
+		<!-- 环比数据对比 -->
+		<div class="sam_tit">
+			<span>环比数据对比</span>
+			<span>查看详情</span>
+		</div>
+		<div class="pc_tit">评测得分</div>
+			<div class="before_month">
+				<div class="one_data">
+						<div class="me_tit" style="float:left;margin-left:5%;font-size:14px;color:#5D5050;">一月</div>
+						<div style="width:60%;background:#CDCCCB;float:left;margin-left:12px;border-radius:4px;height:18px;">
+						<div class="gl_sty"   style="position:relative;left:0;width:80%;background-color:#EFCB06;display:block;float:left;font-siez:16px;color:#fff;border-radius:4px;height:18px;"></div>
+						</div>
+						<div style="float:left;display:block;margin-left:5%;font-size:14px;color:#5D5050;">80分</div>
+				</div>
+		<div class="clear"></div>
+				<div class="one_data">
+						<div class="me_tit" style="float:left;margin-left:5%;font-size:14px;color:#5D5050;">二月</div>
+						<div style="width:60%;background:#CDCCCB;float:left;margin-left:12px;border-radius:4px;height:18px;">
+						<div style="position:relative;left:0;width:70%;background-color:#EFCB06;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:18px;"></div>
+						</div>
+						<div style="float:left;display:block;margin-left:5%;font-size:14px;color:#5D5050;">70分</div>
+				</div>
+			</div>
+			<div class="pc_tit">行业评测得分</div>
+				<div class="before_month">
+				<div class="one_data">
+						<div class="me_tit" style="float:left;margin-left:5%;font-size:14px;color:#5D5050;">一月</div>
+						<div style="width:60%;background:#CDCCCB;float:left;margin-left:12px;border-radius:4px;height:18px;">
+						<div class="gl_sty"   style="position:relative;left:0;width:90%;background-color:#00A3E2;display:block;float:left;font-siez:16px;color:#fff;border-radius:4px;height:18px;"></div>
+						</div>
+						<div style="float:left;display:block;margin-left:5%;font-size:14px;color:#5D5050;">80分</div>
+				</div>
+		<div class="clear"></div>
+				<div class="one_data">
+						<div class="me_tit" style="float:left;margin-left:5%;font-size:14px;color:#5D5050;">二月</div>
+						<div style="width:60%;background:#CDCCCB;float:left;margin-left:12px;border-radius:4px;height:18px;">
+						<div style="position:relative;left:0;width:50%;background-color:#00A3E2;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:18px;"></div>
+						</div>
+						<div style="float:left;display:block;margin-left:5%;font-size:14px;color:#5D5050;">70分</div>
+				</div>
+			</div>
+	</div>
+	<div class="clear"></div>
+</div>
+<!-- 参与量&样本&得分&环比-- //////////////-->
+
+
+</div>
+<!-- 时间插件 -->
+<script type="text/javascript" src="static/global/js/My97DatePicker/WdatePicker.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="renderer" content="webkit">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<base href="<?php echo base_url();?>" />
+<title>信息提醒页面</title>
+<!--引入jauery文件-->
+<script src="static/global/js/jquery.1.11.3.min.js"></script>
+<!--引入弹框脚本文件-->
+<script src="static/global/plugins/Layer/layer.js"></script>
+</head>
+<body>
+<script>
+var U = $('base').attr('href');
+var  status=<?php echo $status;?>;
+var  mess='<?php echo $mess;?>';
+var  url='<?php echo $url?>';
+$(function(){
+	layer.msg(mess, {icon:status,time: 2000},function(){
+		url.length<=0?parent.layer.close(parent.layer.getFrameIndex(window.name)):location.href=U+'index.php/'+url;
+	});
+});
+</script>
+</body>
+</html>

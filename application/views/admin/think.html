@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="renderer" content="webkit">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<base href="<?php echo base_url();?>" />
+<title>信息提醒页面</title>
+<!--引入jauery文件-->
+<script src="static/global/js/jquery.1.11.3.min.js"></script>
+<!--引入弹框脚本文件-->
+<script src="static/global/plugins/Layer/layer.js"></script>
+</head>
+<body>
+<script>
+var   U = $('base').attr('href');
+$(function(){
+	 /*打开新窗口*/
+     layer.open({type: 2,area: ['280px', '168px'],fix:false,shadeClose: true,maxmin: true,shade:0.8,title:'修改密码',content: U+'index.php/admin/Index/password',end:function(){}});
+});
+</script>
+</body>
+</html>

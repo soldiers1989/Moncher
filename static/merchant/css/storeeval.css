@@ -1,0 +1,59 @@
+@CHARSET "UTF-8";
+/* html {overflow-x: hidden;  } */
+/* ::-ms-clear, ::-ms-reveal{display: none;} */
+/*图片路径选择相对路径即可*/
+body{margin:0;padding:0;font-family:"微软雅黑";min-width:1200px;min-height:675px;}
+div,ul,li,a,p,h2,h3,h4,label{display:block;margin:0;padding:0;}
+ul{list-style:none;}
+.claer{
+	clear:both;
+}
+/*整体布局*/
+.main{background-color:#F1F1F1;width:100%;height:100%;}
+
+.search_model{background-color:#fff;width:99.6%;margin:0 auto;border-radius:5px;height:60px;margin-bottom:10px;box-shadow:#ccc 0px 0px 2px;}
+.total{display:block;background-color:#F1F1F1;width:99.6%;margin:0 auto;border-radius:5px;border-radius:5px;height:155px;margin-bottom:10px;}
+.model{display:block;background-color:#fff;width:99.6%;margin:0 auto;border-radius:5px;border-radius:5px;height:205px;box-shadow:#ccc 0px 0px 2px;margin-bottom:10px;}
+.Contrast{display:block;background-color:#fff;width:99.6%;margin:0 auto;border-radius:5px;border-radius:5px;height:260px;box-shadow:#ccc 0px 0px 2px;margin-bottom:10px;}
+.gw_model{display:block;background-color:#fff;width:99.6%;margin:0 auto;border-radius:5px;border-radius:5px;height:250px;box-shadow:#ccc 0px 0px 2px;margin-bottom:10px;}
+/*搜索模块*/
+
+/**指标*/
+ .gw_model .title{width:100%;margin:0 auto;border-bottom:1px solid #ccc;text-align:center;height:25px;font-size:14px;color:#717171;line-height:25px;}
+.gw_model .top_index{width:50%;height:225px;}
+.gw_model .bottom_index{width:50%;height:225px;}
+.top_index .top_tit{height:50px;color:#717171;font-size:16px;text-align:center;margin:0 auto;line-height:50px;}
+.index_tit .tit_ul  li{float:left;text-align:center;border-bottom:1px solid #ccc;font-size:12px;color:#717171;}
+.index_tit{width:96%;margin: 0 auto;}
+.index_tit .content_ul  li{float:left;text-align:center;font-size:12px;margin-top:3px;color:#717171;} 
+/**关键指标对比*/
+.keyindex_one{height:260px;width:33%;margin-left:0.5%;}
+.keyindex_two{height:260px;width:33%;}
+.keyindex_three{height:260px;width:33%;}
+/**相邻月份模块对比 */
+.fwgw_eval{width:19.6%;border-right:1px solid #ccc;box-shadow:#ccc 0px 0px 10px;height:205px;margin-right:0.5%;}
+.fwss_eval{width:19.6%;border-right:1px solid #ccc;border-left:1px solid #ccc;box-shadow:#ccc 0px 0px 2px;height:205px;margin-right:0.5%;}
+.wxzl_eval{width:19.6%;border-right:1px solid #ccc;border-left:1px solid #ccc;box-shadow:#ccc 0px 0px 2px;height:205px;margin-right:0.5%;}
+.wxjj_eval{width:19.6%;border-right:1px solid #ccc;border-left:1px solid #ccc;box-shadow:#ccc 0px 0px 2px;height:205px;margin-right:0.5%;}
+.wxss_eval{width:19.6%;border-left:1px solid #ccc;box-shadow:#ccc 0px 0px 2px;height:205px;}
+.fwgw_tit{height:25px;text-align:center;line-height:25px;font-size:14px;color:#6E6E6E;border-bottom:1px solid #ccc;}
+.pc_tit{heiht:18px;font-size:12px;line-height:18px;text-align:left;color:#8F8F8F;}
+.before_month{height:65px;}
+.one_data{margin-top:10px;}
+.total_data{width:49.7%;height:150px;margin-right:0.6%;background-color:#fff;box-shadow:#ccc 0px 0px 2px;border-radius:5px;}
+.ind_data{width:49.7%;height:150px;background-color:#fff;box-shadow:#ccc 0px 0px 2px;border-radius:5px;}
+.tot_tit{height:30px;text-align:center;line-height:30px;font-size:16px;color:#4F4F4F;border-bottom:1px solid #ccc;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

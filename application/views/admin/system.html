@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="renderer" content="webkit">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<base href="<?php echo base_url();?>" />
+<title>CADA云数聚-菜单管理</title>
+<!--引入jauery文件-->
+<script src="static/global/js/jquery.1.11.3.min.js"></script>
+<!--引入滚动条CSS样式文件-->
+<link rel="stylesheet" href="static/global/plugins/Scoller/jquery.mCustomScrollbar.css">
+<!--引入滚动条脚本文件-->
+<script src="static/global/plugins/Scoller/jquery.mCustomScrollbar.concat.min.js"></script>
+<!--引用框架样式文件-->
+<link href="static/global/plugins/Bootstrap/css/bootstrap.css" rel="stylesheet">
+<!--引入框架脚本文件-->
+<script src="static/global/plugins/Bootstrap/js/bootstrap.min.js"></script>
+<!--引入弹框脚本文件-->
+<script src="static/global/plugins/Layer/layer.js"></script>
+<!--引入日期脚本文件-->
+<script src="<?php echo base_url();?>static/global/js/My97DatePicker/WdatePicker.js"></script>
+<!--引入全局CSS文件-->
+<link href="static/admin/css/cada-admin-min.css" rel="stylesheet">
+<!--引入全局脚本文件-->
+<script src="static/admin/js/cada-admin.js"></script>
+<!--引入搜索脚本文件-->
+<script src="static/admin/js/cada-admin-search.js"></script>
+</head>
+<script>
+$(function(){
+var provider='<?php echo $user;?>';
+/**搜索选择器*/
+var proposals =provider.split(",");
+	 $('#o-name').autocomplete({hints: proposals});
+});
+</script>
+<body>
+<div id="cada-admin-menu" class="cada-admin-main">
+<form class="form-inline" action="index.php/admin/system/search" method="post" id="formz" icon="system">
+  <div class="form-group">
+    <label for="menu-name">日志类型</label>
+	 <select class="form-control" id="b-type" name="type" style="width:120px;">
+	  <option value="1">错误日志</option>
+	  <option value="2">平台日志</option>
+	  <option value="3">商户日志</option>
+	</select>
+  </div>
+   <div class="form-group">
+    <label for="menu-name">操作类型</label>
+	 <select class="form-control" id="b-type" name="operatorType" style="width:120px;">
+	  <option value="1">登录</option>
+	  <option value="2">退出</option>
+	  <option value="3">查看</option>
+	  <option value="4">删除</option>
+	  <option value="5">修改</option>
+	  <option value="6">新增</option>
+	  <option value="7">下载</option>
+	  <option value="8">上传</option>
+	</select>
+  </div>
+  <div class="form-group">
+    <label for="menu-name">操作人员</label>
+    <input type="text" class="form-control" id="o-name" placeholder="操作人员" style="width:120px;" name="operatorName" maxlength="16">
+  </div>
+  <div class="form-group">
+    <label for="menu-url">操作时间</label>
+    <input type="text" class="form-control Wdate" name="startDate" placeholder="开始时间" style="width:120px;" onfocus="WdatePicker({isShowWeek:true});">
+    <input type="text" class="form-control Wdate" name="lastDate"  placeholder="结束时间"  style="width:120px;" onfocus="WdatePicker({isShowWeek:true});">
+  </div>
+  &nbsp;&nbsp;&nbsp;&nbsp;<button type="submit" class="btn btn-danger" >查找</button>
+</form>
+<div class="dataDesc">
+<ul>
+  <li class="Idx">ID</li>
+  <li class="onex">日志名称</li>
+  <li class="typex">日志类型</li>
+  <li class="typex">操作类型</li>
+  <li class="onex">日志描述</li>
+  <li class="userx">操作人员</li>
+  <li class="timex">操作时间</li>
+</ul>
+</div>
+<?php 
+	$operatorType=array("0"=>"默认操作","1"=>"登录操作","2"=>"退出操作","3"=>"查看操作","4"=>"删除操作","5"=>"更新操作","6"=>"插入操作","7"=>"下载操作","8"=>"上传操作");
+	$logType=array("0"=>"系统默认","1"=>"错误日志","2"=>"平台日志","3"=>"商户日志");
+?>
+<div class="dataList">
+<?php foreach($list as $key=>$val){?>
+<ul>
+  <li class="Idx"><?php echo $val['id'];?></li>
+  <li class="onex"><?php echo $val['name'];?></li>
+  <li class="typex"><?php echo $logType[$val['type']];?></li>
+  <li class="typex"><?php echo $operatorType[$val['operationType']];?></li>
+  <li class="onex"><?php echo mb_substr($val['description'],0,50).'...';?></li>
+  <li class="userx"><?php echo $val['operatorName'];?></li>
+  <li class="timex"><?php echo $val['operationTime'];?></li>
+</ul>
+<?php }?>
+</div>
+<div class="relist" ><span>总记录数量<?php echo count($list);?>条,  &nbsp;每页显示100条</span></div>
+<div class="pagev"><?php echo $page;?></div>
+</div>
+</body>
+</html>

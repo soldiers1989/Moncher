@@ -1,0 +1,170 @@
+/**全局CSS*/
+*{
+  margin:0;
+  padding:0;
+ }
+.clear{clear:both;}
+.baseinfo{
+	width:calc(100% - 24px);
+	margin:0 auto;
+}
+input[type='text']{
+border:1px solid #FFF;
+}
+input[type='submit']{
+height:36px;
+width:120px;
+text-align:center;
+line-height:30px;
+background:#e60012;
+color:#FFF;
+margin-left:120px;
+border:1px solid #e60012;
+display:block;
+border-radius:4px;
+}
+.baseinfo h2{
+	display:block;
+	line-height:60px;
+	height:60px;
+	text-align:left;
+	width:100%;
+	color:#555;
+}
+.baseinfo .title{
+	height:45px;
+	width:100%;
+	border-top:2px solid #e60012;
+}
+.baseinfo .title .redTitle{
+	height:40px;
+	line-height:40px;
+	color:#FFF;
+	font-size:16px;
+	width:120px;
+	background:#e60012;
+}
+.baseinfo .title .redTitle span{
+	display:block;
+	margin-left:32px;
+	color:#FFF;
+	font-size:16px;
+	width:100px;
+	background:#e60012;
+	transform: skew(-30deg);
+}
+.baseinfo .title .redTitle span div{
+	transform: skew(30deg);
+    height:40px;
+	font-family:"微软雅黑";
+	text-align:left;
+	line-height:40px;
+}
+.basemain{
+	width:100%;
+}
+.baseinfo ul{
+	list-style:none;
+	width:720px;
+}
+.baseinfo ul li{
+	width:50%;
+	line-height:45px;
+	text-indent:12px;
+	color:#555;
+	font-size:13px;
+	font-family:"微软雅黑";
+	float:left;
+}
+.baseinfo .findata{
+	width:100%;
+	margin-bottom:12px;
+	color:#666;
+	font-size:14px;
+}
+.baseinfo .findata dl{
+	display:block;
+	list-style:none;
+}
+.baseinfo .findata dl dt{
+	height:42px;
+	line-height:42px;
+	width:25%;
+	float:left;
+}
+.baseinfo .findata dl dt select{
+	height:36px;
+	line-height:36px;
+	text-align:center;
+	width:120px;
+	color:#666;
+	border:1px solid #CCC;
+}
+.baseinfo .main-left,.main-right{
+	float:left;
+	height:135px;
+}
+.baseinfo .main-left p{
+	width:360px;
+	font-size:13px;
+	color:#555;
+	line-height:45px;
+	text-indent:12px;
+}
+.baseinfo .main-right p{
+	float:left;
+	color:#555;
+	font-family:"微软雅黑";
+	line-height:45px;
+	font-size:13px;
+}
+.baseinfo .main-right p img{
+	margin-top:12px;
+	margin-left:12px;
+}
+.baseinfo .main-right a {
+	display:block;
+	height:20px;
+	line-height:20px;
+}
+.text-indent{
+	text-align:right;
+	width:100px;
+}
+.sysroom{
+	color:#555;
+	font-size:13px;
+	margin-bottom:12px;
+}
+.sysroom label{
+	display:block;
+	width:100px;
+	line-height:45px;
+	color:#555;
+	font-family:"微软雅黑";
+	text-align:right; 
+	margin-right:12px;
+	float:left;
+}
+.sysroom .checkbox{
+	margin-top:12px;
+	line-height:30px;
+	padding-right:45px;
+	width:500px;
+	float:left;
+}
+.sysroom textarea{
+	display:block;
+	float:left;
+	margin-top:16px;
+	resize:none;
+}
+.wowo{
+	width:100px;
+	display:block;
+	text-align:right;
+	color:#555;
+	font-family:"微软雅黑";
+	float:left;
+	margin:0;
+}

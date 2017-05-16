@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="renderer" content="webkit">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<base href="<?php echo base_url();?>" />
+<title>CADA云数聚-商户登录</title>
+<!--引入页面样式文件-->
+<link rel="stylesheet" href="static/merchant/css/cada-merchant-login.css">
+<!--引入jauery文件-->
+<script src="static/global/js/jquery.1.11.3.min.js"></script>
+<!--引入插件脚本-->
+<script src="static/global/js/jquery.placeholder.js"></script>
+<!--引用框架样式文件-->
+<link href="static/global/plugins/Bootstrap/css/bootstrap.css" rel="stylesheet">
+<!--引入框架脚本文件-->
+<script src="static/global/plugins/Bootstrap/js/bootstrap.min.js"></script>
+<!--引入弹框脚本文件-->
+<script src="static/global/plugins/Layer/layer.js"></script>
+<!--引入插件脚本-->
+<script src="static/global/js/jquery.cookie.js"></script>
+<!--引入页面脚本文件-->
+<script src="static/merchant/js/cada-merchant-login.js"></script>
+</head>
+<body>
+<div id="head" onclick="javascript:window.location.href='http://www.cadayun.cn/';"><span>商户登录</span></div>
+<div id="main-bg">
+	<div id="main">
+	<div class="main-l">
+	<div class="main-l-t"></div>
+	<div class="main-l-b"></div>
+	</div>
+	<div class="main-r">
+	 <div class="main-r-m">
+		<h2>用户登录</h2>
+		<form action="index.php/merchant/Login/Logined" method="post" id="form-z">
+		<input type="hidden" id="error" value="<?php echo $error;?>"/>
+		<ul>
+		<li>
+			<div class="input-group">
+				<span class="input-group-addon icon1">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+				<input type="text" class="form-control" placeholder="请输入用户名" maxlength="16" id="username" name="userName">
+		   </div>
+		</li>
+		<li>
+			<div class="input-group">
+				<span class="input-group-addon icon2">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+				<input type="password" class="form-control" placeholder="请输入密码"  maxlength="16" id="password" name="passWord">
+			</div>
+		</li>
+	    <li>
+			<label>验证码</label>
+			<input type="text" name="code" id="code" class="form-control"  style="width:120px;float:left;" maxlength="4"/>
+			<img  id="imgcode"	src="index.php/admin/Login/findCode"/>
+		</li>
+		<li><input type="button" value="登录" class="button"/></li>
+		</ul>
+		</form>
+		<div class="links"><a href="merchant/Login/findPass">找回密码</a><a href="index.php/merchant/Register">立即注册</a></div>
+	 </div>
+	</div>
+	<div class="crear"></div>
+	</div>
+</div>
+<div id="footx"><p>Copyright &copy;  2013-2017 www.cadayun.cn All Rights Reserved</p><p>北京与车行信息技术有限公司</p></div>
+</body>
+</html>

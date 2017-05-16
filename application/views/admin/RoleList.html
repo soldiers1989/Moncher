@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="renderer" content="webkit">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<base href="<?php echo base_url();?>" />
+<title>CADA云数聚-菜单管理</title>
+<!--引入jauery文件-->
+<script src="static/global/js/jquery.1.11.3.min.js"></script>
+<!--引入滚动条CSS样式文件-->
+<link rel="stylesheet" href="static/global/plugins/Scoller/jquery.mCustomScrollbar.css">
+<!--引入滚动条脚本文件-->
+<script src="static/global/plugins/Scoller/jquery.mCustomScrollbar.concat.min.js"></script>
+<!--引用框架样式文件-->
+<link href="static/global/plugins/Bootstrap/css/bootstrap.css" rel="stylesheet">
+<!--引入框架脚本文件-->
+<script src="static/global/plugins/Bootstrap/js/bootstrap.min.js"></script>
+<!--引入弹框脚本文件-->
+<script src="static/global/plugins/Layer/layer.js"></script>
+<!--引入全局CSS文件-->
+<link href="static/admin/css/cada-admin-min.css" rel="stylesheet">
+<!--引入全局脚本文件-->
+<script src="static/admin/js/cada-admin.js"></script>
+<!--引入搜索脚本文件-->
+<script src="static/admin/js/cada-admin-search.js"></script>
+</head>
+<script>
+$(function(){
+var provider='<?php echo $role;?>';
+/**搜索选择器*/
+var proposals =provider.split(",");
+	 $('#role-name').autocomplete({hints: proposals});
+});
+</script>
+<body>
+<div id="cada-admin-menu" class="cada-admin-main">
+<form class="form-inline" method="post" action="index.php/admin/role/search" id="formz" icon="role">
+  <div class="form-group">
+    <label for="menu-name">角色名称</label>
+    <input type="text" class="form-control" id="role-name" placeholder="搜索角色名称" style="width:120px;" name="roleName" maxlength="16">
+  </div>
+  &nbsp;&nbsp;&nbsp;&nbsp;<button type="submit" class="btn btn-danger" >查找</button>&nbsp;&nbsp;<button type="button" class="btn btn-danger" onclick="javascript:addShow('role');">添加权限</button>
+</form>
+<div class="dataDesc">
+<ul>
+  <li class="Idx">ID</li>
+  <li class="onex">权限名称</li>
+  <li class="onex">权限描述</li>
+  <li class="userx">操作人员</li>
+  <li class="timex">操作时间</li>
+  <li class="playx">操作</li>
+</ul>
+</div>
+<div class="dataList">
+<?php foreach($list as $key=>$val){?>
+<ul>
+  <li class="Idx"><?php echo ($key+1) ;?></li>
+  <li class="onex"><?php echo $val['roleName'];?></li>
+  <li class="onex"><?php echo $val['notes'];?></li>
+  <li class="userx"><?php echo $val['operatorName'];?></li>
+  <li class="timex"><?php echo $val['operationTime'];?></li>
+  <li class="playx"><a href="javascript:saveShow('role','<?php echo $val['id']?>');" class="btn btn-info">修改</a>&nbsp;&nbsp;
+		  <a href="javascript:delRows('role','<?php echo $val['id']?>');" class="btn btn-danger">删除</a></li>
+</ul>
+<?php }?>
+</div>
+<div class="relist" ><span>总记录数量<?php echo count($list);?>条,  &nbsp;每页显示100条</span></div>
+<div class="pagev"><?php echo $page;?></div>
+</div>
+</body>
+</html>

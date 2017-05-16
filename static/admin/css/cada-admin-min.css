@@ -1,0 +1,327 @@
+/*平台管理端全局css*/
+.cada-admin-main {
+	padding: 5px;
+	padding-bottom: 2px;
+	width:100%;
+}
+.cada-admin-layer {
+	margin: 0 auto;
+	background:#f8f8f8;
+}
+#message{
+    padding: 8px;
+	margin: 0 auto;
+	width: 300px;
+	background:#f5f5f5;
+	border:1px solid #CCC;
+	border-radius:4px;
+	margin-top:12px;
+}
+#message h2{
+	font-size:16px;
+	line-height:28px;
+	border-bottom:1px solid #CCC;
+	margin:0;
+}
+#message p{
+	display:block;
+	line-height:28px;
+	word-wrap : break-word;
+	font-size:13px;
+	text-indent:12px;
+	color:#555;
+	width:100%;
+}
+#message p img{
+	display:block;
+	width:284px;
+}
+#message h3{
+	line-height:28px;
+	border-top:1px solid #CCC;
+	font-size:14px;
+	margin:0;
+}
+.base-line {
+	height: 2px;
+	color: #cfcfcf;
+}
+
+.form-inline {
+	padding-top: 12px;
+	padding-bottom: 12px;
+}
+
+.form-group label {
+	font-weight: normal;
+	margin-left: 4px;
+	text-align: right;
+	padding: 4px 0px;
+}
+
+.length-min {
+	width: 150px;
+	float: left;
+}
+.layer_form ul {
+	display: block;
+	list-style: none;
+	border-top:1px solid #ddd;
+	margin: 0;
+	padding: 0;
+	padding-top:5px;
+	padding-bottom:5px;
+}
+
+.layer_form ul li {
+	display: block;
+	margin: 4px 0px;
+	float:left;
+}
+.layer_form ul li p{
+	display:block;
+	line-height:28px;
+	word-wrap : break-word;
+	font-size:13px;
+	font-weight:bold;
+	color:#555;
+	width:360px;
+	float:left;
+}
+.layer_form ul li p img{
+	width:360px;
+}
+.form-control{
+	padding:0px 0px;
+	height:25px;
+	text-indent:8px;
+}
+.layer_form ul label {
+	display: block;
+	width: 80px;
+	line-height: 25px;
+	float: left;
+	font-weight: normal;
+	margin-bottom: 0px;
+	text-align: right;
+	font-size: 13px;
+}
+
+.layer_form ul label i {
+	font-size:5px;
+	color: #e60012;
+}
+.layer_form .titleAll{
+	width: 380px;
+	float: left;
+}
+.layer_form .textareaAll{
+	width: 380px;
+	height:85px;
+	line-height:28px;
+	resize:none;
+	float: left;
+}
+.playDiv{
+	display:block;
+	width:100%;
+	height:28px;
+	position:absolute;
+	z-index:212;
+	top:calc(100% - 29px);
+	background:#eee;
+	border-top:1px solid #ddd;
+}
+.playDivs{
+	display:block;
+	width:100%;
+	height:28px;
+	z-index:212;
+	top:calc(100% - 29px);
+	background:#eee;
+	border-top:1px solid #ddd;	
+}
+.playDivs button{
+	margin-top:4px;
+	font-size:12px;
+	float:right;
+	margin-right:12px;
+	padding:2px 6px;
+}
+.playDiv button{
+	margin-top:4px;
+	font-size:12px;
+	float:right;
+	margin-right:12px;
+	padding:2px 6px;
+}
+.clear {
+	clear: both;
+}
+
+.layer_form  input[type="radio"] {
+	display: block;
+	margin-top: 7px;
+	float: left;
+}
+.relist {
+	float:left;
+	line-height:36px;
+}
+.pagev{
+	margin-top:6px;
+}
+.layer_form  ul li .spanx {
+	display: block;
+	margin-top: 6px;
+	margin-left: 2px;
+	float: left;
+	margin-right: 12px;
+}
+/* CSS Document */
+#paging {
+	display: inline-block;
+	padding-left: 0;
+	margin: 0;
+	border-radius: 4px;
+	float:right;
+}
+
+#paging .prev {
+	position: relative;
+	padding: 4px 12px;
+	float: left;
+	margin-left: 2px;
+	line-height: 1.42857143;
+	color: #323232;
+	text-decoration: none;
+	background-color: #fff;
+	border: 1px solid #ddd;
+	border-radius: 2px;
+}
+
+#paging .next {
+	position: relative;
+	padding: 4px 12px;
+	float: left;
+	margin-left: 2px;
+	line-height: 1.42857143;
+	color: #323232;
+	text-decoration: none;
+	background-color: #fff;
+	border: 1px solid #ddd;
+	border-radius: 2px;
+}
+
+#paging .num {
+	position: relative;
+	padding: 4px 6px;
+	float: left;
+	margin-left: 2px;
+	line-height: 1.42857143;
+	color: #323232;
+	text-decoration: none;
+	background-color: #fff;
+}
+
+#paging .end {
+	position: relative;
+	float: left;
+	padding: 4px 12px;
+	margin-left: 2px;
+	line-height: 1.42857143;
+	color: #323232;
+	text-decoration: none;
+	background-color: #fff;
+	border: 1px solid #ddd;
+	border-radius: 2px;
+}
+
+#paging .current {
+	position: relative;
+	float: left;
+	padding: 4px 4px;
+	margin-left: 2px;
+	line-height: 1.42857143;
+	color: #e60012;
+	text-decoration: none;
+	border-bottom: 1px solid #e60012;
+}
+
+#paging .first {
+	position: relative;
+	padding: 4px 12px;
+	float: left;
+	margin-left: 2px;
+	line-height: 1.42857;
+	color: #323232;
+	text-decoration: none;
+	background-color: #FFF;
+	border: 1px solid #DDD;
+	text-decoration: none;
+	border-radius: 2px;
+}
+
+#paging .first:hover {
+	text-decoration: none;
+}
+.imgFile {
+	width:150px;
+	height:28px;
+	float:left;
+	background:url(../images/addimg.png) center center / 98% 90% no-repeat;
+}
+.files {
+	display:block;
+	width:150px;
+	height:28px;
+	filter:alpha(opacity=0);
+	opacity:0;
+	position:relative;
+	top:0;
+	left:0;
+	z-index:1000;
+	margin-top:0;
+}
+.dataList{
+	border-left:1px solid #ddd;
+	border-right:1px solid #ddd;
+	border-bottom:1px solid #ddd;
+	overflow:scroll;
+	width:100%;
+	min-width:1150px;
+}
+.dataDesc{
+	margin-top:5px;
+	border:1px solid #ddd;
+	overflow:hidden;
+	width:100%;
+	min-width:1150px;
+}
+.dataDesc ul{
+	background:#eee;
+}
+.dataDesc  ul, .dataList  ul{
+	list-style:none;
+	display:block;
+    width:2000px;
+	margin:0;
+	padding:0;
+	height:30px;
+}
+.dataDesc  ul li, .dataList  ul li{
+	float:left;
+	margin:0;
+	text-align:center;
+	height:30px;
+	line-height:30px;
+	border-collapse:collapse;
+}
+.dataDesc  ul li {
+	border-right:1px solid #ddd;
+	background:#eee;
+}
+.dataList  ul li {
+	border-right:1px solid #ddd;
+	border-bottom:1px solid #f1f1f1;
+}

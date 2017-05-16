@@ -1,0 +1,435 @@
+<?php  $this->load->view('admin/head.html');?>
+<!-- <?php print_r($bottom_ind);?> -->
+<!-- highchart插件 -->
+<script src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script>
+<script src="http://cdn.hcharts.cn/highcharts/modules/exporting.js"></script>
+<script src="static/merchant/js/height_one.js"></script>
+<script src="static/merchant/js/height_two.js"></script>
+<script>
+/**接收数据**/
+var type=<?php echo $type;?>;
+var model=<?php echo $model;?>; //模型 
+var score=<?php echo $score;?>;		//得分
+var index_model=<?php echo $index_model;?>;	//指标
+var start_time=<?php echo $start_time;?>;		//本月
+var end_time=<?php echo $end_time;?>;			//上月
+</script>
+   <!--引入js部分  -->
+<script src="static/merchant/js/groupeval.js"></script>
+<!-- 本页css -->
+<link href="static/merchant/css/groupeval.css" rel="stylesheet">
+<!-- 外层div -->
+<div class="type1" style="min-width:1200px;">
+<!-- 搜索模块 -->
+<div class="search_model">
+	<!-- 总单双切换 -->
+<div class="store_choice">
+<button  class="btn btn-danger" id="one_total_store">总体</button>
+<button  class="btn btn-danger" id="one_store">单店</button>
+<button  class="btn btn-danger" id="one_two_store"style="width:100px;">双店</button>
+</div>
+<form class="form-inline"  method="POST" action="index.php/merchant/Anagroup/groupEval">
+		 <div class="form-group times">
+	      <input type="text"   class="form-control start" id="datemin" onfocus="WdatePicker({dateFmt:'MM'});"   placeholder="开始时间" name="end">
+	   - <input type="text" class="form-control end" id="datemax"  onfocus="WdatePicker({dateFmt:'MM'});"  placeholder="结束时间" name="start">
+	 	 </div>
+		 &nbsp;&nbsp;<button  class="btn btn-danger butinfo" >查找</button>
+</form>
+</div>
+<!-- 总体(高端)&行业(高端)/////////////// -->
+<div class="total">
+		<div class="top_model" style="float:left;">
+		<div class="top_tit">总分(高端)</div>
+		<div class="one_month" style="float:left;width:50%;">
+		<div class="top_score one_top"><span style="color:#7CB5EC;"></span>/100分</div>
+		<div id="top_Statistics0" style="width:100%;height:170px"></div>
+		</div>
+		 <div class="two_month" style="float:left;width:50%;">
+		<div class="top_score  two_top"><span style="color:#FFB012;"></span>/100分</div>
+		<div id="top_Statistics1" style="width:100%;height:170px"></div>
+		</div>
+		</div>
+		<div class="top_industry" style="float:left;">
+		<div class="top_tit">行业(高端)</div>
+ 		<div class="two_month" style="float:left;width:50%;">
+		<div class="top_score ind_one"><span style="color:#FFB012;"></span>/100分</div>
+		<div id="top_Statistics_ind0" style="width:100%;height:170px"></div>
+		</div>
+		<div class="two_month" style="float:left;width:50%;">
+		<div class="top_score ind_two"><span style="color:#FFB012;"></span>/100分</div>
+		<div id="top_Statistics_ind1" style="width:100%;height:170px"></div>
+		</div>
+		</div>
+</div>
+
+
+	<!-- 自己模块得分 -->
+<div class="modelss">
+			<?php foreach($start_model as $v):?>
+			<div class="model_name"  ><?php echo $v['title'];?></div>
+			<?php endforeach;?>
+			<div class="clear"></div>
+			<div class="anatit" style="float:left;">评测得分</div>
+			<div class="anatit" style="float:left;">评测得分</div>
+			<div class="anatit" style="float:left;">评测得分</div>
+			<div class="anatit" style="float:left;">评测得分</div>
+			<div class="anatit" style="float:left;">评测得分</div>
+		<div class="clear"></div>
+			<?php foreach($start_model as $v):?>
+		<div class="model_score" style="width:20%;height:30px;float:left;border-right:1px solid #ccc;">
+					<div class="me_tit" style="float:left;margin-left:5%;font-size:12px;color:#5D5050;width:10%;"><?php echo $v['Mon'];?>月</div>
+					<div style="width:58%;background:#CDCCCB;float:left;margin-left:12px;border-radius:4px;height:14px;">
+					<div class="gl_sty"   style="position:relative;left:0;width:<?php echo $v['GrHighSum']?>%;background-color:#7CB5EC;display:block;float:left;font-siez:12px;color:#fff;border-radius:4px;height:14px;"></div>
+					</div>
+					<div style="float:left;display:block;margin-left:5%;font-size:12px;color:#5D5050;"><?php echo $v['GrHighSum']?>分</div>
+			</div> 
+			<?php endforeach;?>
+		<div class="clear"></div>
+			<?php foreach($end_model as $v):?>
+			<div class="model_score" style="width:20%;height:30px;float:left;border-right:1px solid #ccc;">
+					<div class="me_tit" style="float:left;margin-left:5%;font-size:12px;color:#5D5050;width:10%;"><?php echo $v['Mon'];?>月</div>
+					<div style="width:58%;background:#CDCCCB;float:left;margin-left:12px;border-radius:4px;height:14px;">
+					<div class="gl_sty"   style="position:relative;left:0;width:<?php echo $v['GrHighSum']?>%;background-color:#7CB5EC;display:block;float:left;font-siez:12px;color:#fff;border-radius:4px;height:14px;"></div>
+					</div>
+					<div style="float:left;display:block;margin-left:5%;font-size:12px;color:#5D5050;"><?php echo $v['GrHighSum']?>分</div>
+			</div> 
+			<?php endforeach;?>
+</div>
+	<!-- 行业模块得分 -->
+<div class="ind_model"> 
+			<?php foreach($start_model as $v):?>
+			<div class="model_name"  ><?php echo $v['title'];?></div>
+			<?php endforeach;?>
+			<div class="clear"></div>
+			<div class="anatit" style="float:left;">评测得分</div>
+			<div class="anatit" style="float:left;">评测得分</div>
+			<div class="anatit" style="float:left;">评测得分</div>
+			<div class="anatit" style="float:left;">评测得分</div>
+			<div class="anatit" style="float:left;">评测得分</div>
+		<div class="clear"></div>
+			<?php foreach($start_model as $v):?>
+		<div class="model_score" style="width:20%;height:30px;float:left;border-right:1px solid #ccc;">
+					<div class="me_tit" style="float:left;margin-left:5%;font-size:12px;color:#5D5050;width:10%;"><?php echo $v['Mon'];?>月</div>
+					<div style="width:58%;background:#CDCCCB;float:left;margin-left:12px;border-radius:4px;height:14px;">
+					<div class="gl_sty"   style="position:relative;left:0;width:<?php echo $v['HighSum']?>%;background-color:#EFCB06;display:block;float:left;font-siez:12px;color:#fff;border-radius:4px;height:14px;"></div>
+					</div>
+					<div style="float:left;display:block;margin-left:5%;font-size:12px;color:#5D5050;"><?php echo $v['HighSum']?>分</div>
+			</div> 
+			<?php endforeach;?>
+		<div class="clear"></div>
+			<?php foreach($end_model as $v):?>
+			<div class="model_score" style="width:20%;height:30px;float:left;border-right:1px solid #ccc;">
+					<div class="me_tit" style="float:left;margin-left:5%;font-size:12px;color:#5D5050;width:10%;"><?php echo $v['Mon'];?>月</div>
+					<div style="width:58%;background:#CDCCCB;float:left;margin-left:12px;border-radius:4px;height:14px;">
+					<div class="gl_sty"   style="position:relative;left:0;width:<?php echo $v['HighSum']?>%;background-color:#FCE807;display:block;float:left;font-siez:12px;color:#fff;border-radius:4px;height:14px;"></div>
+					</div>
+					<div style="float:left;display:block;margin-left:5%;font-size:12px;color:#5D5050;"><?php echo $v['HighSum']?>分</div>
+			</div> 
+			<?php endforeach;?>
+
+
+<!-- 	<div class="model_ind0" style="float:left;"></div>
+	<div class="model_ind1" style="float:left;"></div>
+	<div class="model_ind2" style="float:left;"></div>
+	<div class="model_ind3" style="float:left;"></div>
+	<div class="model_ind4" style="float:left;"></div> -->
+</div>
+<!-- 点击<span>详情指标</span>（本集团高端） -->
+<div class="index">
+	<div class="low_fwgw_inbdex "style="float:left;"><input class="cl_"  type="hidden" rank="1"  value="<?php echo $start_model[0]['questionnaireId']?>"><span class="cl_index">详情指标</span></div>
+	<div class="low_fwss_inbdex  "style="float:left;"><input  class="cl_" type="hidden"  rank="1" value="<?php echo $start_model[1]['questionnaireId']?>"><span class="cl_index">详情指标</span></div>
+	<div class="low_wxzl_inbdex  "style="float:left;"><input  class="cl_" type="hidden"  rank="1"  value="<?php echo $start_model[2]['questionnaireId']?>"><span class="cl_index">详情指标</span></div>
+	<div class="low_wxjg_inbdex  "style="float:left;"><input  class="cl_" type="hidden"  rank="1"  value="<?php echo $start_model[3]['questionnaireId']?>"><span class="cl_index">详情指标</span></div>
+	<div class="low_wxsj_inbdex  "style="float:left;"><input  class="cl_" type="hidden"  rank="1"  value="<?php echo $start_model[4]['questionnaireId']?>"><span class="cl_index">详情指标</span></div>
+</div>
+<div class="clear"></div>
+<!-- 总体(中端)&行业(中端)/////////////// -->
+<div class="total">
+		<div class="top_model" style="float:left;">
+		<div class="top_tit">总分(中端)</div>
+		<div class="one_month" style="float:left;width:50%;">
+		<div class="top_score mid_one"><span style="color:#7CB5EC;"></span>/100分</div>
+		<div id="mid_Statistics0" style="width:100%;height:170px"></div>
+		</div>
+		 <div class="two_month" style="float:left;width:50%;">
+		<div class="top_score mid_wto"><span style="color:#FFB012;"></span>/100分</div>
+		<div id="mid_Statistics1" style="width:100%;height:170px"></div>
+		</div>
+		</div>
+		<div class="top_industry" style="float:left;">
+		<div class="top_tit">行业(中端)</div>
+ 		<div class="two_month" style="float:left;width:50%;">
+		<div class="top_score ind_mid_one"><span style="color:#7CB5EC;"></span>/100分</div>
+		<div id="mid_Statistics_ind0" style="width:100%;height:170px"></div>
+		</div>
+		<div class="two_month" style="float:left;width:50%;">
+		<div class="top_score ind_mid_two"><span style="color:#FFB012;"></span>/100分</div>
+		<div id="mid_Statistics_ind1" style="width:100%;height:170px"></div>
+		</div>
+		</div>
+</div>
+<!-- 模块得分中端 -->
+	<!-- 自己模块得分 -->
+<div class="modelss">
+		<?php foreach($start_model as $v):?>
+			<div class="model_name"  ><?php echo $v['title'];?></div>
+			<?php endforeach;?>
+			<div class="clear"></div>
+			<div class="anatit" style="float:left;">评测得分</div>
+			<div class="anatit" style="float:left;">评测得分</div>
+			<div class="anatit" style="float:left;">评测得分</div>
+			<div class="anatit" style="float:left;">评测得分</div>
+			<div class="anatit" style="float:left;">评测得分</div>
+		<div class="clear"></div>
+			<?php foreach($start_model as $v):?>
+		<div class="model_score" style="width:20%;height:30px;float:left;border-right:1px solid #ccc;">
+					<div class="me_tit" style="float:left;margin-left:5%;font-size:12px;color:#5D5050;width:10%;"><?php echo $v['Mon'];?>月</div>
+					<div style="width:58%;background:#CDCCCB;float:left;margin-left:12px;border-radius:4px;height:14px;">
+					<div class="gl_sty"   style="position:relative;left:0;width:<?php echo $v['GrInSum']?>%;background-color:#EFCB06;display:block;float:left;font-siez:12px;color:#fff;border-radius:4px;height:14px;"></div>
+					</div>
+					<div style="float:left;display:block;margin-left:5%;font-size:12px;color:#5D5050;"><?php echo $v['GrInSum']?>分</div>
+			</div> 
+			<?php endforeach;?>
+		<div class="clear"></div>
+			<?php foreach($end_model as $v):?>
+			<div class="model_score" style="width:20%;height:30px;float:left;border-right:1px solid #ccc;">
+					<div class="me_tit" style="float:left;margin-left:5%;font-size:12px;color:#5D5050;width:10%;"><?php echo $v['Mon'];?>月</div>
+					<div style="width:58%;background:#CDCCCB;float:left;margin-left:12px;border-radius:4px;height:14px;">
+					<div class="gl_sty"   style="position:relative;left:0;width:<?php echo $v['GrInSum']?>%;background-color:#FCE807;display:block;float:left;font-siez:12px;color:#fff;border-radius:4px;height:14px;"></div>
+					</div>
+					<div style="float:left;display:block;margin-left:5%;font-size:12px;color:#5D5050;"><?php echo $v['GrInSum']?>分</div>
+			</div> 
+			<?php endforeach;?>
+</div>
+	<!-- 行业模块得分 -->
+<div class="ind_model"> 
+		<?php foreach($start_model as $v):?>
+			<div class="model_name"  ><?php echo $v['title'];?></div>
+			<?php endforeach;?>
+			<div class="clear"></div>
+			<div class="anatit" style="float:left;">评测得分</div>
+			<div class="anatit" style="float:left;">评测得分</div>
+			<div class="anatit" style="float:left;">评测得分</div>
+			<div class="anatit" style="float:left;">评测得分</div>
+			<div class="anatit" style="float:left;">评测得分</div>
+		<div class="clear"></div>
+			<?php foreach($start_model as $v):?>
+		<div class="model_score" style="width:20%;height:30px;float:left;border-right:1px solid #ccc;">
+					<div class="me_tit" style="float:left;margin-left:5%;font-size:12px;color:#5D5050;width:10%;"><?php echo $v['Mon'];?>月</div>
+					<div style="width:58%;background:#CDCCCB;float:left;margin-left:12px;border-radius:4px;height:14px;">
+					<div class="gl_sty"   style="position:relative;left:0;width:<?php echo $v['InSum']?>%;background-color:#EFCB06;display:block;float:left;font-siez:12px;color:#fff;border-radius:4px;height:14px;"></div>
+					</div>
+					<div style="float:left;display:block;margin-left:5%;font-size:12px;color:#5D5050;"><?php echo $v['InSum']?>分</div>
+			</div> 
+			<?php endforeach;?>
+		<div class="clear"></div>
+			<?php foreach($end_model as $v):?>
+			<div class="model_score" style="width:20%;height:30px;float:left;border-right:1px solid #ccc;">
+					<div class="me_tit" style="float:left;margin-left:5%;font-size:12px;color:#5D5050;width:10%;"><?php echo $v['Mon'];?>月</div>
+					<div style="width:58%;background:#CDCCCB;float:left;margin-left:12px;border-radius:4px;height:14px;">
+					<div class="gl_sty"   style="position:relative;left:0;width:<?php echo $v['InSum']?>%;background-color:#FCE807;display:block;float:left;font-siez:12px;color:#fff;border-radius:4px;height:14px;"></div>
+					</div>
+					<div style="float:left;display:block;margin-left:5%;font-size:12px;color:#5D5050;"><?php echo $v['InSum']?>分</div>
+			</div> 
+			<?php endforeach;?>
+</div>
+<!-- 点击<span>详情指标</span>（本集团中端） -->
+<div class="index">
+	<div class="low_fwgw_inbdex "style="float:left;"><input class="cl_"  type="hidden" rank="2"  value="<?php echo $start_model[0]['questionnaireId']?>"><span class="cl_index">详情指标</span></div>
+	<div class="low_fwss_inbdex  "style="float:left;"><input  class="cl_" type="hidden"  rank="2" value="<?php echo $start_model[1]['questionnaireId']?>"><span class="cl_index">详情指标</span></div>
+	<div class="low_wxzl_inbdex  "style="float:left;"><input  class="cl_" type="hidden"  rank="2"  value="<?php echo $start_model[2]['questionnaireId']?>"><span class="cl_index">详情指标</span></div>
+	<div class="low_wxjg_inbdex  "style="float:left;"><input  class="cl_" type="hidden"  rank="2"  value="<?php echo $start_model[3]['questionnaireId']?>"><span class="cl_index">详情指标</span></div>
+	<div class="low_wxsj_inbdex  "style="float:left;"><input  class="cl_" type="hidden"  rank="2"  value="<?php echo $start_model[4]['questionnaireId']?>"><span class="cl_index">详情指标</span></div>
+</div>
+<!-- 总体(自主)&行业(自主)/////////////// -->
+<div class="total"> 
+		<div class="top_model" style="float:left;">
+		<div class="top_tit">总分(自主)</div>
+		<div class="one_month" style="float:left;width:50%;">
+		<div class="top_score low_one"><span style="color:#7CB5EC;"></span>/100分</div>
+		<div id="low_Statistics0" style="width:100%;height:170px"></div>
+		</div>
+		 <div class="two_month" style="float:left;width:50%;">
+		<div class="top_score low_wto"><span style="color:#FFB012;"></span>/100分</div>
+		<div id="low_Statistics1" style="width:100%;height:170px"></div>
+		</div>
+		</div>
+		<div class="top_industry" style="float:left;">
+		<div class="top_tit">行业(自主)</div>
+ 		<div class="two_month" style="float:left;width:50%;">
+		<div class="top_score ind_low_one"><span style="color:#7CB5EC;"></span>/100分</div>
+		<div id="low_Statistics_ind0" style="width:100%;height:170px"></div>
+		</div>
+		<div class="two_month" style="float:left;width:50%;">
+		<div class="top_score ind_low_two"><span style="color:#FFB012;"></span>/100分</div>
+		<div id="low_Statistics_ind1" style="width:100%;height:170px"></div>
+		</div>
+		</div>
+</div>
+<!-- 模块得分自主 -->
+	<!-- 自己模块得分 -->
+<div class="modelss">
+		<?php foreach($start_model as $v):?>
+			<div class="model_name"  ><?php echo $v['title'];?></div>
+			<?php endforeach;?>
+			<div class="clear"></div>
+			<div class="anatit" style="float:left;">评测得分</div>
+			<div class="anatit" style="float:left;">评测得分</div>
+			<div class="anatit" style="float:left;">评测得分</div>
+			<div class="anatit" style="float:left;">评测得分</div>
+			<div class="anatit" style="float:left;">评测得分</div>
+		<div class="clear"></div>
+			<?php foreach($start_model as $v):?>
+		<div class="model_score" style="width:20%;height:30px;float:left;border-right:1px solid #ccc;">
+					<div class="me_tit" style="float:left;margin-left:5%;font-size:12px;color:#5D5050;width:10%;"><?php echo $v['Mon'];?>月</div>
+					<div style="width:58%;background:#CDCCCB;float:left;margin-left:12px;border-radius:4px;height:14px;">
+					<div class="gl_sty"   style="position:relative;left:0;width:<?php echo $v['GrLowSum']?>%;background-color:#EFCB06;display:block;float:left;font-siez:12px;color:#fff;border-radius:4px;height:14px;"></div>
+					</div>
+					<div style="float:left;display:block;margin-left:5%;font-size:12px;color:#5D5050;"><?php echo $v['GrLowSum']?>分</div>
+			</div> 
+			<?php endforeach;?>
+		<div class="clear"></div>
+			<?php foreach($end_model as $v):?>
+			<div class="model_score" style="width:20%;height:30px;float:left;border-right:1px solid #ccc;">
+					<div class="me_tit" style="float:left;margin-left:5%;font-size:12px;color:#5D5050;width:10%;"><?php echo $v['Mon'];?>月</div>
+					<div style="width:58%;background:#CDCCCB;float:left;margin-left:12px;border-radius:4px;height:14px;">
+					<div class="gl_sty"   style="position:relative;left:0;width:<?php echo $v['GrLowSum']?>%;background-color:#FCE807;display:block;float:left;font-siez:12px;color:#fff;border-radius:4px;height:14px;"></div>
+					</div>
+					<div style="float:left;display:block;margin-left:5%;font-size:12px;color:#5D5050;"><?php echo $v['GrLowSum']?>分</div>
+			</div> 
+			<?php endforeach;?>
+</div>
+	<!-- 行业模块得分 -->
+<div class="ind_model"> 
+		<?php foreach($start_model as $v):?>
+			<div class="model_name"  ><?php echo $v['title'];?></div>
+			<?php endforeach;?>
+			<div class="clear"></div>
+			<div class="anatit" style="float:left;">评测得分</div>
+			<div class="anatit" style="float:left;">评测得分</div>
+			<div class="anatit" style="float:left;">评测得分</div>
+			<div class="anatit" style="float:left;">评测得分</div>
+			<div class="anatit" style="float:left;">评测得分</div>
+		<div class="clear"></div>
+			<?php foreach($start_model as $v):?>
+		<div class="model_score" style="width:20%;height:30px;float:left;border-right:1px solid #ccc;">
+					<div class="me_tit" style="float:left;margin-left:5%;font-size:12px;color:#5D5050;width:10%;"><?php echo $v['Mon'];?>月</div>
+					<div style="width:58%;background:#CDCCCB;float:left;margin-left:12px;border-radius:4px;height:14px;">
+					<div class="gl_sty"   style="position:relative;left:0;width:<?php echo $v['LowSum']?>%;background-color:#EFCB06;display:block;float:left;font-siez:12px;color:#fff;border-radius:4px;height:14px;"></div>
+					</div>
+					<div style="float:left;display:block;margin-left:5%;font-size:12px;color:#5D5050;"><?php echo $v['LowSum']?>分</div>
+			</div> 
+			<?php endforeach;?>
+		<div class="clear"></div>
+			<?php foreach($end_model as $v):?>
+			<div class="model_score" style="width:20%;height:30px;float:left;border-right:1px solid #ccc;">
+					<div class="me_tit" style="float:left;margin-left:5%;font-size:12px;color:#5D5050;width:10%;"><?php echo $v['Mon'];?>月</div>
+					<div style="width:58%;background:#CDCCCB;float:left;margin-left:12px;border-radius:4px;height:14px;">
+					<div class="gl_sty"   style="position:relative;left:0;width:<?php echo $v['LowSum']?>%;background-color:#FCE807;display:block;float:left;font-siez:12px;color:#fff;border-radius:4px;height:14px;"></div>
+					</div>
+					<div style="float:left;display:block;margin-left:5%;font-size:12px;color:#5D5050;"><?php echo $v['LowSum']?>分</div>
+			</div> 
+			<?php endforeach;?>
+</div>
+<!-- 点击<span>详情指标</span>（本集团自主） -->
+<div class="index">
+	<div class="low_fwgw_inbdex "style="float:left;"><input class="cl_"  type="hidden" rank="3"  value="<?php echo $start_model[0]['questionnaireId']?>"><span class="cl_index">详情指标</span></div>
+	<div class="low_fwss_inbdex  "style="float:left;"><input  class="cl_" type="hidden"  rank="3" value="<?php echo $start_model[1]['questionnaireId']?>"><span class="cl_index">详情指标</span></div>
+	<div class="low_wxzl_inbdex  "style="float:left;"><input  class="cl_" type="hidden"  rank="3"  value="<?php echo $start_model[2]['questionnaireId']?>"><span class="cl_index">详情指标</span></div>
+	<div class="low_wxjg_inbdex  "style="float:left;"><input  class="cl_" type="hidden"  rank="3"  value="<?php echo $start_model[3]['questionnaireId']?>"><span class="cl_index">详情指标</span></div>
+	<div class="low_wxsj_inbdex  "style="float:left;"><input  class="cl_" type="hidden"  rank="3"  value="<?php echo $start_model[4]['questionnaireId']?>"><span class="cl_index">详情指标</span></div>
+</div>
+<!-- 各模块指标-->
+<div class="gw_model">
+	<div class="title" style="float:left;"><?php echo $index_model[0]['que_name'];?></div>
+	<!-- 最高指标开始 -->
+	<div class="top_index" style="float:left;">
+		<div class="top_tit">最高指标得分</div>
+		<div class="index_tit">
+		<ul class="tit_ul  top">
+		<li style="width:70%;">指标</li>
+		<li style="width:10%;"></li>
+		<li style="width:10%;"></li>
+		<li style="width:10%;">差值</li>
+		</ul>
+			<?php?>
+			<div class="return_index">
+		<?php foreach($index_model as $key=>$u):?>
+			<ul class="content_ul  index_t" >
+		<li style="width:70%;float:left;">
+		<?php echo $u['title']?>
+		</li>
+		<li style="width:10%;float:left;text-align:center;">
+		<?php echo $u['SMon'];?>
+		</li>
+		<li style="width:10%;float:left;text-align:center;">
+		<?php echo $u['EMon']?>
+		</li>
+		<?php if($u['SMon']>$u['EMon']){?>
+		<li style="width:10%;float:left;text-align:center;">
+		<span style="font-weight:1000;font-size:14px;color:green;">↑</span><?php echo $u['CMon']?>
+		</li>
+		<?php }elseif($u['SMon']<$u['EMon']){?>
+		<li style="width:10%;float:left;text-align:center;">
+		<span style="font-weight:1000;font-size:14px;color:red;">↓</span><?php echo $u['CMon']?>
+		</li>
+		<?php }else{?>
+		<li style="width:10%;float:left;text-align:center;">
+		<?php echo $u['CMon']?>
+		</li>
+		<?php }?>
+		</ul>
+		<?php endforeach;?>
+		</div>
+		</div>
+	</div>
+	<!-- 最高指标结束 -->
+	<!-- 最低指标开始 -->
+	<div class="top_index" style="float:left;">
+		<div class="top_tit">最低指标得分</div>
+	<div class="index_tit">
+		<ul class="tit_ul   tit_ul_low">
+		<li style="width:70%;">指标</li>
+		<li style="width:10%;"></li>
+		<li style="width:10%;"></li>
+		<li style="width:10%;">差值</li>
+		</ul>
+		<div class="return_index_low">
+			<?php foreach($index_model_low as $key=>$u):?>
+			<ul class="content_ul index_l">
+		<li style="width:70%;float:left;">
+		<?php echo $u['title']?>
+		</li>
+		<li style="width:10%;float:left;text-align:center;">
+		<?php echo $u['SMon'];?>
+		</li>
+		<li style="width:10%;float:left;text-align:center;">
+		<?php echo $u['EMon']?>
+		</li>
+		<?php if($u['SMon']>$u['EMon']){?>
+		<li style="width:10%;float:left;text-align:center;">
+		<span style="font-weight:1000;font-size:14px;color:green;">↑</span><?php echo $u['CMon']?>
+		</li>
+		<?php }elseif($u['SMon']<$u['EMon']){?>
+		<li style="width:10%;float:left;text-align:center;">
+		<span style="font-weight:1000;font-size:14px;color:red;">↓</span><?php echo $u['CMon']?>
+		</li>
+		<?php }else{?>
+		<li style="width:10%;float:left;text-align:center;">
+		<?php echo $u['CMon']?>
+		</li>
+		<?php }?>
+		</ul>
+				<?php endforeach;?>
+		</div>
+		</div>
+	</div>
+	<!-- 最低指标结束 -->
+</div>
+
+</div>
+<!-- 时间插件 -->
+<script type="text/javascript" src="<?php echo base_url();?>static/global/js/My97DatePicker/WdatePicker.js"></script>
+
+</body>
+</html>

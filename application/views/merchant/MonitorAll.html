@@ -1,0 +1,162 @@
+<?php  $this->load->view('admin/head.html');?>
+<!-- highchart插件 -->
+<script src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script>
+<!--<script src="http://cdn.hcharts.cn/highcharts/modules/exporting.js"></script>-->
+<script src="static/merchant/js/height_one.js"></script>
+<script src="static/merchant/js/height_two.js"></script>
+<script>
+var quer=<?php echo $querTree;?>;
+var year=<?php echo $yearTree;?>;
+var mon=<?php echo $monTree;?>;
+var allsize=<?php echo empty($All['F2'])?0:$All['F2'];?>;
+</script> 
+<!-- 本页css -->
+<link href="static/merchant/css/cada-merchant-warn.css" rel="stylesheet">
+<!--引入js部分  -->
+<script src="static/merchant/js/cada-merchant-warn.js"></script>
+<!-- 搜索模块 -->
+<div class="namei">
+<p><a  href="merchant/Monitor/monitorAll?rank=1" style="<?php echo $rank==1?'background:#e60012;color:#FFF;':'';?>margin-left:10%;">高端</a><a  href="merchant/Monitor/monitorAll?rank=2" style="<?php echo $rank==2?'background:#e60012;color:#FFF;':'';?>">中端</a><a  href="merchant/Monitor/monitorAll?rank=3"  style="<?php echo $rank==3?'background:#e60012;color:#FFF;':'';?>">自主</a></p>
+</div>
+<div class="minvo">
+<!--总分-->
+<div class="total">
+	<div class="total_left" >
+		<div class="amount_tit" >总体</div>
+		<div class="tit">总体用户评测得分：<span style='color:red;' class="dataspan"><?php echo empty($All['F1'])?0:$All['F1'];?></span></div>
+		<div class="quar_score"></div>
+		<div class="five_score">
+			<div class="skyround"  id="skyround1" style="width:20%;height:140px;float:left;" SKY="服务顾问|#0064AE|<?php echo empty($All['F8'])?0:$All['F8'];?>"></div>
+			<div class="skyround"  id="skyround2" style="width:20%;height:140px;float:left;" SKY="服务设施|#02A6AF|<?php echo empty($All['F9'])?0:$All['F9'];?>"></div>
+			<div class="skyround"  id="skyround3" style="width:20%;height:140px;float:left;" SKY="维修质量|#019E47|<?php echo empty($All['F10'])?0:$All['F10'];?>"></div>
+			<div class="skyround"  id="skyround4" style="width:20%;height:140px;float:left;" SKY="维修时间|#E45A02|<?php echo empty($All['F11'])?0:$All['F11'];?>"></div>
+			<div class="skyround"  id="skyround5" style="width:20%;height:140px;float:left;" SKY="维修价格|#E18901|<?php echo empty($All['F12'])?0:$All['F12'];?>"></div>
+			<div class="clear"></div>
+		</div>
+		<div class="sample">
+			   <div class="tit">用户参与样本量</div>
+				<div class="quar_score">总体用户参与样本量：<span style='color:red;' class="dataspan"><?php echo empty($All['F2'])?0:$All['F2'];?></span></div>
+				<div class="skypie" style="float:left;width:100%;" SKY="服务顾问|#0064AE|<?php echo empty($All['F3'])?0:$All['F3'];?>"></div>
+				<div class="skypie" style="float:left;width:100%;" SKY="服务设施|#02A6AF|<?php echo empty($All['F4'])?0:$All['F4'];?>"></div>
+				<div class="skypie" style="float:left;width:100%;" SKY="维修质量|#019E47|<?php echo empty($All['F5'])?0:$All['F5'];?>"></div>
+				<div class="skypie" style="float:left;width:100%;" SKY="维修时间|#E45A02|<?php echo empty($All['F6'])?0:$All['F6'];?>"></div>
+				<div class="skypie" style="float:left;width:100%;" SKY="维修价格|#E18901|<?php echo empty($All['F7'])?0:$All['F7'];?>"></div>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="total_right">
+		<div class="amount_tit">本日</div>
+		<div class="tit">本日用户评测得分：<span style='color:red;' class="dataspan"><?php echo empty($Day['F1'])?0:$Day['F1'];?></span></div>
+		<div class="quar_score"></div>
+		<div class="five_score">
+			<div class="skyround"  id="skyround6" style="width:20%;height:140px;float:left;" SKY="服务顾问|#0064AE|<?php echo empty($Day['F8'])?0:$Day['F8'];?>"></div>
+			<div class="skyround"  id="skyround7" style="width:20%;height:140px;float:left;" SKY="服务设施|#02A6AF|<?php echo empty($Day['F9'])?0:$Day['F9'];?>"></div>
+			<div class="skyround"  id="skyround8" style="width:20%;height:140px;float:left;" SKY="维修质量|#019E47|<?php echo empty($Day['F10'])?0:$Day['F10'];?>"></div>
+			<div class="skyround"  id="skyround9" style="width:20%;height:140px;float:left;" SKY="维修时间|#E45A02|<?php echo empty($Day['F11'])?0:$Day['F11'];?>"></div>
+			<div class="skyround"  id="skyround10" style="width:20%;height:140px;float:left;" SKY="维修价格|#E18901|<?php echo empty($Day['F12'])?0:$Day['F12'];?>"></div>
+			<div class="clear"></div>
+		</div>
+		<div class="sample">
+		<div class="tit">本日用户参与样本量：<span style='color:red;' class="dataspan"><?php echo empty($Day['F2'])?0:$Day['F2'];?></span></div>
+		<div class="quar_score"></div>
+			<div class="skypie" style="float:left;width:100%;" SKY="服务顾问|#0064AE|<?php echo empty($Day['F3'])?0:$Day['F3'];?>"></div>
+			<div class="skypie" style="float:left;width:100%;" SKY="服务设施|#02A6AF|<?php echo empty($Day['F4'])?0:$Day['F4'];?>"></div>
+			<div class="skypie" style="float:left;width:100%;" SKY="维修质量|#019E47|<?php echo empty($Day['F5'])?0:$Day['F5'];?>"></div>
+			<div class="skypie" style="float:left;width:100%;" SKY="维修时间|#E45A02|<?php echo empty($Day['F6'])?0:$Day['F6'];?>"></div>
+			<div class="skypie" style="float:left;width:100%;" SKY="维修价格|#E18901|<?php echo empty($Day['F7'])?0:$Day['F7'];?>"></div>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+</div>
+<div class="important_index">
+	  <div class="amount_tit">月度</div>
+	   <div class="month_left">
+		 <div class="tit">本月用户评测得分：<span style='color:red;' class="dataspan"><?php echo empty($Month['F1'])?0:$Month['F1'];?></span></div>
+		 	<div class="quar_score"></div>
+			<div class="five_score" style="margin-top:50px;">
+				<div class="skyround"  id="skyround11" style="width:20%;height:140px;float:left;" SKY="服务顾问|#0064AE|<?php echo empty($Month['F8'])?0:$Month['F8'];?>"></div>
+				<div class="skyround"  id="skyround12" style="width:20%;height:140px;float:left;" SKY="服务设施|#02A6AF|<?php echo empty($Month['F9'])?0:$Month['F9'];?>"></div>
+				<div class="skyround"  id="skyround13" style="width:20%;height:140px;float:left;" SKY="维修质量|#019E47|<?php echo empty($Month['F10'])?0:$Month['F10'];?>"></div>
+				<div class="skyround"  id="skyround14" style="width:20%;height:140px;float:left;" SKY="维修时间|#E45A02|<?php echo empty($Month['F11'])?0:$Month['F11'];?>"></div>
+				<div class="skyround"  id="skyround15" style="width:20%;height:140px;float:left;" SKY="维修价格|#E18901|<?php echo empty($Month['F12'])?0:$Month['F12'];?>"></div>
+				<div class="clear"></div>
+			</div>
+		 </div>
+	<div class="month_right">
+	     <div class="tit">本月用户参与样本量：<span style='color:red;' class="dataspan"><?php echo empty($Month['F2'])?0:$Month['F2'];?></span></div>
+	 	<div class="quar_score"></div>
+			<div class="skypie" style="float:left;width:100%;" SKY="服务顾问|#0064AE|<?php echo empty($Month['F3'])?0:$Month['F3'];?>"></div>
+			<div class="skypie" style="float:left;width:100%;" SKY="服务设施|#02A6AF|<?php echo empty($Month['F4'])?0:$Month['F4'];?>"></div>
+			<div class="skypie" style="float:left;width:100%;" SKY="维修质量|#019E47|<?php echo empty($Month['F5'])?0:$Month['F5'];?>"></div>
+			<div class="skypie" style="float:left;width:100%;" SKY="维修时间|#E45A02|<?php echo empty($Month['F6'])?0:$Month['F6'];?>"></div>
+			<div class="skypie" style="float:left;width:100%;" SKY="维修价格|#E18901|<?php echo empty($Month['F7'])?0:$Month['F7'];?>"></div>
+	</div>
+	<div class="clear"></div>
+	<!-- 月度各模块详细用户参与样本量-->
+	<div class="month_model"><div id="month_a" style="min-width:98%;height:280px;float:left;"></div></div>
+	<!-- 月度各模块详细评测得分-->
+	<div class="month_model"><div id="month_b" style="min-width:98%;height:280px;float:left;"></div></div>
+	<div class="clear"></div>
+</div>
+<!--季度模块-->
+<div class="quar_model">
+	<div class="amount_tit">季度</div>
+      <div class="quar_one">
+		<div class="tit">本季用户评测得分：<span style='color:red;' class="dataspan"><?php echo empty($Quar['F1'])?0:$Quar['F1'];?></span></div>
+	    <div class="quar_score"></div>
+		<div class="five_score  quarss" style="margin-top:5px;">
+				<div class="skyround"  id="skyround16" style="width:20%;height:140px;float:left;" SKY="服务顾问|#0064AE|<?php echo empty($Quar['F8'])?0:$Quar['F8'];?>"></div>
+				<div class="skyround"  id="skyround17" style="width:20%;height:140px;float:left;" SKY="服务设施|#02A6AF|<?php echo empty($Quar['F9'])?0:$Quar['F9'];?>"></div>
+				<div class="skyround"  id="skyround18" style="width:20%;height:140px;float:left;" SKY="维修质量|#019E47|<?php echo empty($Quar['F10'])?0:$Quar['F10'];?>"></div>
+				<div class="skyround"  id="skyround19" style="width:20%;height:140px;float:left;" SKY="维修时间|#E45A02|<?php echo empty($Quar['F11'])?0:$Quar['F11'];?>"></div>
+				<div class="skyround"  id="skyround20" style="width:20%;height:140px;float:left;" SKY="维修价格|#E18901|<?php echo empty($Quar['F12'])?0:$Quar['F12'];?>"></div>
+				<div class="clear"></div>
+		</div>
+		<div class="quar_sam">
+			<div class="tit">本季用户参与样本量：<span style='color:red;' class="dataspan"><?php echo empty($Quar['F2'])?0:$Quar['F2'];?></span></div>
+			<div class="quar_score"></div>
+			<div class="skypie" style="float:left;width:100%;" SKY="服务顾问|#0064AE|<?php echo empty($Quar['F3'])?0:$Quar['F3'];?>"></div>
+			<div class="skypie" style="float:left;width:100%;" SKY="服务设施|#02A6AF|<?php echo empty($Quar['F4'])?0:$Quar['F4'];?>"></div>
+			<div class="skypie" style="float:left;width:100%;" SKY="维修质量|#019E47|<?php echo empty($Quar['F5'])?0:$Quar['F5'];?>"></div>
+			<div class="skypie" style="float:left;width:100%;" SKY="维修时间|#E45A02|<?php echo empty($Quar['F6'])?0:$Quar['F6'];?>"></div>
+			<div class="skypie" style="float:left;width:100%;" SKY="维修价格|#E18901|<?php echo empty($Quar['F7'])?0:$Quar['F7'];?>"></div>
+		</div>
+	</div>
+  <div class="quar_two"><div   id="quar_a" style="width:98%;height:470px;float:left;"></div></div>
+  <div class="quar_three"><div id="quar_b" style="width:98%;height:470px;float:left;"></div></div>
+</div>
+<!--年度模块-->
+<div class="year_model">
+<div class="amount_tit">年度</div>
+<div class='year_one' style="float:left;">
+	<div class="tit" style="margin-top:10px;text-align:center;">本年用户评测得分：<span style='color:red;' class="dataspan"><?php echo empty($Year['F1'])?0:$All['F1'];?></span></div>
+	<div class="quar_score"></div>
+	<div class="five_score" style="margin-top:20px;">
+		<div class="skyround"  id="skyround21" style="width:20%;height:140px;float:left;" SKY="服务顾问|#0064AE|<?php echo empty($Year['F8'])?0:$Year['F8'];?>"></div>
+		<div class="skyround"  id="skyround22" style="width:20%;height:140px;float:left;" SKY="服务设施|#02A6AF|<?php echo empty($Year['F9'])?0:$Year['F9'];?>"></div>
+		<div class="skyround"  id="skyround23" style="width:20%;height:140px;float:left;" SKY="维修质量|#019E47|<?php echo empty($Year['F10'])?0:$Year['F10'];?>"></div>
+		<div class="skyround"  id="skyround24" style="width:20%;height:140px;float:left;" SKY="维修时间|#E45A02|<?php echo empty($Year['F11'])?0:$Year['F11'];?>"></div>
+		<div class="skyround"  id="skyround25" style="width:20%;height:140px;float:left;" SKY="维修价格|#E18901|<?php echo empty($Year['F12'])?0:$Year['F12'];?>"></div>
+		<div class="clear"></div>
+	</div>
+</div>
+	<div class='year_two' style="float:left;">
+		<div class="tit" style="margin-top:10px;text-align:center;">本年用户参与样本量：<span style='color:red;' class="dataspan"><?php echo empty($Year['F2'])?0:$Year['F2'];?></span></div>
+		<div class="quar_score"></div>
+			<div class="skypie" style="float:left;width:100%;" SKY="服务顾问|#0064AE|<?php echo empty($Year['F3'])?0:$Year['F3'];?>"></div>
+			<div class="skypie" style="float:left;width:100%;" SKY="服务设施|#02A6AF|<?php echo empty($Year['F4'])?0:$Year['F4'];?>"></div>
+			<div class="skypie" style="float:left;width:100%;" SKY="维修质量|#019E47|<?php echo empty($Year['F5'])?0:$Year['F5'];?>"></div>
+			<div class="skypie" style="float:left;width:100%;" SKY="维修时间|#E45A02|<?php echo empty($Year['F6'])?0:$Year['F6'];?>"></div>
+			<div class="skypie" style="float:left;width:100%;" SKY="维修价格|#E18901|<?php echo empty($Year['F7'])?0:$Year['F7'];?>"></div>
+	</div>
+	<div class="clear"></div>
+	<div class='year_three' style="float:left;"><div id="year_a" style="height:300px;"></div></div>
+	<div class='year_fore' style="float:left;"><div id="year_b"  style="height:300px;"></div></div>
+	<div class="clear"></div>
+</div>
+</div>
+<!-- 时间插件 -->
+<script type="text/javascript" src="<?php echo base_url();?>static/global/js/My97DatePicker/WdatePicker.js"></script>
+</body>
+</html>

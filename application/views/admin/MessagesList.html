@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="renderer" content="webkit">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<base href="<?php echo base_url();?>" />
+<title>CADA云数聚</title>
+<!--引入jauery文件-->
+<script src="static/global/js/jquery.1.11.3.min.js"></script>
+<!--引入滚动条CSS样式文件-->
+<link rel="stylesheet" href="static/global/plugins/Scoller/jquery.mCustomScrollbar.css">
+<!--引入滚动条脚本文件-->
+<script src="static/global/plugins/Scoller/jquery.mCustomScrollbar.concat.min.js"></script>
+<!--引用框架样式文件-->
+<link href="static/global/plugins/Bootstrap/css/bootstrap.css" rel="stylesheet">
+<!--引入框架脚本文件-->
+<script src="static/global/plugins/Bootstrap/js/bootstrap.min.js"></script>
+<!--引入弹框脚本文件-->
+<script src="static/global/plugins/Layer/layer.js"></script>
+<!--引入全局CSS文件-->
+<link href="static/admin/css/cada-admin-min.css" rel="stylesheet">
+<!--引入全局脚本文件-->
+<script src="static/admin/js/cada-admin.js"></script>
+<!--引入搜索脚本文件-->
+<script src="static/admin/js/cada-admin-search.js"></script>
+<!--引入日期脚本文件-->
+<script src="<?php echo base_url();?>static/global/js/My97DatePicker/WdatePicker.js"></script>
+</head>
+<script>
+$(function(){
+var provider='<?php echo $name;?>';
+/**搜索选择器*/
+//var proposals =provider.split(",");$('#iname').autocomplete({hints: proposals,width:240});
+});
+</script>
+<body>
+<div id="cada-admin-menu" class="cada-admin-main">
+<form class="form-inline" action="index.php/admin/messages/search" method="post" id="formz" icon="message">
+  <div class="form-group">
+    <label for="menu-name">商户名称</label>
+    <input type="text" class="form-control" id="iname" placeholder="商户名称" style="width:120px;" name="name"  maxlength="50" 	value="<?php echo $POSTS['name'];?>">
+  </div>
+   <div class="form-group">
+    <label for="menu-name">消息类型</label>
+	 <select class="form-control" id="itype" style="width:120px;" name="types">
+	 <option value="">选择</option>
+	 <option value="1" 	<?php echo $POSTS['types']==1?'selected':''?>>系统消息</option>
+	 <option value="2"	<?php echo $POSTS['types']==2?'selected':''?>>公告</option>
+	 <option value="3"	<?php echo $POSTS['types']==3?'selected':''?>>平台消息</option>
+	</select>
+  </div>
+  <div class="form-group">
+    <label for="menu-name">阅读状态</label>
+	 <select class="form-control" id="imark" style="width:120px;" name="mark">
+	 <option value="">选择</option>
+	 <option value="1"	<?php echo $POSTS['mark']==1?'selected':''?>>未读</option>
+	 <option value="2"	<?php echo $POSTS['mark']==2?'selected':''?>>已读</option>
+	</select>
+  </div>
+   <div class="form-group">
+    <label for="menu-url">发布时间</label>
+    <input type="text" class="form-control Wdate" name="startPublicDate" placeholder="开始时间" style="width:120px;" onfocus="WdatePicker({isShowWeek:true});" 	value="<?php echo $POSTS['startPublicDate'];?>">
+    <input type="text" class="form-control Wdate" name="lastPublicDate"   placeholder="结束时间"  style="width:120px;" onfocus="WdatePicker({isShowWeek:true});"	value="<?php echo $POSTS['lastPublicDate'];?>">
+  </div>
+  <br />
+    <div class="form-group">
+    <label for="menu-name">操作人员</label>
+    <input type="text" class="form-control" id="iname" placeholder="操作人员" style="width:120px;" name="operatorName"  maxlength="50" 	value="<?php echo $POSTS['operatorName'];?>">
+  </div>
+   <div class="form-group">
+    <label for="menu-name">选择品牌</label>
+	 <select class="form-control" id="itype" style="width:120px;" name="brandId">
+	 <option value="">全部品牌</option>
+	  <?php foreach($brand as $a){?>
+	   <option value="<?php echo $a['id'];?>"	<?php echo $POSTS['brandId']==$a['id']?'selected':'';?>><?php echo $a['name'];?></option>
+	  <?php }?>
+	</select>
+  </div>
+  <div class="form-group">
+    <label for="menu-name">选择区域</label>
+	 <select class="form-control" id="imark" style="width:120px;" name="areaId">
+	  <option value="">全部区域</option>
+	  <?php foreach($area as $a){?>
+	   <option value="<?php echo $a['id'];?>"	<?php echo $POSTS['areaId']==$a['id']?'selected':'';?>><?php echo $a['name'];?></option>
+	  <?php }?>
+	</select>
+  </div>
+    <div class="form-group">
+    <label for="menu-url">推送时间</label>
+    <input type="text" class="form-control Wdate" name="startPushDate"  placeholder="开始时间" style="width:120px;" onfocus="WdatePicker({isShowWeek:true});"		value="<?php echo $POSTS['startPushDate'];?>">
+    <input type="text" class="form-control Wdate" name="lastPushDate"    placeholder="结束时间"  style="width:120px;" onfocus="WdatePicker({isShowWeek:true});"		value="<?php echo $POSTS['lastPushDate'];?>">
+  </div>
+  &nbsp;&nbsp;&nbsp;&nbsp;<button type="submit" class="btn btn-danger" >查找</button>
+  &nbsp;&nbsp;<button type="button" class="btn btn-danger" onclick="javascript:addShow('message');">发布系统消息</button>
+</form>
+<div class="dataDesc">
+<ul>
+  <li class="Idx">ID</li>
+  <li class="onex">标题</li>
+  <li class="typex">类型</li>
+  <li class="onex">商户</li>
+  <li class="onex">区域</li>
+  <li class="onex">品牌</li>
+  <li class="markx">状态</li>
+  <li class="timex">发布时间</li>
+  <li class="timex">推送时间</li>
+  <li class="userx">操作人员</li>
+  <li class="timex">操作时间</li>
+  <li class="playx">操作</li>
+  <div style="clear"></div>
+</ul>
+</div>
+<div class="dataList">
+<?php foreach($list as $key=>$val){?>
+<ul>
+  <li class="Idx"><?php echo ($key+1) ;?></li>
+  <li class="onex"><?php echo $val['title'];?></li>
+  <li class="typex"><?php echo $val['type'];?></li>
+  <li class="onex"><?php echo $val['provider'];?></li>
+  <li class="onex"><?php echo $val['area'];?></li>
+  <li class="onex"><?php echo $val['brand'];?></li>
+  <li class="markx"><?php echo $val['mark'];?></li>
+  <li class="timex"><?php echo $val['publicDate'];?></li>
+  <li class="timex"><?php echo $val['pushTime'];?></li>
+  <li class="userx"><?php echo $val['operatorName'];?></li>
+  <li class="timex"><?php echo $val['operationTime'];?></li>
+  <li class="playx"><a href="javascript:saveShow('message','<?php echo $val['id']?>');" class="btn btn-info">修改</a>&nbsp;&nbsp;
+		 <a href="javascript:delRows('message','<?php echo $val['id']?>');;"   class="btn btn-danger">删除</a>
+  </li><div style="clear"></div></ul>
+<?php }?>
+</div>
+<div class="relist" ><span>总记录数量<?php echo count($list);?>条,  &nbsp;每页显示100条</span></div>
+<div class="pagev"><?php echo $page;?></div>
+</div>
+</body>
+</html>

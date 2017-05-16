@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="renderer" content="webkit">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<base href="<?php echo base_url();?>" />
+<title>CADA云数聚</title>
+<!--引入jauery文件-->
+<script src="static/global/js/jquery.1.11.3.min.js"></script>
+<!--引用框架样式文件-->
+<link href="static/global/plugins/Bootstrap/css/bootstrap.css" rel="stylesheet">
+<!--引入框架脚本文件-->
+<script src="static/global/plugins/Bootstrap/js/bootstrap.min.js"></script>
+<!--引入弹框脚本文件-->
+<script src="static/global/plugins/Layer/layer.js"></script>
+<!--引入全局CSS文件-->
+<link href="static/admin/css/cada-admin-min.css" rel="stylesheet">
+<!--引入全局脚本文件-->
+<script src="static/merchant/js/cada-merchant-min.js"></script>
+<!--引用字体样式文件-->
+<link href="static/global/plugins/FontAwesome/css/font-awesome.css" rel="stylesheet">
+<!--引入日期脚本文件-->
+<script src="<?php echo base_url();?>static/global/js/My97DatePicker/WdatePicker.js"></script>
+</head>
+<!--内部脚本-->
+<script>
+/*获取二级菜单选项*/
+var U = $('base').attr('href');
+/**判断必填项是否完成*/
+function status(){
+	if($.trim($("#o-title").val()).length <= 0){
+	   	layer.msg('请填写标题', {icon:2,time: 2000});
+	   return false;
+	}
+	if($.trim($("#o-tel").val()).length <= 0){
+	   	layer.msg('请填写联系方式', {icon:2,time: 2000});
+	   return false;
+	}
+	if($.trim($("#o-title").val()).length <= 0){
+	   	layer.msg('请反馈描述', {icon:2,time: 2000});
+	   return false;
+	}
+	return true;
+}
+/**程序执行*/
+$(function(){
+	$('.layer_button').click(function(){
+	   status()  && $('.layer_form').submit();
+	});
+});
+</script>
+<body>
+<div id="cada-admin-menu" class="cada-admin-layer">
+<form class="layer_form" method="post" action="index.php/merchant/feedback/added" enctype="multipart/form-data">
+<ul>
+<li>
+<label for="menu-name" ><i class="fa fa-asterisk"></i>反馈标题&nbsp;&nbsp;</label>
+<input type="text" class="form-control titleAll" id="o-title" placeholder="消息标题"  name="title">
+<div class="clear"></div>
+</li>
+<li>
+<label for="menu-url"><i class="fa fa-asterisk"></i>反馈类型&nbsp;&nbsp;</label>
+ <select class="form-control length-min"  id="o-tel" name="feedbackType">
+  <option value="1">平台操作</option>
+  <option value="2">意见建议</option>
+  <option value="3">分析类型</option>
+</select>
+<div class="clear"></div>
+</li>
+<li>
+<label for="menu-name" ><i class="fa fa-asterisk"></i>联系方式&nbsp;&nbsp;</label>
+<input type="text" class="form-control length-min" id="o-tel" placeholder="联系方式"  name="tel">
+<div class="clear"></div>
+</li>
+<li>
+<label for="menu-name" >选择图片&nbsp;&nbsp;</label>
+<input type="file"   style="position: relative; top:5px; z-index: 1000;"  name="picture"/>
+</li>
+<li>
+    <label for="menu-url" ><i class="fa fa-asterisk"></i>内容描述&nbsp;&nbsp;</label>
+	<textarea class="form-control textareaAll" rows="8" name="feedbackContens" id="o-text"></textarea>
+    <div class="clear"></div>
+</li>
+<div class="clear"></div>
+</ul>
+<div class="playDiv"><button type="reset" class="btn btn-default" >输入重置</button><button type="button" class="btn btn-info layer_button" >保存信息</button></div>
+</form>
+</div>
+</body>
+</html>

@@ -1,0 +1,315 @@
+<?php  $this->load->view('admin/head.html');?>
+<script src="static/admin/js/maintainUpdate.js"></script>
+<!-- 修改内容 -->
+<div id="smonar" class="cada-admin-main" >
+<form action="index.php/admin/Provider/maintainUpdated"  class="form-inline"  method="post" id="myform" name="myform" enctype="multipart/form-data">
+<input type="hidden" name="id"  value="<?php echo $provider[0]['id'];?>" />
+<input type="hidden" name="details" value="<?php echo $details;?>">
+<div class="baseinfo">
+<h3>商户详情</h3>
+<div class="title">
+<div class="title-z">
+<div class="title-x"><span>个人信息</span></div>
+</div>
+</div>
+<div class="form-group">
+<label for="menu-name"  >联系人:</label>
+<input type="text" class="form-control" id="" placeholder="联系人"    name="personName" maxlength='20'    value="<?php echo $provider[0]['personName'];?>" onkeyup="value=value.replace(/[\W]/g,' ') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,' '))">
+</div>
+<div class="form-group">
+<label for="menu-name"  >手机号:</label>
+<input type="text" class="form-control" id="" placeholder="手机号码"    name="cellPhone"  maxlength='11' value="<?php echo $provider[0]['cellPhone'];?>" onkeyup="value=value.replace(/[\W]/g,' ') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,' '))">
+</div>
+<div class="form-group">
+<label for="menu-name"  >微信号:</label>
+<input type="text" class="form-control" id="" placeholder="微信号"     name="wechat"        maxlength='50'  value="<?php echo $provider[0]['wechat'];?>"    onkeyup="value=value.replace(/[\W]/g,' ') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,' '))"  >
+</div>
+<br>
+<!-- <div class="form-group">
+<label for="menu-name"  >邮编:</label>
+<input type="text" class="form-control" id="" placeholder="邮政编码"    name="postCode"  maxlength='6' value="<?php echo $provider[0]['postCode'];?>"  onkeyup="value=value.replace(/[\W]/g,' ') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,' '))">
+</div>
+<div class="form-group">
+<label for="menu-name"  >QQ:</label>
+<input type="text" class="form-control" id="" placeholder="qq"    name="qq" maxlength='12' value="<?php echo $provider[0]['qq'];?>"   value="<?php echo $provider[0]['qq'];?>" onkeyup="value=value.replace(/[\W]/g,' ') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,' '))">
+</div>
+<div class="form-group">
+<label for="menu-name"  >官网:</label>
+<input type="text" class="form-control" id="" placeholder="网址"    name="webSite" maxlength='150' value="<?php echo $provider[0]['webSite'];?>" onkeyup="value=value.replace(/[\W]/g,' ') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,' '))">
+</div> -->
+<!-- 公司信息开始 -->
+<div class="title">
+<div class="title-z">
+<div class="title-x"><span>公司信息</span></div>
+</div>
+</div>
+<div class="form-group Longi">
+<label for="menu-name"  >商户名称:</label>
+<input type="text" class="form-control Long" id="" placeholder="商户名称"    name="name" value="<?php echo $provider[0]['name'];?>" maxlength='100'  onkeyup="value=value.replace(/[\W]/g,' ') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,' '))">
+</div>
+<div class="form-group">
+<label for="menu-name"  >商户编号:</label>
+<input type="text" class="form-control" id="" placeholder="商户编号"    name="code" value="<?php echo $provider[0]['code'];?>"   maxlength='50' onkeyup="value=value.replace(/[\W]/g,' ') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,' '))">
+</div>
+<br>
+
+<div class="form-group">
+<label for="menu-url"  >品牌1:</label>
+<select class="form-control" style="width:146px;"  name="brandNameId1"  class="selector" >
+<option value="">请选择</option>
+<?php foreach($brand as $vv):?>
+<?php  if($provider[0]['brandId1']==$vv['id']){?>
+<option value="<?php echo $provider[0]['brandId1'];?>" selected><?php echo $vv['name']?></option>
+<?php }?>
+<option value="<?php echo $vv['id']?>"><?php echo $vv['name'];?></option>
+<?php endforeach;?>
+</select>
+</div>	
+<div class="form-group">
+<label for="menu-url"  >品牌2:</label>
+<select class="form-control" style="width:146px;"  name="brandNameId2"  class="selector" >
+<option value="">请选择</option>
+<?php foreach($brand as $vv):?>
+<?php  if($provider[0]['brandId2']==$vv['id']){?>
+<option value="<?php echo $provider[0]['brandId2'];?>" selected><?php echo $vv['name']?></option>
+<?php }?>
+<option value="<?php echo $vv['id']?>"><?php echo $vv['name'];?></option>
+<?php endforeach;?>
+</select>
+</div>	
+<div class="form-group">
+<label for="menu-url"  >品牌3:</label>
+<select class="form-control" style="width:146px;"  name="brandNameId3"  class="selector" >
+<option value="">请选择</option>
+<?php foreach($brand as $vv):?>
+<?php  if($provider[0]['brandId3']==$vv['id']){?>
+<option value="<?php echo $provider[0]['brandId3'];?>" selected><?php echo $vv['name']?></option>
+<?php }?>
+<option value="<?php echo $vv['id']?>"><?php echo $vv['name'];?></option>
+<?php endforeach;?>
+</select>
+</div>	
+<br>
+<div class="form-group">
+<label for="menu-url"   >是否签约:</label>
+<select class="form-control" style="width:146px;"  name="hasSigning"  class="selector">
+<option value="">请选择</option>
+<option value="1"<?php if($provider[0]['hasSigning']==1){echo 'selected';}?>>是</option>
+<option value="0"<?php if($provider[0]['hasSigning']==0){ echo "selected";}?>>否</option>
+</select>
+</div>	
+<div class="form-group">
+<label for="menu-url"  >主营品牌:</label>
+<select class="form-control" style="width:146px;"  name="brandNameId1"  class="selector" >
+<option value="">请选择</option>
+<?php foreach($brand as $vv):?>
+<?php  if($provider[0]['brandId1']==$vv['id']){?>
+<option value="<?php echo $provider[0]['brandId1'];?>" selected><?php echo $vv['name']?></option>
+<?php }?>
+<option value="<?php echo $vv['id']?>"><?php echo $vv['name'];?></option>
+<?php endforeach;?>
+</select>
+</div>	
+<div class="form-group">
+<label for="menu-url">所在区域:</label>
+<select class="form-control" style="width:146px;"  name="areaId"  class="selector">
+<option value="">请选择</option>
+<?php foreach($area as $v):?>
+<?php  if($provider[0]['areaId']==$v['id']){?>
+<option value="<?php echo $provider[0]['areaId'];?>" selected="selected">   <?php echo $v['name']?></option>
+<?php }?>
+<option value="<?php echo $v['id'];?>"><?php echo $v['name'];?></option>
+<?php endforeach;?>
+</select>
+</div>
+<br />
+<!-- <div class="form-group">
+<label for="menu-url"  >商户性质:</label>
+<select class="form-control" style="width:146px;"  name="hasSigning"  class="selector">
+<option value="0"  selected="selected" >请选择</option>
+<option value="综合"  >综合修理</option>
+<option value="4s店"  >4s店</option>
+<option value="养护快修" >养护快修</option>
+<option value="其他">其他</option>
+</select>
+</div>	 -->
+
+<!-- <div class="form-group">
+<label for="menu-url"  >经营类型:</label>
+<select class="form-control" style="width:146px;"  name="hasSigning"  class="selector">
+<option value="0"  selected="selected" >请选择</option>
+<option value="">请选择</option>
+<option value="单店直营"  <?php if($provider[0]['shopType']=="单店直营"){ echo "selected";}?>>单店直营</option>
+<option value="连锁直营" <?php if($provider[0]['shopType']=="连锁直营"){ echo 'selected';}?>>连锁直营</option>
+<option value="加盟品牌" <?php if($provider[0]['shopType']=="加盟品牌"){ echo 'selected';}?>>加盟品牌</option>
+<option value="其他">其他</option>
+</select>
+</div> -->
+<!-- <div class="form-group">
+<label for="menu-url"  >物业类型:</label>
+<select class="form-control" style="width:146px;"  name="hasSigning"  class="selector">
+<option value="0">请选择</option>
+<option value="住宅区"  >住宅区</option>
+<option value="写字楼"  >写字楼</option>
+<option value="加油站" >加油站</option>
+<option value="商业中心" >商业中心</option>
+<option value="停车场" >停车场</option>
+<option value="专业市场" >专业市场</option>
+</select>
+</div>	
+<br/> -->
+<div class="form-group">
+<label for="menu-name">工位数量:</label>
+<input type="text" class="form-control" id="" placeholder="工位数量"    name="stationNum"value="<?php echo $provider[0]['stationNum'];?>"  maxlength='5'  onkeyup="value=value.replace(/[\W]/g,' ') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,' '))">
+</div>
+<div class="form-group">
+<label for="menu-name"  >商户面积:</label>
+<input type="text" class="form-control" id="" placeholder="面积"    name="acreage"	value="<?php echo $provider[0]['acreage'];?>" maxlength='50'  onkeyup="value=value.replace(/[\W]/g,' ') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,' '))">
+</div>
+<div class="form-group">
+<label for="menu-name">经度:</label>
+<input type="text" class="form-control" id="" placeholder="经度"     value="<?php echo $provider[0]['longitude'];?>"   name="longitude"    onkeyup="value=value.replace(/[\W]/g,' ') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,' '))">
+</div>
+<br/>
+<div class="form-group Longi">
+<label for="menu-name">商户地址:</label>
+<input type="text" class="form-control Long" id="" placeholder="商户地址"    name="addrRess" value="<?php echo $provider[0]['addrRess'];?>"  maxlength='50'  onkeyup="value=value.replace(/[\W]/g,' ') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,' '))" >
+</div>
+<div class="form-group">
+<label for="menu-name">纬度:</label>
+<input type="text" class="form-control" id=""    placeholder="纬度"  value="<?php echo $provider[0]['latitude'];?>"  name="latitude"    onkeyup="value=value.replace(/[\W]/g,' ') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,' '))">
+</div>
+<br/>
+<!-- <div class="form-group Longi">
+<label style="float:left">服务标签:</label>
+  	<span>惠</span>
+  	<span>券</span>
+  	<span>接</span>
+    <span>救</span>
+	<span>险</span>
+</div>
+<div class="form-group">
+<label> 二维码:</label>
+<a href="javascript:void(0);"  onclick="window.open('http://qr.liantu.com/api.php?text=http://survey.51hyc.com/Wechat/index?openid=<?php echo $provider[0]['id'];?>&w=512&logo=http://123.57.156.76/car/We/cadalogo.png');">点击下载二维码</a>
+</div> -->
+
+
+<div class=" form-group sysroom  info" style="float:left;width:700px;">
+<label for="menu-name" style="float:left;">服务信息:</label>
+<div class="checkbox" style="float:left;">
+<ul style="float:left;display:inline;">
+<li><input type="checkbox" name="serviceDescription[]" value="洗车"  <?php  if(in_array('洗车',explode(';', $$provider[0]['serviceDescription']))) echo 'checked';?>/>
+洗车</li>
+<li><input type="checkbox" name="serviceDescription[]" value="美容"  <?php  if(in_array('美容',explode(';', $$provider[0]['serviceDescription']))) echo 'checked';?>/>
+美容</li>
+<li><input type="checkbox" name="serviceDescription[]" value="装饰"  <?php  if(in_array('装饰',explode(';', $$provider[0]['serviceDescription']))) echo 'checked';?>/>
+装饰</li>
+<li><input type="checkbox" name="serviceDescription[]" value="总成大修"  <?php  if(in_array('总成大修',explode(';', $provider[0]['serviceDescription']))) echo 'checked';?>/>
+总成大修</li>
+<li><input type="checkbox" name="serviceDescription[]" value="保养"   <?php  if(in_array('保养',explode(';', $provider[0]['serviceDescription']))) echo 'checked';?>/>
+保养</li>
+<li><input type="checkbox" name="serviceDescription[]" value="快修"  <?php  if(in_array('快修',explode(';', $provider[0]['serviceDescription']))) echo 'checked';?>/>
+快修</li>
+<li><input type="checkbox" name="serviceDescription[]" value="喷漆"  <?php  if(in_array('喷漆',explode(';', $provider[0]['serviceDescription']))) echo 'checked';?>/>
+喷漆</li>
+<li><input type="checkbox" name="serviceDescription[]" value="轮胎"  <?php  if(in_array('轮胎',explode(';', $provider[0]['serviceDescription']))) echo 'checked';?>/>
+轮胎</li>
+<li><input type="checkbox" name="serviceDescription[]" value="车险" <?php  if(in_array('车险',explode(';', $provider[0]['serviceDescription']))) echo 'checked';?>/>
+车险</li>
+<li><input type="checkbox" name="serviceDescription[]" value="茶饮" <?php  if(in_array('茶饮',explode(';', $provider[0]['serviceDescription']))) echo 'checked';?>/>
+茶饮</li>
+<li><input type="checkbox" name="serviceDescription[]" value="WIFI" <?php  if(in_array('WIFI',explode(';', $provider[0]['serviceDescription']))) echo 'checked';?>/>
+WIFI</li>
+<li><input type="checkbox" name="serviceDescription[]" value="休息区" <?php  if(in_array('休息区',explode(';', $provider[0]['serviceDescription']))) echo 'checked';?>/>
+休息区</li>
+<li><input type="checkbox" name="serviceDescription[]" value="简餐"  <?php  if(in_array('简餐',explode(';', $provider[0]['serviceDescription']))) echo 'checked';?>/>
+简餐</li>
+<li><input type="checkbox" name="serviceDescription[]" value="接送车"  <?php  if(in_array('接送车',explode(';', $provider[0]['serviceDescription']))) echo 'checked';?>/>
+接送车</li>
+<li><input type="checkbox" name="serviceDescription[]" value="代验车" <?php  if(in_array('代验车',explode(';', $provider[0]['serviceDescription']))) echo 'checked';?>/>
+代验车</li>
+<li><input type="checkbox" name="serviceDescription[]" value="制动检测" <?php  if(in_array('制动检测',explode(';',$provider[0]['serviceDescription']))) echo 'checked';?>/>
+制动检测</li>
+<li><input type="checkbox" name="serviceDescription[]" value="四轮定位"  <?php  if(in_array('四轮定位',explode(';', $provider[0]['serviceDescription']))) echo 'checked';?>/>
+四轮定位</li>
+<li><input type="checkbox" name="serviceDescription[]" value="道路救援"  <?php  if(in_array('道路救援',explode(';', $provider[0]['serviceDescription']))) echo 'checked';?>/>
+道路救援</li>
+
+<li><input type="checkbox" name="serviceDescription[]" value="车品销售"  <?php  if(in_array('车品销售',explode(';', $provider[0]['serviceDescription']))) echo 'checked';?>/>
+车品销售</li>
+<li><input type="checkbox" name="serviceDescription[]" value="尾气检测" <?php  if(in_array('尾气检测',explode(';', $provider[0]['serviceDescription']))) echo 'checked';?> />
+尾气检测</li>
+</ul>
+</div>
+<div class="clear"></div>
+</div>
+
+<div class="clear"></div>
+<div class="title">
+<div class="title-z">
+<div class="title-x"><span>认证信息</span></div>
+</div>
+<input type="hidden" name="logo" 	 id="Hi1"/>
+<input type="hidden" name="picture"  id="Hi2"/>
+<input type="hidden" name="revenue" id="Hi3"/>
+<input type="hidden" name="manage" id="Hi4"/>
+<input type="hidden" name="license"   id="Hi5"/>
+</div>
+<div class="form-group" style="height:150px">
+<label style="float:left;">商户logo:</label>
+<?php if(empty($provider[0]['logo'])){?>
+<img   border="0" src="static/admin/images/photo_icon.png" width="150" height="150" id="pic1">
+<?php }else{?>
+<img   src="upload/merchant/images/<?php echo $provider[0]['logo'];?>" width="150" height="150" id="pic1">
+<?php }?>
+<input type="file"  id="logo" Hid="Hi1"  Pic="pic1" class="fileLoad">
+</div>
+<div class="form-group" style="height:150px">
+<label style="float:left;">门面信息:</label>
+<?php if(empty($provider[0]['picture'])){?>
+<img border="0" src="static/admin/images/photo_icon.png" width="150" height="150"  id="pic2">
+<?php }else{?>
+<img  src="upload/merchant/images/<?php echo $provider[0]['picture'];?>" width="150" height="150"  id="pic2">
+<?php }?>
+<input type="file"  id="picture" Hid="Hi2" Pic="pic2"  class="fileLoad">
+</div>
+<div class="form-group" style="height:150px">
+<label style="float:left;">经营许可:</label>
+<?php if(empty($provider[0]['revenue'])){?>
+<img  border="0" src="static/admin/images/photo_icon.png" width="150" height="150" id="pic3" >
+<?php }else{?>
+<img  src="upload/merchant/images/<?php echo $provider[0]['revenue'];?>" width="150" height="150" id="pic3" >
+<?php }?>
+<input type="file"  id="revenue" Hid="Hi3"  Pic="pic3" class="fileLoad">
+</div>
+<!-- <br />
+<div class="form-group" style="height:150px">
+<label style="float:left;">税务登记:</label>
+<?php if(empty($provider[0]['manage'])){?>
+<img   border="0" src="static/admin/images/photo_icon.png" width="150" height="150"  id="pic4">
+<?php }else{?>
+<img  src="upload/merchant/images/<?php echo $provider[0]['manage'];?>" width="150" height="150" id="pic4" >
+<?php }?>
+<input type="file"  id="manage" Hid="Hi4" Pic="pic4" class="fileLoad">
+</div> -->
+<div class="form-group" style="height:150px">
+<label style="float:left;">行业资质:</label>
+<?php if(empty($provider[0]['license'])){?>
+<img  border="0" src="static/admin/images/photo_icon.png" width="150" height="150"  id="pic5">
+<?php }else{?>
+<img  src="upload/merchant/images/<?php echo $provider[0]['license'];?>" width="150" height="150" id="pic5">
+<?php }?>
+<input type="file"  id="license" Hid="Hi5" Pic="pic5" class="fileLoad">
+</div>
+</div>
+<div class="clear"></div>
+<div class="form-group" id="Authentication">
+</div>
+<div class="clear"></div>
+<div class="but-g">
+&nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-danger" >保存信息</button>
+</div>
+</div>
+</form>
+</div>
+<?php  $this->load->view('admin/foot.html');?>

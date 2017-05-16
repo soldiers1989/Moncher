@@ -1,0 +1,201 @@
+<?php  $this->load->view('merchant/head.html');?>
+<!-- highchart插件 -->
+<script src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script>
+<script src="http://cdn.hcharts.cn/highcharts/modules/exporting.js"></script>
+<script src="static/merchant/js/height_one.js"></script>
+<script src="static/merchant/js/height_two.js"></script>
+<!--引入js部分  -->
+<script src="static/merchant/js/cada-merchant-main.js"></script>
+<!-- 本页css -->
+<link href="static/merchant/css/cada-merchant-main.css" rel="stylesheet">
+<script>
+/**获取总体样本得分*/
+var json=<?php echo $json;?>;
+/**获取门店指标*/
+var jsonNPS=<?php echo $jsonNPS;?>;
+/**获取门店排行*/
+var topc=<?php echo $jsonTOP;?>;
+</script>
+<!-- 外层div -->
+<div class="main">
+<!-- 头部总体-->
+	<div class="total">
+		<!-- 总分-->
+		<div class="tot_score" style="float:left;">
+		<div class="amount_tit">总分</div>
+		<div class="rank"><span style="color:#FFB012;" class="rose"><?php echo $tree['F1'];?></span>/100分</div>
+			<div id="total_score" style="min-width:100%;height:200px"></div>
+		</div>
+		<!-- 排行 -->
+		<div class="tot_rand"style="float:left;">
+		<div class="amount_tit">排行</div>
+			<div class="rank"><span><?php echo $treeTOP['top'];?></span>/<?php echo $treeTOP['size'];?>名</div>
+			<div id="rank_all" style="min-width:100%;height:200px"></div>
+		</div>
+		<!--总用户参与样本量-->
+		<div class="tot_amount"style="float:left;">
+		<div class="amount_tit" style="float:left;">总用户参与样本量</div>
+			<div class="num" style="float:left;">
+				<span  style="float:left;" class="span-c color-a rose"><?php echo $tree['F2'];?></span>
+				<span  style="float:left;" class="span-d color-a">(本门店)</span>
+				<span  style="float:left;" class="span-e color-a">用户参与样本量</span>
+			</div>
+			<div class="ind_num" style="float:left;">
+				<span style="float:left;"  class="span-c color-b rose"><?php echo $tree['F3'];?></span>
+				<span  style="float:left;" class="span-d color-b">(平台全部)</span>
+				<span  style="float:left;" class="span-e color-b">用户参与样本量</span>
+			</div>
+		</div>
+	</div>
+<!-- 关键指标分析-->
+<div class="important_index">
+	<!--标题  -->
+	<div class="imp_tit">关键指标分析</div>
+	<!-- 一次修复率 -->
+	<div class="one_index">
+	        <div class="one-titles">① 一次修复率</div>
+			<div class="one-titlex">每次维修/保养是否能解决您的问题？</div>
+			<div id="xf_index" class="one-tree"></div>
+			<div class="one-less">
+				<p><span style="background:#15A354;">&nbsp;</span>可以解决 (<?php echo $treeNPS['S1'];?>%)</p>
+				<p><span style="background:#0064AE;">&nbsp;</span>需要多次返修 (<?php echo $treeNPS['S2'];?>%)</p>
+				<p><span style="background:#EC8F54;">&nbsp;</span>需要返修一次 (<?php echo $treeNPS['S3'];?>%)</p>
+		    </div>			
+	</div>
+	<!-- NPS -->
+	<div class="one_index">
+		 <div class="one-titles">② 净推荐率，即NPS</div>
+		 <div class="one-titlex">您是否会推荐他人来这家门店维修保养？</div>
+		<div id="nps_index" class="one-tree"></div>
+			<div class="one-less">
+				<p><span style="background:#15A354;">&nbsp;</span>会 (<?php echo $treeNPS['S4'];?>%)</p>
+				<p><span style="background:#E35A02;">&nbsp;</span>不会 (<?php echo $treeNPS['S5'];?>%)</p>
+		    </div>		
+	</div>
+	<!-- 忠诚度 -->
+	<div class="one_index">
+		 <div class="one-titles">③ 售后服务忠诚度</div>
+		 <div class="one-titlex">您下次还会选择来这家店维修保养？</div>
+		 <div id="loyal_index" class="one-tree"></div>
+			<div class="one-less">
+				<p><span style="background:#029BD5;">&nbsp;</span>会 (<?php echo $treeNPS['S6'];?>% )</p>
+				<p><span style="background:#0064AE;">&nbsp;</span>不会 (<?php echo $treeNPS['S7'];?>%)</p>
+		    </div>				 
+	</div>
+</div>
+<!-- 参与量&样本&得分&环比-->
+<div class="amount_sam_score">
+	<!-- 参与样本量 & 平均得分 -->
+	<div class="amount_score" style="float:left;">
+	<!-- 得分 -->
+	<div class="score" style="float:left;">
+		<div class="score_tit">
+		<span  class="span-a">本月平均得分</span>
+		<a class="span-b" href="merchant/Anastore/storeNum">查看详情</a>
+		</div>
+		<!-- 服务顾问 -->
+		<div id="fwgw_score" style="width:20%;height:120px;float:left;"></div>
+		<!-- 服务设施 -->
+		<div id="fwss_score" style="width:20%;height:120px;float:left;"></div>
+		<!-- 维修质量 -->
+		<div id="fwzl_score" style="width:20%;height:120px;float:left;"></div>
+		<!-- 维修价格 -->
+		<div id="wxjg_score" style="width:20%;height:120px;float:left;"></div>
+		<!-- 维修时间 -->
+		<div id="wxss_score" style="width:20%;height:120px;float:left;"></div>
+		<!-- 标题 -->
+		<div class="model_tit" style="float:left;">服务顾问</div>
+		<div class="model_tit" style="float:left;">服务设施</div>
+		<div class="model_tit" style="float:left;">维修质量</div>
+		<div class="model_tit" style="float:left;">维修价格</div>
+		<div class="model_tit" style="float:left;">维修时间</div>
+	</div>
+	<!-- 参与量 -->
+	<div class="amount" style="float:left;">
+		<div class="score_tit"><span class="span-a">本月用户参与样本量</span><a class="span-b" href="merchant/Anastore/storeNum">查看详情</a></div>
+				<div class="model_score">
+						<div class="me_tit">服务顾问</div>
+						<div class="me_line">
+						<div class="me_sty"   style="width:<?php echo $tree['F4']/$tree['F2']*100;?>%;background-color:#0064AE;"></div>
+						</div>
+						<div class="me_size"><?php echo $tree['F4'];?></div>
+						<div class="clear"></div>
+				</div>
+				<div class="model_score">
+						<div class="me_tit" >服务设施</div>
+						<div class="me_line">
+						<div class="me_sty"   style="width:<?php echo $tree['F5']/$tree['F2']*100;?>%;background-color:#01A8B0;"></div>
+						</div>
+						<div class="me_size"><?php echo $tree['F5'];?></div>
+						<div class="clear"></div>
+				</div>
+			   <div class="model_score">
+						<div class="me_tit">维修质量</div>
+						<div class="me_line">
+						<div class="me_sty"   style="width:<?php echo $tree['F6']/$tree['F2']*100;?>%;background-color:#019E47;"></div>
+						</div>
+						<div class="me_size"><?php echo $tree['F6'];?></div>
+					    <div class="clear"></div>	
+				</div>
+			    <div class="model_score">
+						<div class="me_tit">维修价格</div>
+						<div class="me_line">
+						<div class="me_sty"   style="width:<?php echo $tree['F7']/$tree['F2']*100;?>%;background-color:#E45A02;"></div>
+						</div>
+						<div class="me_size"><?php echo $tree['F7'];?></div>
+						<div class="clear"></div>	
+				</div>
+				<div class="model_score">
+						<div class="me_tit">维修时间</div>
+						<div class="me_line">
+						<div class="me_sty"   style="width:<?php echo $tree['F8']/$tree['F2']*100;?>%;background-color:#E18901;"></div>
+						</div>
+						<div class="me_size"><?php echo $tree['F8'];?></div>
+						<div class="clear"></div>	
+				</div>
+		   <div class="clear"></div>	
+		</div>
+	</div>
+	<!-- 环比数据对比 -->
+	<div class="smple" style="float:left;">
+		<!-- 环比数据对比-->
+		<div class="sam_tit"><span class="span-a">环比数据对比</span><a class="span-b" href="merchant/Anastore/storeEval">查看详情</a></div>
+		<div class="pc_tit">本店评测得分</div>
+			<div class="one_data">
+					<div class="me_tita">上月</div>
+					<div class="me_linea">
+					<div class="me_stya"   style="width:<?php echo $tree['F15'];?>%;background-color:#EFCB06;"></div>
+					</div>
+					<div class="me_sizea"><?php echo $tree['F15'];?>分</div>
+					<div class="clear"></div>
+			</div>
+			<div class="one_data">
+					<div class="me_tita">本月</div>
+					<div class="me_linea">
+					<div class="me_stya" style="width:<?php echo $tree['F14'];?>%;background-color:#EFCB06;"></div>
+					</div>
+					<div class="me_sizea"><?php echo $tree['F14'];?>分</div>
+					<div class="clear"></div>
+			</div>
+			<div class="pc_tit">行业评测得分</div>
+			<div class="one_data">
+					<div class="me_tita">上月</div>
+					<div class="me_linea">
+					<div class="me_stya"   style="width:<?php echo $tree['F17'];?>%;background-color:#00A3E2;"></div>
+					</div>
+					<div class="me_sizea"><?php echo $tree['F17'];?>分</div>
+					<div class="clear"></div>
+			</div>
+			<div class="one_data">
+					<div class="me_tita">本月</div>
+					<div class="me_linea">
+					<div class="me_stya" style="width:<?php echo $tree['F16'];?>%;background-color:#00A3E2;"></div>
+					</div>
+					<div class="me_sizea"><?php echo $tree['F16'];?>分</div>
+					<div class="clear"></div>
+		   </div>
+	</div>
+<!-- 时间插件 -->
+<script type="text/javascript" src="<?php echo base_url();?>static/global/js/My97DatePicker/WdatePicker.js"></script>
+</body>
+</html>

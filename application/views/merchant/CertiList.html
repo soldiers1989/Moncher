@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="renderer" content="webkit">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<base href="<?php echo base_url();?>" />
+<title>CADA云数聚</title>
+<!--引入jauery文件-->
+<script src="static/global/js/jquery.1.11.3.min.js"></script>
+<!--引用框架样式文件-->
+<link href="static/global/plugins/Bootstrap/css/bootstrap.css" rel="stylesheet">
+<!--引入框架脚本文件-->
+<script src="static/global/plugins/Bootstrap/js/bootstrap.min.js"></script>
+<!--引入弹框脚本文件-->
+<script src="static/global/plugins/Layer/layer.js"></script>
+<!--引入全局CSS文件-->
+<link href="static/admin/css/cada-admin-min.css" rel="stylesheet">
+<!--引入全局脚本文件-->
+<script src="static/merchant/js/cada-merchant-min.js"></script>
+<!--引入搜索脚本文件-->
+<script src="static/admin/js/cada-admin-search.js"></script>
+</head>
+<body>
+<div id="cada-admin-menu" class="cada-admin-main">
+<form class="form-inline" action="index.php/merchant/Certification/search" method="post" id="formz" icon="cert">
+<?php if($one['isCompany']!=1){?>
+  <div class="form-group">
+    <label for="menu-name">搜索商户</label>
+    <input type="text" class="form-control" id="title" placeholder="商户名称" style="width:120px;" name="title">
+  </div>
+&nbsp;&nbsp;<button type="submit" class="btn btn-danger" >查找</button>&nbsp;&nbsp;
+<?php }else{?>
+&nbsp;&nbsp;<button type="button" class="btn btn-danger"  onclick="javascript:addShow('certi');">集团认证</button>&nbsp;&nbsp;
+<?php }?>
+</form>
+<div class="dataDesc">
+<ul>
+  <li class="onex">集团名称</li>
+  <li class="timex">申请时间</li>
+  <li class="longstr">申请描述</li>
+  <li class="onex">门店名称</li>
+  <li class="timex">认证时间</li>
+  <li class="markx">认证状态</li>
+  <li class="playx">认证处理</li>
+</ul>
+</div>
+<?php $status=array("0"=>"待认证","1"=>"认证通过","2"=>"拒绝认证","3"=>"撤销申请");?>
+<div class="dataList">
+<?php foreach($list as $key=>$val){?>
+<ul>
+  <li class="onex"><?php echo  $val['parentName'];?></li>
+  <li class="timex"><?php echo $val['applicationTime'];?></li>
+  <li class="longstr"><?php echo  $val['description'];?></li>
+  <li class="onex"><?php echo  $val['providerName'];?></li>
+  <li class="timex"><?php echo $val['processingTime'];?></li>
+  <li class="markx"><span class="label label-success"><?php echo $status[$val['certificationStatus']];?></span></li>
+  <li class="playx">
+	<?php if($val['certificationStatus']==0  && $one['isCompany']!=1){?>
+	<a href="javascript:setAction('certi','<?php echo $val['id']?>','certificationStatus','1');" class="btn btn-success">通过</a>
+	<a href="javascript:setAction('certi','<?php echo $val['id']?>','certificationStatus','2');" class="btn btn-danger">拒绝</a>
+	<?php }else if($val['certificationStatus']==1 && $one['isCompany']==1){?>
+	<a href="javascript:setAction('certi','<?php echo $val['id']?>','certificationStatus','3');" class="btn btn-info">撤销</a>
+	<?php }else if($val['certificationStatus']==1 && $one['isCompany']!=1){?>
+	<a href="javascript:setAction('certi','<?php echo $val['id']?>','certificationStatus','2');" class="btn btn-danger">拒绝</a>
+	<?php }else if($val['certificationStatus']==2 && $one['isCompany']!=1){?>
+	<a href="javascript:setAction('certi','<?php echo $val['id']?>','certificationStatus','1');" class="btn btn-success">通过</a>
+	<?php }else if($val['certificationStatus']==3 && $one['isCompany']==1){?>
+	<a href="javascript:setAction('certi','<?php echo $val['id']?>','certificationStatus','0');" class="btn btn-success">申请</a>
+	<?php }else if($val['certificationStatus']==2 && $one['isCompany']==1){?>
+	<a href="javascript:setAction('certi','<?php echo $val['id']?>','certificationStatus','0');" class="btn btn-success">申请</a>
+	<?php }?>
+  </li>
+</ul>
+<?php }?>
+</div>
+<div class="relist" ><span>总记录数量<?php echo count($list);?>条,  &nbsp;每页显示100条</span></div>
+<div class="pagev"><?php echo $page;?></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="renderer" content="webkit">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<base href="<?php echo base_url();?>" />
+<title>CADA云数聚-菜单管理</title>
+<!--引入jauery文件-->
+<script src="static/global/js/jquery.1.11.3.min.js"></script>
+<!--引入滚动条CSS样式文件-->
+<link rel="stylesheet" href="static/global/plugins/Scoller/jquery.mCustomScrollbar.css">
+<!--引入滚动条脚本文件-->
+<script src="static/global/plugins/Scoller/jquery.mCustomScrollbar.concat.min.js"></script>
+<!--引用框架样式文件-->
+<link href="static/global/plugins/Bootstrap/css/bootstrap.css" rel="stylesheet">
+<!--引入框架脚本文件-->
+<script src="static/global/plugins/Bootstrap/js/bootstrap.min.js"></script>
+<!--引入弹框脚本文件-->
+<script src="static/global/plugins/Layer/layer.js"></script>
+<!--引入全局CSS文件-->
+<link href="static/admin/css/cada-admin-min.css" rel="stylesheet">
+<!--引入全局脚本文件-->
+<script src="static/admin/js/cada-admin.js"></script>
+<!--引入搜索脚本文件-->
+<script src="static/admin/js/cada-admin-search.js"></script>
+</head>
+<script>
+$(function(){
+var name='<?php echo $name;?>';
+var code='<?php echo $code?>';
+/**搜索选择器*/
+var pname =name.split(",");
+var pcode  =code.split(",");
+	 $('#p-name').autocomplete({hints: pname});
+	 $('#p-code').autocomplete({hints: pcode});
+});
+</script>
+<body>
+<div id="cada-admin-menu" class="cada-admin-main">
+<form class="form-inline" action="index.php/admin/parameter/search" method="post" id="formz" icon="param">
+  <div class="form-group">
+    <label for="menu-name">参数名称</label>
+    <input type="text" class="form-control" id="p-name" placeholder="参数名称" style="width:120px;" name="name" maxlength="16">
+  </div>
+   <div class="form-group">
+    <label for="menu-name">参数编码</label>
+    <input type="text" class="form-control" id="p-code" placeholder="参数编码" style="width:120px;" name="code" maxlength="16">
+  </div>
+  &nbsp;&nbsp;&nbsp;&nbsp;<button type="submit" class="btn btn-danger" >查找</button>&nbsp;&nbsp;<button type="button" class="btn btn-danger" onclick="javascript:addShow('param');">添加参数</button>
+</form>
+<div class="dataDesc">
+<ul>
+  <li class="Idx">ID</li>
+  <li class="onex">参数名称</li>
+  <li class="onex">参数编码</li>
+  <li class="onex">参数键值</li>
+  <li class="typex">参数类型</li>
+  <li class="onex">参数描述</li>
+  <li class="userx">操作人员</li>
+  <li class="timex">操作时间</li>
+  <li class="playx">操作</li>
+</ul>
+</div>
+<div class="dataList">
+<?php foreach($list as $key=>$val){?>
+<ul>
+  <li class="Idx"><?php echo ($key+1) ;?></li>
+  <li class="onex"><?php echo $val['name'];?></li>
+  <li class="onex"><?php echo $val['code'];?></li>
+  <li class="onex"><?php echo $val['value'];?></li>
+  <li class="typex"><?php echo $val['type']==1?'管理平台':'商户平台';?></li>
+  <li class="onex"><?php echo $val['description'];?></li>
+  <li class="userx"><?php echo $val['operatorName'];?></li>
+  <li class="timex"><?php echo $val['operationTime'];?></li>
+  <li class="playx"><a href="javascript:saveShow('param','<?php echo $val['id']?>');" class="btn btn-info">修改</a>&nbsp;&nbsp;
+		  <a href="javascript:delRows('param','<?php echo $val['id']?>');" class="btn btn-danger">删除</a></li>
+</ul>
+<?php }?>
+</div>
+<div class="relist" ><span>总记录数量<?php echo count($list);?>条,  &nbsp;每页显示100条</span></div>
+<div class="pagev"><?php echo $page;?></div>
+</div>
+</body>
+</html>

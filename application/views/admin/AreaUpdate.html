@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="renderer" content="webkit">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<base href="<?php echo base_url();?>" />
+<title>CADA云数聚-区域修改</title>
+<!--引入jauery文件-->
+<script src="static/global/js/jquery.1.11.3.min.js"></script>
+<!--引用框架样式文件-->
+<link href="static/global/plugins/Bootstrap/css/bootstrap.css" rel="stylesheet">
+<!--引入框架脚本文件-->
+<script src="static/global/plugins/Bootstrap/js/bootstrap.min.js"></script>
+<!--引入弹框脚本文件-->
+<script src="static/global/plugins/Layer/layer.js"></script>
+<!--引入全局CSS文件-->
+<link href="static/admin/css/cada-admin-min.css" rel="stylesheet">
+<!--引用字体样式文件-->
+<link href="static/global/plugins/FontAwesome/css/font-awesome.css" rel="stylesheet">
+</head>
+<!--内部脚本-->
+<script>
+/*获取二级菜单选项*/
+var U = $('base').attr('href');
+/**异步请求数据方法*/
+function Fa(url, data) {
+	var message;
+	$.ajax({type: "POST",url: U + 'index.php/' + url,async: false,
+		data: data,success: function(msg) {message = msg;}});
+	return message;
+}
+/**是否含有中文（也包含日文和韩文）*/
+function isChar(str){   
+   var reg = /[\u4E00-\u9FA5\uF900-\uFA2D]/;
+   return reg.test(str);
+}
+/**判断必填项是否完成*/
+function status(){
+	if($.trim($("#area-type").val()).length <= 0){
+	   	layer.msg('请选择区域类型', {icon:2,time: 2000});
+	   return false;
+	}
+	if($.trim($("#pid").val()).length <= 0){
+	     layer.msg('请选择区域父级', {icon:2,time: 2000});
+	      return false;
+	}
+	if($.trim($("#area-name").val()).length <= 0){
+		 layer.msg('请填写区域标题', {icon:2,time: 2000});
+	     return false;
+	}
+    if($.trim($("#area-code").val()).length <= 0){
+		 layer.msg('请填写区域编码', {icon:2,time: 2000});
+	    return false;
+	}else if($.trim($("#area-code").val()).length>0 && isChar($("#area-code").val())){
+		   layer.msg('区域编码不能输入中文', {icon:2,time: 2000});
+	       return false;
+	}
+   if($.trim($("#short-code").val()).length <= 0){
+	    layer.msg('请填写区域简码', {icon:2,time: 2000});
+	   return false;
+	}else if($.trim($("#short-code").val()).length>0 && isChar($("#short-code").val())){
+		   layer.msg('区域简码不能输入中文', {icon:2,time: 2000});
+	       return false;
+	}
+	return true;
+}
+/**程序执行*/
+$(function(){
+   /**切换菜单*/
+	$('#area-type').change(function(){
+		$("#pid").find('option').remove();
+		if($.trim($(this).val()).length>0 && $(this).val()!="1"){
+			var select = eval('(' + Fa('admin/area/getCitys', 'id='+$(this).val()) + ')'); 
+			$.each(select,function(x,item){
+				$("#pid").append('<option value="'+item.id+'">'+item.name+'</option>');
+			});
+		}else{
+		    $("#pid").append('<option value="0">新城市</option>');
+		}
+	});
+	$('.layer_button').click(function(){
+	   status()  && $('.layer_form').submit();
+	});
+});
+</script>
+<body>
+<div id="cada-admin-menu" class="cada-admin-layer">
+<form class="layer_form" method="post" action="index.php/admin/area/updated">
+<input type="hidden" name="id" value="<?php echo $one['id'];?>"/>
+<ul>
+	<li>
+		<label for="menu-url">区域类型&nbsp;&nbsp;</label>
+		 <select class="form-control length-min" id="area-type">
+		  <option value="1" <?php echo $one['parentId']==0?'selected':'';?>>城市</option>
+		  <option value="0" <?php echo $one['parentId']!=0?'selected':'';?>>区县</option>
+		</select>
+		<div class="clear"></div>
+	</li>
+	<li>
+		<label for="menu-url">区域父级&nbsp;&nbsp;</label>
+		 <select class="form-control length-min" name="parentId" id="pid">
+		  <option value="0">新城市</option>
+		  <?php if(!empty($city) && $one['parentId']!=0){
+						 foreach($city as $i){
+							echo $i['id']==$one['parentId']?'<option value="'.$i['id'].'" selected>'.$i['name'].'</option>':'<option value="'.$i['id'].'">'.$i['name'].'</option>';
+					     }
+					 }
+		  ?>
+		</select>
+		<div class="clear"></div>
+	</li>
+<li>
+    <label for="menu-name" >区域名称&nbsp;&nbsp;</label>
+    <input type="text" class="form-control titleAll" id="area-name" placeholder="区域名称"  name="name" value="<?php echo $one['name'];?>" maxlength="16">
+    <div class="clear"></div>
+</li>
+<li>
+    <label for="menu-url" >区域编码&nbsp;&nbsp;</label>
+    <input type="text" class="form-control length-min" id="area-code" placeholder="区域编码"  name="areaCode" value="<?php echo $one['areaCode'];?>" maxlength="16">
+    <div class="clear"></div>
+</li>
+<li>
+    <label for="menu-url" >区域简码&nbsp;&nbsp;</label>
+    <input type="text" class="form-control length-min" id="short-code" placeholder="区域简码"  name="shortCode" value="<?php echo $one['shortCode'];?>" maxlength="16">
+    <div class="clear"></div>
+</li>
+<div class="clear"></div>
+</ul>
+<div class="playDiv"><button type="reset" class="btn btn-default" >输入重置</button><button type="button" class="btn btn-info layer_button" >保存信息</button></div>
+</form>
+</div>
+</body>
+</html>

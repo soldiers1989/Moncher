@@ -1,0 +1,475 @@
+<?php  $this->load->view('merchant/head.html');?>
+<link href="static/merchant/css/store.css" rel="stylesheet">
+<link href="static/merchant/css/style.css"rel="stylesheet">
+<link rel="stylesheet" href="static/merchant/css/style-h.css">
+<!-- highchart插件 -->
+<script src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script>
+<script src="http://cdn.hcharts.cn/highcharts/modules/exporting.js"></script>
+<script src="static/merchant/js/height_one.js"></script>
+<script src="static/merchant/js/height_two.js"></script>
+<script src="static/merchant/js/libal.js"></script>
+<script src="static/merchant/js/circles.js"></script>
+<script src="static/merchant/js/index.js"></script>
+ <div class="store-aa";>	
+        <!-- 总体 -->
+    <div id="store-ba"> 
+             <p align="center"style="font-size: 17px;font-weight:bold;">总体</p> 
+             <hr style="box-shadow:0 1 1px #000 ;"/> 
+             <p align="center" style="font-size: 15px;">用户参与样本量</p> 
+             <p  align="right"style=" font-size:13px;margin-right:20px;">
+             <a style="text-decoration:none;color: blue;">本年度</a>用户总参与样量:
+             <span  class="number_zf" style="text-decoration:none;color: red;">231321</span></p> 
+      <!-- 条形统计图 -->
+    <!-- 条形统计图 -->
+     <div class="skillbar-z">
+     <div style="width:100%;height:20%;">
+         <span class="skillbar-p" style="font-size: 13px;">服务顾问</span>
+         <div class="skillbar  " data-percent="25%">
+         <div class="skillbar-bar" style="background: #3498db;"></div>
+         </div> <!-- End Skill Bar -->
+         <div style="float:left;font-size:13px;">1222</div>
+     </div>
+     <div style="width:100%;height:20%;">
+         <span class="skillbar-p" style="font-size: 13px;">服务设施</span>
+         <div class="skillbar  " data-percent="20%">
+       	 <div class="skillbar-bar" style="background: #01A8B0;"></div>
+         </div> <!-- End Skill Bar -->
+         <div style="float:left;font-size:13px;">1222</div>
+     </div>
+     <div style="width:100%;height:20%;">
+         <span class="skillbar-p" style="font-size: 13px;">维修质量</span>
+         <div class="skillbar  " data-percent="50%">
+	     <div class="skillbar-bar" style="background: #008B00;"></div>
+         </div> <!-- End Skill Bar -->
+         <div style="float:left;font-size:13px;">1222</div>
+     </div>
+     <div style="width:100%;height:20%;">
+         <span class="skillbar-p" style="font-size: 13px;">维修价格</span>
+         <div class="skillbar  " data-percent="40%">
+	     <div class="skillbar-bar" style="background: #CD3700;"></div>
+         </div> <!-- End Skill Bar -->
+         <div style="float:left;font-size:13px;">1222</div>
+     </div>
+     <div style="width:100%;height:20%;">
+         <span class="skillbar-p" style="font-size: 13px;">维修时间</span>
+         <div class="skillbar  " data-percent="75%">
+	     <div class="skillbar-bar" style="background: #CD8500;"></div>
+	     </div> <!-- End Skill Bar -->
+         <div style="float:left;font-size:13px;">1222</div>
+     </div>
+     </div>
+     <!-- 圆形统计图 -->
+ 	<div class="score-y" style="float:left;width:100%;height:220px; ">
+	
+	     <p align="center" style="font-size: 15px;margin-top: 28px;">用户参与样本量</p>
+         <p  align="right"style=" font-size:13px;margin-right:20px;">
+         <a style="text-decoration:none;color: blue;">本年度</a>用户总参与样量:
+         <a style="text-decoration:none;color: red;">345</a></p>
+	
+		<!-- 服务顾问 -->
+		<div id="z1_score" style="width:100px;height:120px;margin-left:8%; float:left;" ></div>
+		<!-- 服务设施 -->
+		<div id="z2_score" style="width:100px;height:120px;margin-left:10px; float:left;" ></div>
+		<!-- 维修质量 -->
+		<div id="z3_score" style="width:100px;height:120px;margin-left:10px; float:left;" ></div>
+		<!-- 维修价格 -->
+		<div id="z4_score" style="width:100px;height:120px;margin-left:10px; float:left;" ></div>
+		<!-- 维修时间 -->
+		<div id="z5_score" style="width:100px;height:120px;margin-left:10px; float:left;" ></div>
+		<!--<div id="fwzl_score" style="width:80px;height:120px;margin-left:10px;"data-highcharts-chart="1"></div>-->
+		
+		 <!--标题--> 
+		<div class="model_tit" style="float:left;font-size:15px;margin-right:8%;margin-left:-525px;margin-top:120px;">服务顾问</div>
+		<div class="model_tit" style="float:left;font-size:15px;margin-right:8%;margin-top:120px;
+		margin-left:-410px;">服务设施</div>
+		<div class="model_tit" style="float:left;font-size:15px;margin-right:8%;margin-top:120px;
+		margin-left:-300px;">维修质量</div>
+		<div class="model_tit" style="float:left;font-size:15px;margin-right:8%;margin-top:120px;
+		margin-left:-190px;">维修价格</div>
+		<div class="model_tit" style="float:left;font-size:15px;margin-right:8%;margin-top:120px;
+		margin-left:-85px;">维修时间</div>
+	</div>
+    </div>
+    </div>
+      <!-- 本日    -->
+    <div id="store-bb">
+         <p align="center"style="font-size: 17px;font-weight:bold;">本日</p> 
+         <hr/> 
+         <p align="center" style="font-size: 15px;">用户参与样本量</p>
+         <p  align="right"style=" font-size:13px;margin-right:20px;">
+         <a style="text-decoration:none;color: blue;">本日</a>用户总参与样量:
+         <a style="text-decoration:none;color: red;">345</a></p>
+            <!-- 条形统计图 -->
+    <!-- 条形统计图 -->
+     <div class="skillbar-z">
+     <div style="width:100%;height:20%;">
+         <span class="skillbar-p" style="font-size: 13px;">服务顾问</span>
+         <div class="skillbar  " data-percent="25%">
+         <div class="skillbar-bar" style="background: #3498db;"></div>
+         </div> <!-- End Skill Bar -->
+         <div style="float:left;font-size:13px;">1222</div>
+     </div>
+     <div style="width:100%;height:20%;">
+         <span class="skillbar-p" style="font-size: 13px;">服务设施</span>
+         <div class="skillbar  " data-percent="20%">
+       	 <div class="skillbar-bar" style="background: #01A8B0;"></div>
+         </div> <!-- End Skill Bar -->
+         <div style="float:left;font-size:13px;">1222</div>
+     </div>
+     <div style="width:100%;height:20%;">
+         <span class="skillbar-p" style="font-size: 13px;">维修质量</span>
+         <div class="skillbar  " data-percent="50%">
+	     <div class="skillbar-bar" style="background: #008B00;"></div>
+         </div> <!-- End Skill Bar -->
+         <div style="float:left;font-size:13px;">1222</div>
+     </div>
+     <div style="width:100%;height:20%;">
+         <span class="skillbar-p" style="font-size: 13px;">维修价格</span>
+         <div class="skillbar  " data-percent="40%">
+	     <div class="skillbar-bar" style="background: #CD3700;"></div>
+         </div> <!-- End Skill Bar -->
+         <div style="float:left;font-size:13px;">1222</div>
+     </div>
+     <div style="width:100%;height:20%;">
+         <span class="skillbar-p" style="font-size: 13px;">维修时间</span>
+         <div class="skillbar  " data-percent="75%">
+	     <div class="skillbar-bar" style="background: #CD8500;"></div>
+	     </div> <!-- End Skill Bar -->
+         <div style="float:left;font-size:13px;">1222</div>
+     </div>
+     </div>
+ 
+  <!-- 圆形统计图 -->
+ 	<div class="score-y" style="float:left;width:100%; height:220px;">
+	
+	     <p  align="center" style="font-size: 15px;margin-top: 28px;">测评得分</p>
+         <p  align="right"  style=" font-size:13px;margin-right:20px;">
+         <a style="text-decoration:none;color: blue;">本日</a>用户测评得分:
+         <a style="text-decoration:none;color: red;">345</a>
+		<!-- 服务顾问 -->
+		<div id="fwgw_scorea" style="width:100px;height:120px;margin-left:15%; float:left;" ></div>
+		<!-- 服务设施 -->
+		<div id="fwss_scoreb" style="width:100px;height:120px;margin-left:15px; float:left;" ></div>
+		<!-- 维修质量 -->
+		<div id="fwzl_scorec" style="width:100px;height:120px;margin-left:15px; float:left;" ></div>
+		<!-- 维修价格 -->
+		<div id="wxjg_scored" style="width:100px;height:120px;margin-left:15px; float:left;" ></div>
+		<!-- 维修时间 -->
+		<div id="wxss_scoree" style="width:100px;height:120px;margin-left:15px; float:left;" ></div>
+
+			
+		 <!--标题--> 
+		<div class="model_tit" style="float:left;font-size:15px;margin-left: 18%;">服务顾问</div>
+		<div class="model_tit" style="float:left;font-size:15px;margin-left: 55px;">服务设施</div>
+		<div class="model_tit" style="float:left;font-size:15px;margin-left: 55px;">维修质量</div>
+		<div class="model_tit" style="float:left;font-size:15px;margin-left: 55px;">维修价格</div>
+		<div class="model_tit" style="float:left;font-size:15px;margin-left: 55px;">维修时间</div>
+	</div>
+    </div>
+       <!-- 月度 -->
+  <div id="store-bc">
+        <p align="center"style="font-size: 17px;font-weight:bold;">月度</p> 
+        <hr/> 
+   
+        
+        <p align="lift" style="margin-left:19%;font-size: 15px;float:left;margin-top:25px;">用户参与样本量</p> 
+        <p align="right" style="margin-right:20%;font-size: 15px;margin-top:28px;">用户参与样本量</p>
+       <!-- 条形统计图 -->
+    <div class="model_b">
+    <div class="model_score">
+						<div class="me_tit" style="float:left;margin-left:5%;font-size:12px;color:#5D5050;">商务顾问</div>
+						<div style="width:60%;background:#CDCCCB;float:left;margin-left:10%;border-radius:4px;height:14px;margin-top:4px;">
+						<div class="gl_sty"   style="position:relative;left:0;width:80%;background-color:#1874CD;display:block;float:left;font-siez:12px;color:#fff;border-radius:4px;height:14px;"></div>
+						</div>
+						<div style="float:left;display:block;margin-left:5%;font-size:12px;color:#5D5050;">80</div>
+	</div>
+	<div class="model_score">
+						<div class="me_tit" style="float:left;margin-left:5%;font-size:12px;color:#5D5050;margin-top: 5px;">服务设施</div>
+						<div style="width:60%;background:#CDCCCB;float:left;margin-left:10%;border-radius:4px;height:14px;margin-top:10px;">
+						<div class="gl_sty"   style="position:relative;left:0;width:80%;background-color:#01A8B0;display:block;float:left;font-siez:12px;color:#fff;border-radius:4px;height:14px;"></div>
+						</div>
+						<div style="float:left;display:block;margin-left:5%;font-size:12px;color:#5D5050;margin-top: 7px;">80</div>
+	</div>
+	<div class="model_score">
+						<div class="me_tit" style="float:left;margin-left:5%;font-size:12px;color:#5D5050;margin-top:5px;">维修质量</div>
+						<div style="width:60%;background:#CDCCCB;float:left;margin-left:10%;border-radius:4px;height:14px;margin-top:10px;">
+						<div class="gl_sty"   style="position:relative;left:0;width:80%;background-color:#008B00;display:block;float:left;font-siez:12px;color:#fff;border-radius:4px;height:14px;"></div>
+						</div>
+						<div style="float:left;display:block;margin-left:5%;font-size:12px;color:#5D5050;margin-top: 7px;">80</div>
+	</div>
+	<div class="model_score">
+						<div class="me_tit" style="float:left;margin-left:5%;font-size:12px;color:#5D5050;margin-top: 5px;">维修价格</div>
+						<div style="width:60%;background:#CDCCCB;float:left;margin-left:10%;border-radius:4px;height:14px;margin-top:10px;">
+						<div class="gl_sty"   style="position:relative;left:0;width:80%;background-color:#CD3700;display:block;float:left;font-siez:12px;color:#fff;border-radius:4px;height:14px;"></div>
+						</div>
+						<div style="float:left;display:block;margin-left:5%;font-size:12px;color:#5D5050;margin-top: 7px;">80</div>
+	</div>
+	<div class="model_score">
+						<div class="me_tit" style="float:left;margin-left:5%;font-size:12px;color:#5D5050;margin-top: 5px;">维修时间</div>
+						<div style="width:60%;background:#CDCCCB;float:left;margin-left:10%;border-radius:4px;height:14px;margin-top:10px;">
+						<div class="gl_sty"   style="position:relative;left:0;width:80%;background-color:#CD8500;display:block;float:left;font-siez:12px;color:#fff;border-radius:4px;height:14px;"></div>
+						</div>
+						<div style="float:left;display:block;margin-left:5%;font-size:12px;color:#5D5050;margin-top: 7px;">80</div>
+	</div>
+	</div>
+	
+     <!--   月份折线图  -->
+    <p align="center" style="font-size:15px;margin-top: 25px;">月份各模块详细用户参与样本量</p>
+    <div id="container_i" style="min-width:400px;height:400px"></div>
+    <!-- 柱形统计图开始 -->
+    <div>
+    <p align="center" style="font-size:15px;">月度各模块详细测评得分</p>
+    <div id="parent"align="right">
+			<select>
+				<option>服务顾问</option>
+				<option>服务设施</option>
+				<option>维修质量</option>
+				<option>维修价格</option>
+				<option>维修时间</option>
+			</select>	
+    </div>	
+    <div id="container_ii" style="min-width:400px;height:400px"></div>
+    </div>
+    	
+    <!-- 圆形统计图 -->
+ 	<div class="score-y" style="float:right;width:50%;margin-top: -1113px; ">
+	
+	    <!-- <p align="center" style="font-size: 16;">用户参与样本量</p>-->
+         <p  align="right"style=" font-size:13px;margin-right:20px;">
+         <a style="text-decoration:none;color: blue;">本月</a>用户总参与样量:
+         <a style="text-decoration:none;color: red;">345</a></p>
+	
+		<!-- 服务顾问 -->
+		<div id="by_scorea" style="width:100px;height:120px;margin-left:15%; float:left;" ></div>
+		<!-- 服务设施 -->
+		<div id="by_scoreb" style="width:100px;height:120px;margin-left:15px; float:left;" ></div>
+		<!-- 维修质量 -->
+		<div id="by_scorec" style="width:100px;height:120px;margin-left:15px; float:left;" ></div>
+		<!-- 维修价格 -->
+		<div id="by_scored" style="width:100px;height:120px;margin-left:15px; float:left;" ></div>
+		<!-- 维修时间 -->
+		<div id="by_scoree" style="width:100px;height:120px;margin-left:15px; float:left;" ></div>	
+		  <!--标题--> 
+		<div class="model_tit" style="float:left;font-size:15px;margin-left:18%;">服务顾问</div>
+		<div class="model_tit" style="float:left;font-size:15px;margin-left:55px;">服务设施</div>
+		<div class="model_tit" style="float:left;font-size:15px;margin-left:55px;">维修质量</div>
+		<div class="model_tit" style="float:left;font-size:15px;margin-left:55px;">维修价格</div>
+		<div class="model_tit" style="float:left;font-size:15px;margin-left:55px;">维修时间</div>
+	</div>
+    </div>
+   
+</div>
+<!-- 季度模块开始 -->
+              <div id="store-bd">
+              <p align="center"style="font-size: 17px;font-weight:bold;">季度</p>
+              <hr> 
+ 	            <div id="store-bd-1">
+                <p align="center" style="font-size: 15px;margin-top: 25px;">用户参与样本量</p> 
+             <p  align="right"style=" font-size:13px;margin-right:20px;">
+             <a style="text-decoration:none;color: blue;">本季度</a>用户总参与样量:
+             <a style="text-decoration:none;color: red;">12345</a></p> 
+   
+     <!-- 条形统计图 -->
+      <div id="parent_j" align="left">
+			<select>
+				<option>第一季度</option>
+				<option>第二季度</option>
+				<option>第三季度</option>
+				<option>第四季度</option>
+			</select>	
+     </div>	
+    <div class="model_j">
+    <div class="model_score">
+						<div class="me_tit" style="float:left;margin-left:5%;font-size:12px;color:#5D5050;">商务顾问</div>
+						<div style="width:60%;background:#CDCCCB;float:left;margin-left:10%;border-radius:4px;height:14px;margin-top:4px;">
+						<div class="gl_sty"   style="position:relative;left:0;width:80%;background-color:#1874CD;display:block;float:left;font-siez:12px;color:#fff;border-radius:4px;height:14px;"></div>
+						</div>
+						<div style="float:left;display:block;margin-left:5%;font-size:12px;color:#5D5050;">80</div>
+	</div>
+	<div class="model_score">
+						<div class="me_tit" style="float:left;margin-left:5%;font-size:12px;color:#5D5050;margin-top: 5px;">服务设施</div>
+						<div style="width:60%;background:#CDCCCB;float:left;margin-left:10%;border-radius:4px;height:14px;margin-top:10px;">
+						<div class="gl_sty"   style="position:relative;left:0;width:80%;background-color:#01A8B0;display:block;float:left;font-siez:12px;color:#fff;border-radius:4px;height:14px;"></div>
+						</div>
+						<div style="float:left;display:block;margin-left:5%;font-size:12px;color:#5D5050;margin-top: 7px;">80</div>
+	</div>
+	<div class="model_score">
+						<div class="me_tit" style="float:left;margin-left:5%;font-size:12px;color:#5D5050;margin-top:5px;">维修质量</div>
+						<div style="width:60%;background:#CDCCCB;float:left;margin-left:10%;border-radius:4px;height:14px;margin-top:10px;">
+						<div class="gl_sty"   style="position:relative;left:0;width:80%;background-color:#008B00;display:block;float:left;font-siez:12px;color:#fff;border-radius:4px;height:14px;"></div>
+						</div>
+						<div style="float:left;display:block;margin-left:5%;font-size:12px;color:#5D5050;margin-top: 7px;">80</div>
+	</div>
+	<div class="model_score">
+						<div class="me_tit" style="float:left;margin-left:5%;font-size:12px;color:#5D5050;margin-top: 5px;">维修价格</div>
+						<div style="width:60%;background:#CDCCCB;float:left;margin-left:10%;border-radius:4px;height:14px;margin-top:10px;">
+						<div class="gl_sty"   style="position:relative;left:0;width:80%;background-color:#CD3700;display:block;float:left;font-siez:12px;color:#fff;border-radius:4px;height:14px;"></div>
+						</div>
+						<div style="float:left;display:block;margin-left:5%;font-size:12px;color:#5D5050;margin-top: 7px;">80</div>
+	</div>
+	<div class="model_score">
+						<div class="me_tit" style="float:left;margin-left:5%;font-size:12px;color:#5D5050;margin-top: 5px;">维修时间</div>
+						<div style="width:60%;background:#CDCCCB;float:left;margin-left:10%;border-radius:4px;height:14px;margin-top:10px;">
+						<div class="gl_sty"   style="position:relative;left:0;width:80%;background-color:#CD8500;display:block;float:left;font-siez:12px;color:#fff;border-radius:4px;height:14px;"></div>
+						</div>
+						<div style="float:left;display:block;margin-left:5%;font-size:12px;color:#5D5050;margin-top: 7px;">80</div>
+	</div>
+	</div>
+    <!-- 圆形统计图 -->
+ 	<div class="score-y" style="float:left;width:100%;margin-top: 30px;height:185px; ">
+	
+	     <p align="center" style="font-size: 15px;">测评得分</p>
+         <p  align="right"style=" font-size:13px;margin-right:20px;">
+         <a style="text-decoration:none;color: blue;">本季度</a>用户总参与样量:
+         <a style="text-decoration:none;color: red;">345</a></p>
+	
+		
+		<!-- 服务顾问 -->
+		<div id="bj_scorea" style="width:80px;height:120px;margin-left:45px; float:left;" ></div>
+		<!-- 服务设施 -->
+		<div id="bj_scoreb" style="width:80px;height:120px;margin-left:5px; float:left;" ></div>
+		<!-- 维修质量 -->
+		<div id="bj_scorec" style="width:80px;height:120px;margin-left:5px; float:left;" ></div>
+		<!-- 维修价格 -->
+		<div id="bj_scored" style="width:80px;height:120px;margin-left:5px; float:left;" ></div>
+		<!-- 维修时间 -->
+		<div id="bj_scoree" style="width:80px;height:120px;margin-left:5px; float:left;" ></div>	
+			
+		 <!--标题--> 
+		<div class="model_tit" style="float:left;font-size:15px;margin-left: 55px;">服务顾问</div>
+		<div class="model_tit" style="float:left;font-size:15px;margin-left: 25px">服务设施</div>
+		<div class="model_tit" style="float:left;font-size:15px;margin-left: 25px">维修质量</div>
+		<div class="model_tit" style="float:left;font-size:15px;margin-left: 25px">维修价格</div>
+		<div class="model_tit" style="float:left;font-size:15px;margin-left: 25px">维修时间</div>
+	</div>
+    </div>
+
+      </div>
+      <div id="store-bd-2">
+         <!--   折线图  -->
+         	<p align="center" style="font-size:15px;margin-top: 25px;">季度各模块详细用户参与样本量</p>
+            <div id="container_iii" style="min-width:400px;height:400px;"></div>
+
+      </div>
+      <div id="store-bd-3">
+       <div id="parent"align="right">
+			<select>
+				<option>服务顾问</option>
+				<option>服务设施</option>
+				<option>维修质量</option>
+				<option>维修价格</option>
+				<option>维修时间</option>
+			</select>	
+       </div>	
+        <!-- 三柱柱形统计图开始 -->
+            <p align="center" style="font-size:15px;">季度各模块详细用户参与样本量</p>
+            <div id="container_ss" ></div>
+      </div>
+      </div>
+      <!-- 年度 -->
+    <div id="store-be">
+         <p align="center"style="font-size: 17px;font-weight:bold;">年度</p> 
+         <hr>
+    <div id="store-be-1">
+         <p align="center" style="margin-top:30px;font-size: 15px;">用户参与样本量</p>
+         <p align="right" style="margin-right:20px;font-size:13px;">
+            <a style="text-decoration:none;color: blue;">本年</a>用户总参与样量:
+            <a style="text-decoration:none;color: red;">12345</a>
+         </p>
+    <!-- 条形统计图 -->
+    <div class="model_j">
+    <div class="model_score">
+						<div class="me_tit" style="float:left;margin-left:5%;font-size:12px;color:#5D5050;">商务顾问</div>
+						<div style="width:60%;background:#CDCCCB;float:left;margin-left:10%;border-radius:4px;height:14px;margin-top:4px;">
+						<div class="gl_sty"   style="position:relative;left:0;width:80%;background-color:#1874CD;display:block;float:left;font-size:12px;color:#fff;border-radius:4px;height:14px;"></div>
+						</div>
+						<div style="float:left;display:block;margin-left:5%;font-size:12px;color:#5D5050;">80</div>
+	</div>
+	<div class="model_score">
+						<div class="me_tit" style="float:left;margin-left:5%;font-size:12px;color:#5D5050;margin-top: 5px;">服务设施</div>
+						<div style="width:60%;background:#CDCCCB;float:left;margin-left:10%;border-radius:4px;height:14px;margin-top:10px;">
+						<div class="gl_sty"   style="position:relative;left:0;width:80%;background-color:#01A8B0;display:block;float:left;font-size:12px;color:#fff;border-radius:4px;height:14px;"></div>
+						</div>
+						<div style="float:left;display:block;margin-left:5%;font-size:12px;color:#5D5050;margin-top: 7px;">80</div>
+	</div>
+	<div class="model_score">
+						<div class="me_tit" style="float:left;margin-left:5%;font-size:12px;color:#5D5050;margin-top:5px;">维修质量</div>
+						<div style="width:60%;background:#CDCCCB;float:left;margin-left:10%;border-radius:4px;height:14px;margin-top:10px;">
+						<div class="gl_sty"   style="position:relative;left:0;width:80%;background-color:#008B00;display:block;float:left;font-size:12px;color:#fff;border-radius:4px;height:14px;"></div>
+						</div>
+						<div style="float:left;display:block;margin-left:5%;font-size:12px;color:#5D5050;margin-top: 7px;">80</div>
+	</div>
+	<div class="model_score">
+						<div class="me_tit" style="float:left;margin-left:5%;font-size:12px;color:#5D5050;margin-top: 5px;">维修价格</div>
+						<div style="width:60%;background:#CDCCCB;float:left;margin-left:10%;border-radius:4px;height:14px;margin-top:10px;">
+						<div class="gl_sty"   style="position:relative;left:0;width:80%;background-color:#CD3700;display:block;float:left;font-size:12px;color:#fff;border-radius:4px;height:14px;"></div>
+						</div>
+						<div style="float:left;display:block;margin-left:5%;font-size:12px;color:#5D5050;margin-top: 7px;">80</div>
+	</div>
+	<div class="model_score">
+						<div class="me_tit" style="float:left;margin-left:5%;font-size:12px;color:#5D5050;margin-top: 5px;">维修时间</div>
+						<div style="width:60%;background:#CDCCCB;float:left;margin-left:10%;border-radius:4px;height:14px;margin-top:10px;">
+						<div class="gl_sty"   style="position:relative;left:0;width:80%;background-color:#CD8500;display:block;float:left;font-size:12px;color:#fff;border-radius:4px;height:14px;"></div>
+						</div>
+						<div style="float:left;display:block;margin-left:5%;font-size:12px;color:#5D5050;margin-top: 7px;">80</div>
+	</div>
+	</div>
+    </div>
+     <!--圆形模块--> 
+    <div id="store-be-2"> 
+    <!-- 圆形统计图 -->
+ 	<div class="score-y" style="float:left;width:100%;margin-top: 30px; ">
+	
+	     <p align="center" style="font-size: 15px;">测评得分</p>
+         <p  align="right"style=" font-size:13px;margin-right:20px;">
+         <a style="text-decoration:none;color: blue;">本年</a>用户测评得分:
+         <a style="text-decoration:none;color: red;">345</a>
+         </p>
+	
+		
+		<!-- 服务顾问 -->
+		<div id="bn_scorea" style="width:100px;height:120px;margin-left:15%; float:left;margin-top:30px;" ></div>
+		<!-- 服务设施 -->
+		<div id="bn_scoreb" style="width:100px;height:120px;margin-left:15px; float:left;margin-top:30px;" ></div>
+		<!-- 维修质量 -->
+		<div id="bn_scorec" style="width:100px;height:120px;margin-left:15px; float:left;margin-top:30px;" ></div>
+		<!-- 维修价格 -->
+		<div id="bn_scored" style="width:100px;height:120px;margin-left:15px; float:left;margin-top:30px;" ></div>
+		<!-- 维修时间 -->
+		<div id="bn_scoree" style="width:100px;height:120px;margin-left:15px; float:left;margin-top:30px;" ></div>	
+			
+		 <!--标题--> 
+		<div class="model_tit" style="float:left;font-size:15px;margin-left: 18%;">服务顾问</div>
+		<div class="model_tit" style="float:left;font-size:15px;margin-left: 55px;">服务设施</div>
+		<div class="model_tit" style="float:left;font-size:15px;margin-left: 55px;">维修质量</div>
+		<div class="model_tit" style="float:left;font-size:15px;margin-left: 55px;">维修价格</div>
+		<div class="model_tit" style="float:left;font-size:15px;margin-left: 55px;">维修时间</div>
+	</div>
+    </div>
+
+    </div>
+    <!--第三个盒子-->
+    <div id="store-be-3">
+   <!--   折线图  -->
+     <p align="center" style="font-size:15px;">各模块详细用户样本参与量</p>
+    <div id="container_ia" style="min-width:400px;height:400px;margin-top:40px;"></div>
+    </div>
+    <!-- 年份柱形图 -->
+     
+    <div id="store-be-4">
+    <p align="center" style="font-size:15px;">季度各模块详细测评得分</p>
+    	<div id="parent"align="right">
+			<select>
+				<option>服务顾问</option>
+				<option>32</option>
+				<option>213</option>	
+			</select>	
+        </div>	
+                 <!-- 柱形统计图开始 -->
+
+    <div id="container_iia" style="min-width:400px;height:400px;margin-top:20px;"></div>
+    </div>
+    </div>
+    </div>
+    </body>
+   </html>

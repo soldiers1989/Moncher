@@ -1,0 +1,46 @@
+@CHARSET "UTF-8";
+/* html {overflow-x: hidden;  } */
+/* ::-ms-clear, ::-ms-reveal{display: none;} */
+/*图片路径选择相对路径即可*/
+body{margin:0;padding:0;font-family:"微软雅黑";min-width:1200px;min-height:675px;}
+div,ul,li,a,p,h2,h3,h4,label{display:block;margin:0;padding:0;}
+ul{list-style:none;}
+.claer{
+	clear:both;
+}
+/*整体布局*/
+.main{background-color:#F1F1F1;width:100%;height:100%;}
+.search{background-color:#fff;width:99.6%;height:90px;margin:0 auto;border-radius:5px;margin-bottom:10px;box-shadow:#ccc 0px 0px 2px;}
+.total{background-color:#F1F1F1;width:99.6%;height:520px;margin:0 auto;border-radius:5px;margin-bottom:10px;box-shadow:#ccc 0px 0px 2px;}
+.important_index{background-color:#fff;width:99.6%;height:350px;margin:0 auto;border-radius:5px;box-shadow:#ccc 0px 0px 2px;margin-bottom:10px;}
+.gw_model{display:block;background-color:#fff;width:99.6%;margin:0 auto;border-radius:5px;border-radius:5px;height:250px;box-shadow:#ccc 0px 0px 2px;margin-bottom:10px;}
+.month_model{display:block;background-color:#fff;width:99.6%;margin:0 auto;border-radius:5px;border-radius:5px;height:280px;box-shadow:#ccc 0px 0px 2px;margin-bottom:10px;}
+.quar_model{display:block;background-color:#fff;width:99.6%;margin:0 auto;border-radius:5px;border-radius:5px;height:560px;box-shadow:#ccc 0px 0px 2px;margin-bottom:10px;}
+.year_model{display:block;background-color:#fff;width:99.6%;margin:0 auto;border-radius:5px;border-radius:5px;height:690px;box-shadow:#ccc 0px 0px 2px;}
+
+/**头部*/
+.right_model{width:50%;float:left;}
+
+/**总分*/
+.total_left{width:49.7%;float:left;margin-right:0.6%;border-radius:5px;background-color:#fff;height:520px;box-shadow:#ccc 0px 0px 2px;}
+.total_right{width:49.7%;float:left;border-radius:5px;background-color:#fff;height:520px; box-shadow:#ccc 0px 0px 2px;}
+.amount_tit{width:100%;text-align:center;height:30px;line-height:30px;border-bottom:1px solid #ccc;font-size:16px;color:#959898;}
+.tit{width:100%;text-align:center;height:30px;line-height:30px;font-size:14px;color:#959898;}
+.year_score{margin-right:5px;height:20px;width:25%;margin-left:75%;}
+.five_score{diaplay:block;width:100%;height:140px;}
+.sample{width:100%;height:250px;}
+.month_left{width:50%;float:left;height:30px;margin-top:10px;}
+.month_right{width:50%;float:left;height:320px;}
+.times{height:30px;width:45%;float:left;margin-left:5px;}
+.sc_tit{line-height:30px;color:#959898;}
+/**季度*/
+.quar_one{width:33.33%;border-right:1px solid #ccc;height:530px;float:left;}
+.quar_score{margin-right:5px;height:20px;width:220px;float:right;}
+.quar_sam{width:100%;}
+.quar_two{width:33.33%;border-right:1px solid #ccc;height:530px;float:left;}
+.quar_three{width:33.33%;height:530px;float:left;}
+/**年度**/
+.year_one{width:50%;border-right:1px solid #ccc;height:300px;float:left;}
+.year_two{width:50%;border-right:1px solid #ccc;height:300px;float:left;}
+.year_three{width:50%;border-right:1px solid #ccc;height:360px;float:left;}
+.year_fore{width:50%;border-right:1px solid #ccc;height:360px;float:left;}

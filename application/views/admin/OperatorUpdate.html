@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="renderer" content="webkit">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<base href="<?php echo base_url();?>" />
+<title>CADA云数聚</title>
+<!--引入jauery文件-->
+<script src="static/global/js/jquery.1.11.3.min.js"></script>
+<!--引用框架样式文件-->
+<link href="static/global/plugins/Bootstrap/css/bootstrap.css" rel="stylesheet">
+<!--引入框架脚本文件-->
+<script src="static/global/plugins/Bootstrap/js/bootstrap.min.js"></script>
+<!--引入弹框脚本文件-->
+<script src="static/global/plugins/Layer/layer.js"></script>
+<!--引入全局CSS文件-->
+<link href="static/admin/css/cada-admin-min.css" rel="stylesheet">
+<!--引用字体样式文件-->
+<link href="static/global/plugins/FontAwesome/css/font-awesome.css" rel="stylesheet">
+</head>
+<!--内部脚本-->
+<script>
+/*获取二级菜单选项*/
+var U = $('base').attr('href');
+/**判断必填项是否完成*/
+function status(){
+	if($.trim($("#o-name").val()).length <= 0){
+	   	layer.msg('请填写用户名', {icon:2,time: 2000});
+	   return false;
+	}
+	if($.trim($("#o-user").val()).length <= 0){
+	     layer.msg('请填写姓名', {icon:2,time: 2000});
+	      return false;
+	}
+   if($('.layer_form ul li :input[type="radio"]:checked').length<= 0){
+	    layer.msg('选择性别', {icon:2,time: 2000});
+	    return false;
+	}
+    if($.trim($("#o-sector").val()).length <= 0){
+		 layer.msg('请选择部门', {icon:2,time: 2000});
+	    return false;
+	}
+    if($.trim($("#o-role").val()).length <= 0){
+		 layer.msg('请选择权限', {icon:2,time: 2000});
+	    return false;
+	}
+    if($.trim($("#o-area").val()).length <= 0){
+		 layer.msg('请选择区域', {icon:2,time: 2000});
+	    return false;
+	}
+	return true;
+}
+/**程序执行*/
+$(function(){
+	$('.layer_button').click(function(){
+	   status()  && $('.layer_form').submit();
+	});
+});
+</script>
+<body>
+<div id="cada-admin-menu" class="cada-admin-layer">
+<form class="layer_form" method="post" action="index.php/admin/operator/updated">
+<input type="hidden" name="id" value="<?php echo $one['id'];?>"/>
+<ul>
+<li>
+<label for="menu-name" >用户名&nbsp;&nbsp;</label>
+<input type="text" class="form-control length-min" id="o-name" placeholder="用户名"  name="loginName" value="<?php echo $one['loginName'];?>" maxlength="16">
+<div class="clear"></div>
+</li>
+<li>
+<label for="menu-url">部门&nbsp;&nbsp;</label>
+ <select class="form-control length-min" id="o-sector" name="sector">
+ <option value="0">选择</option>
+ <?php  foreach($dict as $d){?>
+  <option value="<?php echo $d['id'];?>" <?php echo $one['sector']==$d['id']?'selected':'';?>><?php echo $d['name'];?></option>
+ <?php  }?>
+</select>
+<div class="clear"></div>
+</li>
+<li>
+<label for="menu-name" >姓名&nbsp;&nbsp;</label>
+<input type="text" class="form-control length-min" id="o-user" placeholder="姓名"  name="staffName" value="<?php echo $one['staffName'];?>" maxlength="16">
+<div class="clear"></div>
+</li>
+<li>
+<label for="menu-name" >性别&nbsp;&nbsp;</label>
+<input type="radio"  id="area-name"  name="sex" value="1" <?php echo $one['sex']==1? 'checked':'';?>>
+<span class="spanx">男</span>
+<input type="radio"  id="area-name"  name="sex" value="2" <?php echo $one['sex']==2? 'checked':'';?>>
+<span class="spanx">女</span>
+<div class="clear"></div>
+</li>
+<li>
+<label for="menu-url">权限&nbsp;&nbsp;</label>
+ <select class="form-control length-min"  id="o-role" name="staffRoleId">
+  <option value="0">选择</option>
+ <?php  foreach($role as $r){?>
+  <option value="<?php echo $r['id'];?>" <?php echo $one['staffRoleId']==$r['id']?'selected':'';?>><?php echo $r['roleName'];?></option>
+ <?php  }?>
+</select>
+<div class="clear"></div>
+</li>
+<li>
+<label for="menu-url">区域&nbsp;&nbsp;</label>
+ <select class="form-control length-min" name="areaId" id="o-area">
+  <option value="0">选择</option>
+  <?php  foreach($area as $a){?>
+  <option value="<?php echo $a['id'];?>" <?php echo $one['areaId']==$a['id']?'selected':'';?>><?php echo $a['name'];?></option>
+ <?php  }?>
+</select>
+<div class="clear"></div>
+</li>
+<li>
+<label for="menu-name" >职位&nbsp;&nbsp;</label>
+<input type="text" class="form-control length-min"  placeholder="职位"  name="post" value="<?php echo $one['post'];?>" maxlength="16">
+<div class="clear"></div>
+</li>
+<li>
+<label for="menu-name" >电话&nbsp;&nbsp;</label>
+<input type="text" class="form-control length-min"  placeholder="电话"  name="phone" value="<?php echo $one['phone'];?>" maxlength="16">
+<div class="clear"></div>
+</li>
+<li>
+<label for="menu-name" >邮箱&nbsp;&nbsp;</label>
+<input type="text" class="form-control length-min"  placeholder="邮箱"  name="email"  value="<?php echo $one['email'];?>" maxlength="16">
+<div class="clear"></div>
+</li>
+<li>
+<label for="menu-name" >微信&nbsp;&nbsp;</label>
+<input type="text" class="form-control length-min"  placeholder="微信"  name="wechat" value="<?php echo $one['wechat'];?>" maxlength="30">
+<div class="clear"></div>
+</li>
+<li>
+<label for="menu-name" >Q&nbsp;Q&nbsp;&nbsp;</label>
+<input type="text" class="form-control length-min"  placeholder="QQ"  name="qq" value="<?php echo $one['qq'];?>" maxlength="16">
+<div class="clear"></div>
+</li>
+<li>
+<label for="menu-name" >备注&nbsp;&nbsp;</label>
+<input type="text" class="form-control length-min"  placeholder="修改备注"  name="notes" value="<?php echo $one['notes'];?>" maxlength="16">
+<div class="clear"></div>
+</li>
+<div class="clear"></div>
+</ul>
+<div class="playDiv"><button type="reset" class="btn btn-default" >输入重置</button><button type="button" class="btn btn-info layer_button" >保存信息</button></div>
+</form>
+</div>
+</body>
+</html>

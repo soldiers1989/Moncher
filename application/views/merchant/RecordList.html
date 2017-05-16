@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="renderer" content="webkit">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<base href="<?php echo base_url();?>" />
+<title>CADA云数聚</title>
+<!--引入jauery文件-->
+<script src="static/global/js/jquery.1.11.3.min.js"></script>
+<!--引用框架样式文件-->
+<link href="static/global/plugins/Bootstrap/css/bootstrap.css" rel="stylesheet">
+<!--引入框架脚本文件-->
+<script src="static/global/plugins/Bootstrap/js/bootstrap.min.js"></script>
+<!--引入弹框脚本文件-->
+<script src="static/global/plugins/Layer/layer.js"></script>
+<!--引入全局CSS文件-->
+<link href="static/admin/css/cada-admin-min.css" rel="stylesheet">
+<!--引入全局脚本文件-->
+<script src="static/merchant/js/cada-merchant-min.js"></script>
+<!--引入搜索脚本文件-->
+<script src="static/admin/js/cada-admin-search.js"></script>
+<!--引入日期脚本文件-->
+<script src="<?php echo base_url();?>static/global/js/My97DatePicker/WdatePicker.js"></script>
+</head>
+<body>
+<div id="cada-admin-menu" class="cada-admin-main">
+<form class="form-inline" action="merchant/Record/index" method="post" id="formz" icon="record">
+   <div class="form-group">
+    <label for="menu-name">选择模块</label>
+	 <select class="form-control" id="area-type" style="width:120px;" name="questionnaireId">
+		<option value="<?php echo $model[0]['id'];?>" <?php echo $questionnaireId==$model[0]['id']?'selected':'';?>>服务顾问</option>
+		<option value="<?php echo $model[1]['id'];?>" <?php echo $questionnaireId==$model[1]['id']?'selected':'';?>>服务设施</option>
+		<option value="<?php echo $model[2]['id'];?>" <?php echo  $questionnaireId==$model[2]['id']?'selected':'';?>>维修质量</option>
+		<option value="<?php echo $model[3]['id'];?>" <?php echo  $questionnaireId==$model[3]['id']?'selected':'';?>>维修时间</option>
+		<option value="<?php echo $model[4]['id'];?>" <?php echo  $questionnaireId==$model[4]['id']?'selected':'';?>>维修价格</option>
+	</select>
+  </div>
+  <?php if($iscompany==0){?>
+  <div class="form-group">
+    <label for="menu-name">选择门店</label>
+	 <select class="form-control" id="area-type" style="width:120px;" name="providerId">
+	 <option value="0">选择</option>
+	</select>
+  </div>
+   <div class="form-group">
+    <label for="menu-name">选择品牌</label>
+	 <select class="form-control" id="area-type" style="width:120px;" name="brandId">
+	 <option value="0">选择</option>
+	</select>
+  </div>
+   <?php }?>
+	<?php if($iscompany==0 || $iscompany==3){?>
+	<div class="form-group">
+	<label for="menu-name">选择区域</label>
+	 <select class="form-control" id="area-type" style="width:120px;" name="areaId">
+	 <option value="0">选择</option>
+	</select>
+	</div>
+	<?php }?>
+   <div class="form-group">
+    <label for="menu-url">选择时间</label>
+    <input type="text" class="form-control Wdate"  name="startTime" placeholder="开始时间" style="width:120px;" onfocus="WdatePicker({isShowWeek:true});">
+    <input type="text" class="form-control Wdate"  name="endTime"  placeholder="结束时间"  style="width:120px;" onfocus="WdatePicker({isShowWeek:true});">
+  </div>
+  &nbsp;&nbsp;&nbsp;&nbsp;<button type="submit" class="btn btn-danger" >查找</button>&nbsp;&nbsp;
+</form>
+<div class="dataDesc">
+<ul>
+  <li class="Idx">序号</li>
+  <li class="markx">性别</li>
+  <li class="timex">年龄</li>
+  <li class="timex">学历</li>
+  <li class="longstr">职业</li>
+  <li class="timex">收入</li>
+  <li class="timex">年限</li>
+  <li class="timex">区域</li>
+  <li class="timex">品牌</li>
+  <li class="timex">车型</li>
+  <li class="timex">时间</li>
+  <?php foreach($ques as $q){?>
+  <li class="onex"><?php echo $q['title'];?></li>
+  <?php }?>
+</ul>
+</div>
+<div class="dataList">
+<?php foreach($list as $key=>$val){?>
+<ul>
+  <li class="Idx">    <?php echo  $key+1;?></li>
+  <li class="markx"><?php echo $val['sex'];?></li>
+  <li class="timex"><?php  echo $val['age'];?></li>
+  <li class="timex"><?php  echo $val['education'];?></li>
+  <li class="longstr"><?php echo $val['vocation'];?></li>
+  <li class="timex"><?php echo $val['money'];?></li>
+  <li class="timex"><?php echo $val['buytime'];?></li>
+  <li class="timex"><?php echo $val['area'];?></li>
+  <li class="timex"><?php echo $val['brand'];?></li>
+  <li class="timex"><?php echo $val['carType'];?></li>
+  <li class="timex"><?php echo $val['operationTime'];?></li>
+ <?php  $i=0;foreach($val as $v){ if($i>9){ ?>
+  <li class="onex"><?php echo $v;?></li>
+ <?php } $i++; }?>
+  </li>
+</ul>
+<?php }?>
+</div>
+<div class="relist" ><span>总记录数量<?php echo count($list);?>条,  &nbsp;每页显示100条</span></div>
+<div class="pagev"><?php echo $page;?></div>
+</div>
+</body>
+</html>

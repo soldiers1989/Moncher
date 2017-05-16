@@ -1,0 +1,8 @@
+@CHARSET "UTF-8";
+html {overflow-x: hidden; overflow-y:hidden; }
+::-ms-clear, ::-ms-reveal{display:none;}
+/*图片路径选择相对路径即可*/
+body{margin:0;padding:0;"font-family":"微软雅黑"}
+div,ul,li,a,p,h2,h3,h4,label,dl,dt,dd{display:block;margin:0;padding:0;}
+ul{list-style:none;}
+img{display:block;border-style:none;};

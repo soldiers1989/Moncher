@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="renderer" content="webkit">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<base href="<?php echo base_url();?>" />
+<title>CADA云数聚-商户注册</title>
+<!--引用字体样式文件-->
+<link href="http://netdna.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+<!--引入页面样式文件-->
+<link rel="stylesheet" href="static/merchant/css/cada-merchant-regis.css">
+<!-- 引入验证码滑动脚本 -->
+<link rel="stylesheet" href="static/global/plugins/unlock/drag.css">
+<!--引入jauery文件-->
+<script src="static/global/js/jquery.1.11.3.min.js"></script>
+<!--引入插件脚本-->
+<script src="static/global/js/jquery.placeholder.js"></script>
+<!--引用框架样式文件-->
+<link href="static/global/plugins/Bootstrap/css/bootstrap.css" rel="stylesheet">
+<!--引入框架脚本文件-->
+<script src="static/global/plugins/Bootstrap/js/bootstrap.min.js"></script>
+<!--引入弹框脚本文件-->
+<script src="static/global/plugins/Layer/layer.js"></script>
+<!--引入插件脚本-->
+<script src="static/global/js/jquery.cookie.js"></script>
+<!--引入页面脚本文件-->
+<script src="static/merchant/js/cada-merchant-regis.js"></script>
+<!-- 引入验证码滑动文件 -->
+<script src="static/global/plugins/unlock/drag.js"></script>
+<!--引入日期脚本文件-->
+<script src="<?php echo base_url();?>static/global/js/My97DatePicker/WdatePicker.js"></script>
+</head>
+<body>
+<div id="head-main" onclick="javascript:window.location.href='http://www.cadayun.com/';"><div id="head"><span>商户注册</span></div></div>
+<div id="main">
+<div class="title">您当前的位置:首页&nbsp;> &nbsp;<span>注册</span></div>
+<form action="index.php/merchant/Register/Registed" method="post" id="Formz">
+<input type="hidden" name="isCompany" value="1" id="isCompany"/>
+<!--设置用户名和密码-->
+<div class="userinfo">
+	<ul class="inputs" style="height:240px;">
+		<li>
+		<div class="form-group">
+		<label  class="control-label"  style="font-weight:bold;color:#333;">账户设置</label>
+		<div class="input-mess">请设置您的用户名和密码用于登录</div>
+		</div>
+		</li>
+	   <li>
+	   	<div class="form-group">
+		<label   class="control-label"  check="0"><span>*</span>注册类型</label>
+			<ul class="selects">
+			<li findId="Merchant" class="addbg">门店</li>
+			<li findId="Group" class="addborder">集团</li>
+			<li findId="Brand" class="addborder">厂家</li>
+			<div class="clear"></div>
+			</ul>
+		</div>
+	   </li>
+		<li>
+		<div class="form-group">
+		<label   class="control-label"  check="0"><span>*</span>用户名</label>
+		<input type="text" class="form-control"placeholder="输入用户名" maxlength="16" name="loginName" id="username">
+		</div>
+		</li>
+		<li>
+		<div class="form-group">
+		<label   class="control-label"  check="0"><span>*</span>密码</label>
+		<input type="password" class="form-control"  placeholder="输入密码" maxlength="16" name="userPwd" id="password"/>
+		</div>
+		</li>
+		<li>
+		<div class="form-group">
+		<label   class="control-label"  check="0"><span>*</span>确认密码</label>
+		<input type="password" class="form-control"	placeholder="确认密码" maxlength="16" id="passwordi">
+		</div>
+		</li>
+	</ul>
+</div>
+<!--基础信息不变的部分-->
+<div id="notNull">
+	<ul class="inputs">
+		<li>
+		<div class="form-group">
+		<label  class="control-label" style="font-weight:bold;color:#333;">基础信息</label>
+		<div class="input-mess">请填写真实的信息</div>
+		</div>
+		</li>
+		<li>
+		<div class="form-group">
+		<label   class="control-label"  check="0"><span>*</span>手机号</label>
+		<input type="text" class="form-control"placeholder="输入手机号" name="cellPhone" maxlength="11" id="number">
+		</div>
+		</li>
+		<li>
+		<div class="form-group">
+		<label   class="control-label"><span>*</span>验证</label>
+		<div id="drag" style="cursor:pointer"></div>
+		</div>
+		</li>
+		<li>
+		<div class="form-group">
+		<label   class="control-label"  check="0"><span>*</span>联系人</label>
+		<input type="text" class="form-control"placeholder="输入调研联系人" name="personName" maxlength="6" onblur="javascript:checkValue(this,2,'A','personStatus');">
+		</div>
+		</li>
+		<div class="clear"></div>
+		</ul >
+	  </div>
+	 <!--集团注册信息-->
+      <div class="baseinfo" id="Group">
+	  <ul class="inputs">
+		<li>
+		<div class="form-group">
+		<label   class="control-label"  check="0"><span>*</span>集团名称</label>
+		<input type="text" class="form-control"placeholder="输入集团名称" name="G-name" maxlength="25" id="G-name" onblur="javascript:checkValue(this,2,'G','Gname');">
+		</div>
+		</li>
+		<li>
+		<div class="form-group">
+		<label   class="control-label"  check="0"><span>*</span>总部区域</label>
+		<select class="form-control" style="width:192px;margin-right:16px;" id="city1" onchange="javascript:setArea(0,this,'area1');">
+		  <option>城市</option>
+		</select>
+		<select class="form-control" style="width:192px" name="G-areaId"  id="area1" onchange="javascript:setSelect(this,'G','Garea')">
+		  <option value="">区县</option>
+		</select>
+		</div>
+		</li>
+		<li>
+		<div class="form-group">
+		<label   class="control-label"  check="0"><span>*</span>总部地址</label>
+		<input type="text" class="form-control"placeholder="输入总部地址" name="G-address" maxlength="30" onblur="javascript:checkValue(this,2,'G','Gaddress');">
+		</div>
+		</li>
+		<li style="height:100px;">
+		<div class="form-group">
+		<label   class="control-label"  check="0"><span>*</span>上传logo</label>
+		<div class="imgFile" id="providerManagediv">
+		<div id="G1"><img id="Gi1" width="100" height="100" /></div>
+		<input type="file"    class="files"  onchange="javascript:Fimg(this,'Gi1','GH1','G','Glogo')" accept="image/gif, image/jpeg,image/png" />
+		<input type="hidden" name="G-logo" id="GH1"/>
+		</div>
+		</div>
+		</li>
+		<li style="height:100px;">
+		<div class="form-group">
+		<label   class="control-label"  check="0"><span>*</span>上传大图</label>
+		<div class="imgFile" id="providerManagediv">
+		<div id="G2"><img id="Gi2" width="100" height="100" /></div>
+		<input type="file"    class="files"  onchange="javascript:Fimg(this,'Gi2','GH2','G','Gpicture')" accept="image/gif, image/jpeg,image/png" />
+		<input type="hidden" name="G-picture" id="GH2"/>
+		</div>
+		</div>
+		</li>
+		<li style="height:150px;">
+		<div class="form-group">
+		<label   class="control-label"  check="0"><span>*</span>集团介绍</label>
+		<textarea class="form-control" rows="4" style="width:400px;height:150px;resize:none;" placeholder="请输入集团介绍"  name="G-descriPtion" onblur="javascript:checkValue(this,2,'G','GdescriPtion');"></textarea>
+		</div>
+		</li>
+	</ul>
+</div>
+ <!--厂家注册注册信息-->
+<div class="baseinfo" id="Brand">
+	<ul class="inputs">
+		<li>
+		<div class="form-group">
+		<label   class="control-label"  check="0"><span>*</span>厂家名称</label>
+		<input type="text" class="form-control"placeholder="输入厂家名称" name="B-name" maxlength="25" id="B-name" onblur="javascript:checkValue(this,2,'B','Bname');">
+		</div>
+		</li>
+		<li>
+		<div class="form-group">
+		<label   class="control-label"  check="0"><span>*</span>总部区域</label>
+		<select class="form-control" style="width:192px;margin-right:16px;" id="city2" onchange="javascript:setArea(0,this,'area2');">
+		  <option>城市</option>
+		</select>
+		<select class="form-control" style="width:192px" name="B-areaId" id="area2" onchange="javascript:setSelect(this,'B','Barea')">
+		  <option value="">区县</option>
+		</select>
+		</div>
+		</li>
+		<li>
+		<div class="form-group">
+		<label   class="control-label"  check="0"><span>*</span>总部地址</label>
+		<input type="text" class="form-control" placeholder="输入总部地址" name="B-address" maxlength="30" onblur="javascript:checkValue(this,2,'B','Baddress');">
+		</div>
+		</li>
+		<li>
+		<div class="form-group">
+		<label   class="control-label"  check="0"><span>*</span>厂家品牌</label>
+		<select class="form-control" style="width:192px;margin-right:16px;" onchange="javascript:setBrand(this,'brand2');">
+		  <option value="">车系</option>
+		  <option value="1">美系</option>
+		  <option value="2">日系</option>
+		  <option value="3">德系</option>
+		  <option value="4">韩系</option>
+		  <option value="6">自主</option>
+		  <option value="7">欧系</option>
+		  <option value="0">其他</option>
+		</select>
+		<select class="form-control" style="width:192px" name="B-brandId" maxlength="25" id="brand2" onchange="javascript:setSelect(this,'B','Bbrand')">
+		  <option value="">品牌</option>
+		</select>
+		</div>
+		</li>
+		<li style="height:150px;">
+		<div class="form-group">
+		<label   class="control-label"  check="0"><span>*</span>厂家介绍</label>
+		<textarea class="form-control" rows="4"  placeholder="请输入厂家介绍"  style="width:400px;height:150px;resize:none" name="B-descriPtion" onblur="javascript:checkValue(this,2,'B','BdescriPtion');"></textarea>
+		</div>
+		</li>
+	</ul>
+</div>
+ <!--门店注册注册信息-->
+<div class="baseinfo" id="Merchant">
+	<ul class="inputs">
+		<li>
+		<div class="form-group">
+		<label   class="control-label"  check="0"><span>*</span>门店名称</label>
+		<input type="text" class="form-control" placeholder="输入门店名称" name="M-name" maxlength="25" id="M-name" onblur="javascript:checkValue(this,2,'M','Mname');">
+		</div>
+		</li>
+		<li>
+		<div class="form-group">
+		<label   class="control-label"  check="0"><span>*</span>商业资质</label>
+		<select class="form-control" style="width:400px;" name="qualification" onchange="javascript:setSelect(this,'M','Nature')">
+		  <option value="">资质</option>
+		  <option value="一类">维修行业一类资质</option>
+		  <option value="二类">维修行业二类资质</option>
+		  <option value="三类">维修行业三类资质</option>
+		</select>
+		</div>
+		</li>
+		<li>
+		<div class="form-group">
+		<label   class="control-label"  check="0"><span>*</span>选择区域</label>
+		<select class="form-control" style="width:192px;margin-right:16px;" id="city3" onchange="javascript:setArea(0,this,'area3');">
+		  <option>城市</option>
+		</select>
+		<select class="form-control" style="width:192px" name="M-areaId" id="area3" onchange="javascript:setSelect(this,'M','Marea')">
+		  <option value="">区县</option>
+		</select>
+		</div>
+		</li>
+		<li>
+		<div class="form-group">
+		<label   class="control-label"  check="0"><span>*</span>门店地址</label>
+		<input type="text" class="form-control"placeholder="输入门店地址" name="M-address" maxlength="30" onblur="javascript:checkValue(this,2,'M','Maddress');">
+		</div>
+		</li>
+		<!--其他附属品牌-->
+		<li>
+		<div class="form-group">
+		<label   class="control-label"  check="0"><span>*</span>主营品牌</label>
+		<select class="form-control" style="width:192px;margin-right:16px;" onchange="javascript:setBrand(this,'brand1');">
+		  <option value="">车系</option>
+		  <option value="1">美系</option>
+		  <option value="2">日系</option>
+		  <option value="3">德系</option>
+		  <option value="4">韩系</option>
+		  <option value="6">自主</option>
+		  <option value="7">欧系</option>
+		  <option value="0">其他</option>
+		</select>
+		<select class="form-control" style="width:192px" name="M-brandId1" id="brand1" onchange="javascript:setSelect(this,'M','Mbrand')">
+		  <option value="">品牌</option>
+		</select>
+		</div>
+		</li>
+		<li>
+		<div class="form-group">
+		<label   class="control-label"  check="0">主营品牌</label>
+		<select class="form-control" style="width:192px;margin-right:16px;" onchange="javascript:setBrand(this,'brandx2');">
+		  <option value="">车系</option>
+		  <option value="1">美系</option>
+		  <option value="2">日系</option>
+		  <option value="3">德系</option>
+		  <option value="4">韩系</option>
+		  <option value="6">自主</option>
+		  <option value="7">欧系</option>
+		  <option value="0">其他</option>
+		</select>
+		<select class="form-control" style="width:192px" name="M-brandId2" id="brandx2">
+		  <option value="">品牌</option>
+		</select>
+		</div>
+		</li>
+				<li>
+		<div class="form-group">
+		<label   class="control-label"  check="0">主营品牌</label>
+		<select class="form-control" style="width:192px;margin-right:16px;" onchange="javascript:setBrand(this,'brandx3');">
+		  <option value="">车系</option>
+		  <option value="1">美系</option>
+		  <option value="2">日系</option>
+		  <option value="3">德系</option>
+		  <option value="4">韩系</option>
+		  <option value="6">自主</option>
+		  <option value="7">欧系</option>
+		  <option value="0">其他</option>
+		</select>
+		<select class="form-control" style="width:192px" name="M-brandId3" id="brandx3" >
+		  <option value="">品牌</option>
+		</select>
+		</div>
+		</li>
+		<li>
+		<div class="form-group">
+		<label   class="control-label"  check="0"><span>*</span>联系电话</label>
+		<input type="text" class="form-control"	placeholder="请输入联系电话" name="M-telePhone" maxlength="13" onblur="javascript:checkValue(this,2,'M','MtelePhone');">
+		</div>
+		</li>
+		<li>
+		<div class="form-group">
+		<label   class="control-label"  check="0"><span>*</span>微信账号</label>
+		<input type="text" class="form-control"	placeholder="请输入微信账号" name="M-wechat" maxlength="25" onblur="javascript:checkValue(this,2,'M','Mwechat');">
+		</div>
+		</li>
+		<li>
+		<div class="form-group">
+		<label   class="control-label"  check="0"><span>*</span>员工数量</label>
+		<input type="text" class="form-control"	placeholder="请输入员工数量" name="M-employeeNumber" maxlength="4" onblur="javascript:checkValue(this,1,'M','Memployee');">
+		</div>
+		</li>
+		<li>
+		<div class="form-group">
+		<label   class="control-label"  check="0"><span>*</span>工位数量</label>
+		<input type="text" class="form-control"	placeholder="请输入工位数量" name="M-stationNum" maxlength="4" onblur="javascript:checkValue(this,1,'M','Mstation');">
+		</div>
+		</li>
+		<li>
+		<div class="form-group">
+		<label   class="control-label"  check="0"><span>*</span>门店面积</label>
+		<input type="text" class="form-control"  placeholder="请输入门店面积" name="M-acreage" maxlength="4" onblur="javascript:checkValue(this,1,'M','Macreage');">
+		</div>
+		</li>
+		<li>
+		<div class="form-group">
+		<label   class="control-label"  check="0">开业时间</label>
+		<input type="text" class="form-control Wdate"  placeholder="请输入开业时间"  name="M-openingTime" maxlength="4" 	onfocus="WdatePicker({dateFmt:'yyyy-MM'});">
+		</div>
+		</li>
+		<li>
+		<div class="form-group">
+		<label   class="control-label"  check="0"><span>*</span>营业时间</label>
+		<div class="dropup" style="margin-right:15px;" id="startDiv">
+		<input type="hidden" name="startTime" value="" id="startHidden"/>
+		  <button class="btn btn-default dropdown-toggle" type="button" id="startTime" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			上午
+			<span class="caret"></span>
+		  </button>
+		  <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+		    <li>00:00</li>
+			<li>06:00</li>
+			<li>07:00</li>
+			<li>08:00</li>
+			<li>09:00</li>
+			<li>10:00</li>
+			<li>11:00</li>
+			<li>12:00</li>
+		  </ul>
+		</div>
+		<div class="dropup" id="endDiv">
+		  <input type="hidden" name="endTime" value="" id="endHidden"/>
+		  <button class="btn btn-default dropdown-toggle" type="button" id="endTime" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			下午
+			<span class="caret"></span>
+		  </button>
+		  <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+		    <li>17:00</li>
+			<li>18:00</li>
+			<li>19:00</li>
+			<li>20:00</li>
+			<li>21:00</li>
+			<li>22:00</li>
+			<li>23:00</li>
+			<li>24:00</li>
+		  </ul>
+		</div>
+		</div>
+		</li>
+		<li style="height:100px; margin-right:76px;">
+		<div class="form-group">
+		<label   class="control-label"  check="0"><span>*</span>上传logo</label>
+		<div class="imgFile" id="providerManagediv">
+		<div id="M1"><img id="Mi1" width="100" height="100" /></div>
+		<input type="file"   class="files" onchange="javascript:Fimg(this,'Mi1','MH1','M','Mlogo')"  accept="image/gif, image/jpeg,image/png" />
+		<input type="hidden" name="M-logo" id="MH1"/>
+		</div>
+		</div>
+		</li>
+		<li style="height:100px; ">
+		<div class="form-group">
+		<label   class="control-label"  check="0"><span>*</span>上传实景</label>
+		<div class="imgFile" id="providerManagediv">
+		<div id="M2"><img id="Mi2" width="100" height="100" /></div>
+		<input type="file"    class="files" onchange="javascript:Fimg(this,'Mi2','MH2','M','Mpicture')" accept="image/gif, image/jpeg,image/png" />
+		<input type="hidden" name="M-picture" id="MH2"/>
+		</div>
+		</div>
+		</li>
+		<li style="height:100px; margin-right:76px;">
+		<div class="form-group">
+		<label   class="control-label"  check="0"><span>*</span>营业执照</label>
+		<div class="imgFile" id="providerManagediv">
+		<div id="M3"><img id="Mi3" width="100" height="100" /></div>
+		<input type="file"   class="files" onchange="javascript:Fimg(this,'Mi3','MH3','M','Mrevenue')" accept="image/gif, image/jpeg,image/png" />
+		<input type="hidden" name="M-revenue" id="MH3"/>
+		</div>
+		</div>
+		</li>
+		<li style="height:100px; ">
+		<div class="form-group">
+		<label   class="control-label"  check="0"><span>*</span>资质证书</label>
+		<div class="imgFile" id="providerManagediv">
+		<div id="M4"><img id="Mi4" width="100" height="100" /></div>
+		<input type="file"     class="files"  onchange="javascript:Fimg(this,'Mi4','MH4','M','Mlicense')" accept="image/gif, image/jpeg,image/png" />
+		<input type="hidden" name="M-license" id="MH4"/>
+		</div>
+		</div>
+		</li>
+		<li style="height:120px;">
+		<div class="form-group">
+		<label   class="control-label"  check="0"><span>*</span>服务项目</label>
+	    <div class="radio-css">
+		<span><input type="checkbox" name="serviceDescription[]" value="洗车"/>洗车</span>
+		<span><input type="checkbox" name="serviceDescription[]" value="美容"/>美容</span>
+		<span><input type="checkbox" name="serviceDescription[]" value="装饰"/>装饰</span>
+		<span><input type="checkbox" name="serviceDescription[]" value="保养" />保养</span>
+		<span><input type="checkbox" name="serviceDescription[]" value="快修" />快修</span>
+		<span><input type="checkbox" name="serviceDescription[]" value="喷漆"/>喷漆</span>
+		<span><input type="checkbox" name="serviceDescription[]" value="钣金"/>钣金</span>
+		<span><input type="checkbox" name="serviceDescription[]" value="轮胎"/>轮胎</span>
+		<span><input type="checkbox" name="serviceDescription[]" value="车险"/>车险</span>
+		<span><input type="checkbox" name="serviceDescription[]" value="茶饮" />茶饮</span>
+		<span><input type="checkbox" name="serviceDescription[]" value="WIFI"/>WIFI</span>
+		<span><input type="checkbox" name="serviceDescription[]" value="简餐" />简餐</span>
+		<span><input type="checkbox" name="serviceDescription[]" value="休息区"/>休息区</span>
+		<span><input type="checkbox" name="serviceDescription[]" value="接送车"/>接送车</span>
+		<span><input type="checkbox" name="serviceDescription[]" value="代验车"/>代验车</span>
+		<span><input type="checkbox" name="serviceDescription[]" value="道路救援"/>道路救援</span>
+		<span><input type="checkbox" name="serviceDescription[]" value="车品销售"/>车品销售</span>
+		<span><input type="checkbox" name="serviceDescription[]" value="尾气检测"/>尾气检测</span>
+		<span><input type="checkbox" name="serviceDescription[]" value="四轮定位"/>四轮定位</span>
+		<span><input type="checkbox" name="serviceDescription[]" value="制动检测"/>制动检测</span>
+		<span><input type="checkbox" name="serviceDescription[]" value="总成大修"/>总成大修</span>
+	   </div>
+		</div>
+		</li>
+		<li style="height:150px;">
+		<div class="form-group">
+		<label   class="control-label"  check="0"><span>*</span>门店介绍</label>
+		<textarea class="form-control"  placeholder="请输入门店介绍"  rows="4" style="width:400px;height:150px;resize:none" onblur="javascript:checkValue(this,2,'M','MdescriPtion');" name="M-descriPtion"></textarea>
+		<div class="clear"></div>
+		</div>
+		</li>
+	 <div class="clear"></div>
+	</ul>
+</div>
+<!--基础信息不变的部分-->
+<div>
+	<ul class="inputs">
+		<li>
+		<div class="form-group">
+		<label   class="control-label"  check="0"><span></span></label>
+		<div class="XieYi"><input type="checkbox" name="hasSigning" value="1">&nbsp;&nbsp;我同意<a href="index.php/merchant/Register/Agreement"  target="_blank">《云数聚服务条款》</a></div>
+		</div>
+		</li>
+		<div class="clear"></div>
+		</ul >
+	  </div>
+ <!--提交注册部分-->
+<div class="button"><a id="submit" href="javascript:void(0);">注册</a></div>
+</form>
+</div>
+<div id="footx"><p>Copyright &copy;  2013-2017 www.cadayun.cn All Rights Reserved</p><p>北京与车行信息技术有限公司</p></div>
+</body>
+</html>

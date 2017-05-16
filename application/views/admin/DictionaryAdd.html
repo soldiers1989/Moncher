@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="renderer" content="webkit">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<base href="<?php echo base_url();?>" />
+<title>CADA云数聚-区域添加</title>
+<!--引入jauery文件-->
+<script src="static/global/js/jquery.1.11.3.min.js"></script>
+<!--引用框架样式文件-->
+<link href="static/global/plugins/Bootstrap/css/bootstrap.css" rel="stylesheet">
+<!--引入框架脚本文件-->
+<script src="static/global/plugins/Bootstrap/js/bootstrap.min.js"></script>
+<!--引入全局CSS文件-->
+<link href="static/admin/css/cada-admin-min.css" rel="stylesheet">
+<!--引入弹框脚本文件-->
+<script src="static/global/plugins/Layer/layer.js"></script>
+<!--引用字体样式文件-->
+<link href="static/global/plugins/FontAwesome/css/font-awesome.css" rel="stylesheet">
+</head>
+<!--内部脚本-->
+<script>
+/*获取二级菜单选项*/
+var U = $('base').attr('href');
+var error="";
+/**异步请求数据方法*/
+function Fa(url, data) {
+	var message;
+	$.ajax({type: "POST",url: U + 'index.php/' + url,async: false,
+		data: data,success: function(msg) {message = msg;}});
+	return message;
+}
+/**判断必填项是否完成*/
+function status(){
+	if($.trim($("#d-type").val()).length <= 0){
+	  	layer.msg('请选择字典类型', {icon:2,time: 2000});
+	   return false;
+	}
+	if($.trim($("#d-name").val()).length <= 0){
+		  	layer.msg('请填写字典的名称', {icon:2,time: 2000});
+	       return false;
+	}
+    if($.trim($("#d-value").val()).length <= 0){
+		  	layer.msg('请填写字典键值', {icon:2,time: 2000});
+	       return false;
+	}
+	return true;
+}
+/**程序执行*/
+$(function(){
+	$('.layer_button').click(function(){
+	   status()  && $('.layer_form').submit();
+	});
+});
+</script>
+<body>
+<div id="cada-admin-menu" class="cada-admin-layer">
+<form class="layer_form" method="post" action="index.php/admin/Dictionary/added">
+<ul>
+<li>
+    <label for="menu-name" >字典键名&nbsp;&nbsp;</label>
+    <input type="text" class="form-control titleAll" id="d-name" placeholder="字典键名"  name="name" maxlength="16">
+    <div class="clear"></div>
+</li>
+	<li>
+		<label for="menu-url">字典类型&nbsp;&nbsp;</label>
+		 <select class="form-control length-min" id="d-type" name="type">
+		  <option value="1">管理平台</option>
+		  <option value="2">商户平台</option>
+		</select>
+		<div class="clear"></div>
+</li>
+<li>
+    <label for="menu-url" >字典键值&nbsp;&nbsp;</label>
+    <input type="text" class="form-control length-min" id="d-value" placeholder="字典键值"  name="value" maxlength="16">
+    <div class="clear"></div>
+</li>
+<li>
+    <label for="menu-url" >字典描述&nbsp;&nbsp;</label>
+	<textarea class="form-control textareaAll" rows="4" name="notes"></textarea>
+    <div class="clear"></div>
+</li>
+<div class="clear"></div>
+</ul>
+<div class="playDiv"><button type="reset" class="btn btn-default" >输入重置</button><button type="button" class="btn btn-info layer_button" >保存信息</button></div>
+</form>
+</div>
+</body>
+</html>

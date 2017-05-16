@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="renderer" content="webkit">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<base href="<?php echo base_url();?>" />
+<title>CADA云数聚</title>
+<!--引入jauery文件-->
+<script src="static/global/js/jquery.1.11.3.min.js"></script>
+<!--引用框架样式文件-->
+<link href="static/global/plugins/Bootstrap/css/bootstrap.css" rel="stylesheet">
+<!--引入框架脚本文件-->
+<script src="static/global/plugins/Bootstrap/js/bootstrap.min.js"></script>
+<!--引入弹框脚本文件-->
+<script src="static/global/plugins/Layer/layer.js"></script>
+<!--引入全局CSS文件-->
+<link href="static/admin/css/cada-admin-min.css" rel="stylesheet">
+<!--引用字体样式文件-->
+<link href="static/global/plugins/FontAwesome/css/font-awesome.css" rel="stylesheet">
+<!--引入日期脚本文件-->
+<script src="<?php echo base_url();?>static/global/js/My97DatePicker/WdatePicker.js"></script>
+<!--引入全局脚本文件-->
+<script src="static/admin/js/cada-admin.js"></script>
+</head>
+<!--内部脚本-->
+<script>
+/*获取二级菜单选项*/
+var U = $('base').attr('href');
+/**判断必填项是否完成*/
+/**判断必填项是否完成*/
+function status(){
+	if($.trim($("#o-title").val()).length <= 0){
+	   	layer.msg('请填写标题', {icon:2,time: 2000});
+	   return false;
+	}
+	if($.trim($("#contents").val()).length <= 0){
+	   	layer.msg('请填写消息内容', {icon:2,time: 2000});
+	   return false;
+	}
+	if($.trim($("#public-date").val()).length <= 0){
+	   	layer.msg('请设置发布时间', {icon:2,time: 2000});
+	   return false;
+	}
+	return true;
+}
+/**程序执行*/
+$(function(){
+	$('.layer_button').click(function(){
+	   status()  && $('.layer_form').submit();
+	});
+});
+</script>
+<body>
+<div id="cada-admin-menu" class="cada-admin-layer">
+<form class="layer_form" method="post" action="index.php/admin/messages/updated" enctype="multipart/form-data">
+<input type="hidden" name="id" value="<?php echo $one['id']?>"/>
+<ul>
+<li>
+<label for="menu-name" >消息标题&nbsp;&nbsp;</label>
+<input type="text" class="form-control titleAll" id="o-title" placeholder="消息标题"  name="title" value="<?php echo $one['title'];?>" maxlength="50">
+<div class="clear"></div>
+</li>
+<li>
+<label for="menu-url">消息类型&nbsp;&nbsp;</label>
+ <select class="form-control length-min"  id="o-role" name="type">
+  <option value="1" <?php echo $one['type']==1?'selected':'';?>>系统消息</option>
+  <option value="2" <?php echo $one['type']==2?'selected':'';?>>公告</option>
+  <option value="3" <?php echo $one['type']==3?'selected':'';?>>平台消息</option>
+</select>
+<div class="clear"></div>
+</li>
+<li>
+<label for="menu-name" >发布时间&nbsp;&nbsp;</label>
+<input type="text" class="form-control length-min Wdate"  placeholder="发布时间"  name="publicDate" onfocus="WdatePicker({skin:'whyGreen',maxDate:'%y-%M-%d'});" value="<?php echo $one['publicDate'];?>" id="public-date">
+<div class="clear"></div>
+</li>
+<li>
+<label for="menu-url">设置品牌&nbsp;&nbsp;</label>
+ <select class="form-control length-min" id="o-sector" name="brandId">
+ <option value="0">全部品牌</option>
+ <?php  foreach($brand as $b){?>
+  <option value="<?php echo $b['id'];?>" <?php echo $one['brandId']==$b['id']?'selected':'';?>><?php echo $b['name'];?></option>
+ <?php  }?>
+</select>
+<div class="clear"></div>
+</li>
+<li>
+<label for="menu-url">设置区域&nbsp;&nbsp;</label>
+ <select class="form-control length-min" name="areaId" id="o-area">
+  <option value="0">全部区域</option>
+  <?php  foreach($area as $a){?>
+  <option value="<?php echo $a['id'];?>" <?php echo $one['areaId']==$a['id']?'selected':'';?>><?php echo $a['name'];?></option>
+ <?php  }?>
+</select>
+<div class="clear"></div>
+</li>
+<li>
+<label for="menu-url">选择集团&nbsp;&nbsp;</label>
+ <select class="form-control titleAll" name="groId" id="o-gro">
+  <option value="0">全部集团</option>
+  <?php  foreach($group as $g){?>
+  <option value="<?php echo $g['id'];?>" <?php echo $one['groupId']==$g['id']?'selected':'';?>><?php echo $g['name'];?></option>
+ <?php  }?>
+</select>
+<div class="clear"></div>
+</li>
+<li>
+<label for="menu-url">选择门店&nbsp;&nbsp;</label>
+ <select class="form-control titleAll" name="merId" id="o-mer">
+  <option value="0">全部门店</option>
+</select>
+<div class="clear"></div>
+</li>
+<li>
+<label for="menu-name" >推送时间&nbsp;&nbsp;</label>
+<input type="text" class="form-control length-min Wdate"  placeholder="推送时间"  name="pushTime" onfocus="WdatePicker({skin:'whyGreen',maxDate:'%y-%M-%d'});" value="<?php echo $one['pushTime'];?>">
+<div class="clear"></div>
+</li>
+<li>
+<label for="menu-name" >添加图片&nbsp;&nbsp;</label>
+<div class="imgFile" id="providerManagediv">
+<input type="file"    class="files"  onchange="javascript:Fimg(this,'Gi1','GH1')"/>
+<input type="hidden" name="image" id="GH1" value="<?php echo  $one['image'];?>"/>
+</div>
+<div class="clear"></div>
+</li>
+<li>
+    <label for="menu-url" >消息内容&nbsp;&nbsp;</label>
+	<textarea class="form-control textareaAll" rows="7" name="content" id="contents"><?php echo $one['content'];?></textarea>
+    <div class="clear"></div>
+</li>
+<div class="clear"></div>
+</ul>
+<div class="playDiv"><button type="reset" class="btn btn-default" >输入重置</button><button type="button" class="btn btn-info layer_button" >保存信息</button></div>
+</form>
+</div>
+</body>
+</html>

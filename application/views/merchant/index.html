@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="renderer" content="webkit">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<base href="<?php echo base_url();?>" />
+<title>CADA云数聚-后台管理系统</title>
+<!--引用字体样式文件-->
+<link href="static/global/plugins/FontAwesome/css/font-awesome.css" rel="stylesheet">
+<!--引入页面样式文件-->
+<link rel="stylesheet" href="static/admin/css/cada-admin-index.css">
+<!--引入jauery文件-->
+<script src="static/global/js/jquery.1.11.3.min.js"></script>
+<!--引用框架样式文件-->
+<link href="static/global/plugins/Bootstrap/css/bootstrap.css" rel="stylesheet">
+<!--引入框架脚本文件-->
+<script src="static/global/plugins/Bootstrap/js/bootstrap.min.js"></script>
+<!--引入弹框脚本文件-->
+<script src="static/global/plugins/Layer/layer.js"></script>
+<script>
+var jsonhead=<?php echo $jsonhead;?>;
+</script>
+<!--引入页面脚本文件-->
+<script src="static/merchant/js/cada-merchant-index.js"></script>
+</head>
+<body>
+<div id="cada-admin-index">
+<!--小导航栏-->
+<div id="menu-left" showId="0"></div>
+<!--顶部DIV-->
+<div id="index-head">
+	<div id="head-main">
+		<!--基础信息-->
+		<div class="head-main-t">
+			<ul style="margin:0;">
+				<li><i class="fa fa-bell"></i></li>
+				<li><i class="fa fa-question-circle"></i></li>
+				<li id="user-name"></li>
+				<li id="user-logo">
+				<?php if(!empty($head[0]['headPicture'])){?>
+				<img src="upload/merchant/<?php echo $head[0]['headPicture'];?>">
+				<?php }else{?>
+				<img src="static/global/images/logo.jpg">
+				<?php }?>
+				
+				</li>
+				<li><i class="fa fa-power-off"></i></li>
+				<div style="clear:both;"></div>
+			</ul>
+		</div>
+		<div style="clear:both;"></div>
+		<div	class="head-main-b">
+			<div class="dropdown">
+			  <button class="btn btn-default dropdown-toggle"  type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">默认&nbsp;<span class="caret"></span>
+			  </button>
+			  <ul class="dropdown-menu"  aria-labelledby="dropdownMenu1" id="model-list">
+			  	<?php foreach($model as $m){?>
+				<li><a href="javascript:void(0);"   modelId="<?php echo $m['id'];?>"><?php echo $m['title'];?></a></li>
+				<?php }?>
+			  </ul>
+			</div>
+			<div class="scroll-box ">
+			 <ul>
+			 <?php foreach($mess as $m){?>
+			  <li onclick="javascript:saveShow('message','<?php echo $m['id']?>');"><?php echo $m['title'];?></li>
+			  <?php }?>
+			 </ul>
+			</div>
+			<i class="fa fa-volume-up"></i>
+			<div style="clear:both;"></div>
+		</div>
+	</div>
+</div>
+	<!--内容div-->
+	<div id="index-main">
+	<div id="index-main-l">
+		<!--左侧菜单栏-->
+		<dl id="main-menu">
+			<dt><i class="fa fa-home"></i><span><a style="color:#fff;" href="javascript:void(0);" id="mainpage">主页</a></span></dt>
+		</dl>
+		<!--菜单弹性计算-->
+		<div id="menu-null"></div>
+	</div>
+	<!--内容主框架-->
+	<div id="index-main-r"><iframe src="index.php/merchant/index/main"  frameborder="0"  scrolling="auto"/></div>
+	<div style="clear:both;"></div>
+	</div>
+</div>
+</body>
+</html>

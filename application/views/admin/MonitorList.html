@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<base href="<?php echo base_url();?>" />
+<!--引入jauery文件-->
+<script src="static/global/js/jquery.1.11.3.min.js"></script>
+<!--引用框架样式文件-->
+<link href="static/global/plugins/Bootstrap/css/bootstrap.css" rel="stylesheet">
+<!--引入框架脚本文件-->
+<script src="static/global/plugins/Bootstrap/js/bootstrap.min.js"></script>
+<!--引入弹框脚本文件-->
+<script src="static/global/plugins/Layer/layer.js"></script>
+<!--引入全局CSS文件-->
+<link href="static/admin/css/cada-admin-min.css" rel="stylesheet">
+<!--引入全局脚本文件-->
+<script src="static/merchant/js/cada-merchant-min.js"></script>
+<!--引入搜索脚本文件-->
+<script src="static/admin/js/cada-admin-search.js"></script>
+<!--引入日期脚本文件-->
+<script src="<?php echo base_url();?>static/global/js/My97DatePicker/WdatePicker.js"></script>
+</head>
+<style>
+.namei{
+background:#FFF;
+border-radius:4px;
+height:30px;
+}
+.namei p{
+width:50%;
+display:block;
+margin:0 auto;
+line-height:30px;
+font-size:20px;
+text-align:center;
+}
+.namei p span{
+font-size:12px;
+color:#BBB;
+margin-left:12px;
+}
+.dataListi{
+	border-left:1px solid #ddd;
+	border-right:1px solid #ddd;
+	border-bottom:1px solid #ddd;
+	overflow:scroll;
+	width:100%;
+	min-width:1150px;
+}
+.dataDesci{
+	margin-top:5px;
+	border:1px solid #ddd;
+	overflow:hidden;
+	width:100%;
+	min-width:1150px;
+}
+.dataDesci .deul{
+	background:#eee;
+}
+.dataDesci .deul .isLi{
+	float:left;
+	margin:0;
+	text-align:center;
+	height:60px;
+	line-height:60px;
+	border-collapse:collapse;
+}
+.deul{
+width:2180px;
+}
+.tops{
+height:30px;
+line-height:30px;
+border-bottom:1px solid #ddd;
+}
+.dataDesci  ul, .dataListi  ul{
+	list-style:none;
+	display:block;
+	margin:0;
+	padding:0;
+	height:60px;
+}
+.dataDesci  ul li, .dataListi  ul li{
+	float:left;
+	margin:0;
+	text-align:center;
+	height:30px;
+	line-height:30px;
+	border-collapse:collapse;
+}
+.dataDesci  ul li {
+	border-right:1px solid #ddd;
+	background:#eee;
+}
+.dataListi  ul li {
+	border-right:1px solid #ddd;
+	border-bottom:1px solid #f1f1f1;
+}
+</style>
+<body>
+<div id="cada-admin-menu" class="cada-admin-main">
+<div class="namei">
+<p>数据采集评测情况<span>样本数小于30，评测得分小于60分预警</span></p>
+</div>
+<form class="form-inline" action="admin/Monitor/index" method="post">
+   <div class="form-group">
+    <label for="menu-name">调研模型</label>
+	 <select class="form-control" 	 id="soso-model"  	name="modelid" 	style="width:120px;">
+	 <option value="0">全部</option>
+	  <?php foreach($model as $a){?>
+	  <option value="<?php echo $a['id']?>" <?php echo $modelid==$a['id']?'selected':'';?>><?php echo $a['title'];?></option>
+	  <?php }?>
+	</select>
+  </div>
+   <div class="form-group">
+    <label for="menu-name">选择集团</label>
+	 <select class="form-control"  id="soso-group" 	name="groupid" style="width:120px;">
+	 <option value="0">全部</option>
+	  <?php foreach($group as $a){?>
+	  <option value="<?php echo $a['groupId']?>" <?php echo $groupid==$a['groupId']?'selected':'';?>><?php echo $a['name'];?></option>
+	  <?php }?>
+	</select>
+  </div>
+   <div class="form-group">
+    <label for="menu-name">选择门店</label>
+	 <select class="form-control" id="soso-provider" name="providerid" style="width:120px;">
+	 <option value="0">全部</option>
+	  <?php foreach($merchant as $a){?>
+	  <option value="<?php echo $a['merchantId']?>" <?php echo $providerid==$a['merchantId']?'selected':'';?>><?php echo $a['name'];?></option>
+	  <?php }?>
+	</select>
+  </div>
+  <div class="form-group">
+    <label for="menu-name">选择品牌</label>
+	 <select class="form-control" id="soso-brand" name="brandid" style="width:120px;">
+	  <option value="0">全部</option>
+	  <?php foreach($brand as $a){?>
+	  <option value="<?php echo $a['brandId']?>" <?php echo $brandid==$a['brandId']?'selected':'';?>><?php echo $a['name'];?></option>
+	  <?php }?>
+	</select>
+  </div>
+   <div class="form-group">
+    <label for="menu-name">选择区域</label>
+	 <select class="form-control" id="soso-area" name="areaid" style="width:120px;">
+	 <option value="0">全部</option>
+	 <?php foreach($area as $a){?>
+	  <option value="<?php echo $a['areaId']?>" <?php echo $areaid==$a['areaId']?'selected':'';?>><?php echo $a['name'];?></option>
+	  <?php }?>
+	</select>
+  </div>
+    <div class="form-group">
+    <label for="menu-url">选择时间</label>
+    <input type="text" class="form-control Wdate" name="startDate" placeholder="开始时间" style="width:120px;" onfocus="WdatePicker({isShowWeek:true});" 	value="<?php echo $startDate;?>">
+    <input type="text" class="form-control Wdate" name="endDate"   placeholder="结束时间"  style="width:120px;" onfocus="WdatePicker({isShowWeek:true});"	value="<?php echo $endDate;?>">
+  </div>
+  &nbsp;&nbsp;&nbsp;&nbsp;<button type="submit" class="btn btn-danger" >查找</button>
+</form>
+<div class="dataDesci">
+<ul class="deul">
+  <li class="isLi" style="width:80px;">序号</li>
+  <li class="isLi" style="width:300px;text-align:left;text-indent:12px;">集团名称</li>
+  <li class="isLi" style="width:300px;text-align:left;text-indent:12px;">门店名称</li>
+  <li class="isLi" style="width:150px;text-align:center;text-indent:12px;">总参与样本数</li>
+  <li class="isLi" style="width:150px;text-align:center;text-indent:12px;">总体评测得分</li>
+  <li class="isLi" style="width:500px;">
+ <div class="tops">用户参与样本数</div>
+  	<ul>
+		<li style="width:100px;">服务顾问</li>
+		<li style="width:100px;">服务设施</li>
+		<li style="width:100px;">维修质量</li>
+		<li style="width:100px;">维修时间</li>
+		<li style="width:99px;border:none;">维修价格</li>
+	</ul>
+  </li>
+  <li class="isLi" style="width:500px;">
+  <div class="tops">评测得分</div>
+  	<ul>
+		<li style="width:100px;">服务顾问</li>
+		<li style="width:100px;">服务设施</li>
+		<li style="width:100px;">维修质量</li>
+		<li style="width:100px;">维修时间</li>
+		<li style="width:99px;border:none;">维修价格</li>
+	</ul>
+  </li>
+  <li class="isLi" style="width:100px;">总评测得分</li>
+  <li class="isLi" style="width:83px;">操作</li>
+</ul>
+</div>
+<div class="dataListi">
+<?php foreach($list AS $index=>$item){?>
+<ul class="deul" style="width:2163px;height:30px;">
+  <li class="isLi" style="width:80px;"><?php echo  $index+1;?></li>
+  <li class="isLi" style="width:300px;text-align:left;text-indent:12px;"><?php echo $item['groupName'];?></li>
+  <li class="isLi" style="width:300px;text-align:left;text-indent:12px;"><?php echo $item['name'];?></li>
+  <li class="isLi" style="width:150px;text-align:center;text-indent:12px;"><?php echo $item['F2'];?></li>
+  <li class="isLi" style="width:150px;text-align:center;text-indent:12px;"><?php echo $item['F1'];?></li>
+  <li class="isLi" style="width:500px;">
+    <ul>
+		<li style="width:100px;<?php echo $item['F3']<30?'color:red':'';?>"><?php echo $item['F3'];?></li>
+		<li style="width:100px;<?php echo $item['F4']<30?'color:red':'';?>"><?php echo $item['F4'];?></li>
+		<li style="width:100px;<?php echo $item['F5']<30?'color:red':'';?>"><?php echo $item['F5'];?></li>
+		<li style="width:100px;<?php echo $item['F6']<30?'color:red':'';?>"><?php echo $item['F6'];?></li>
+		<li style="width:99px;border:none;<?php echo $item['F7']<30?'color:red':'';?>"><?php echo $item['F7'];?></li>
+	</ul>
+  </li>
+  <li class="isLi" style="width:500px;">
+     <ul>
+		<li style="width:100px;<?php echo $item['F8']<60?'color:red':'';?>"><?php echo $item['F8'];?></li>
+		<li style="width:100px;<?php echo $item['F9']<60?'color:red':'';?>"><?php echo $item['F9'];?></li>
+		<li style="width:100px;<?php echo $item['F10']<60?'color:red':'';?>"><?php echo $item['F10'];?></li>
+		<li style="width:100px;<?php echo $item['F11']<60?'color:red':'';?>"><?php echo $item['F11'];?></li>
+		<li style="width:99px;border:none;<?php echo $item['F12']<60?'color:red':'';?>"><?php echo $item['F12'];?></li>
+	</ul>
+  </li>
+  <li class="isLi" style="width:100px;<?php echo $item['F1']<60?'color:red':'';?>"><?php echo $item['F1'];?></li>
+  <li class="isLi" style="width:83px;">查看详情</li>
+</ul>
+<?php }?>
+</div>
+<div class="relist" ><span>总记录数量<?php echo count($list);?>条,  &nbsp;每页显示100条</span></div>
+<div class="pagev"><?php echo $page;?></div>
+</div>
+</body>
+<script>
+var U = $('base').attr('href');
+/**异步请求数据方法*/
+function Fa(url, data) {
+	var message;
+	$.ajax({type: "POST",url: U + url,async: false,
+			   data: data,success: function(msg) {message = msg;}
+	});
+	return message;
+}
+$(function(){
+	$('.dataListi').css({"height":($(window).height()-($('.form-inline').height()+166))+"px"});
+	$('.dataListi').scroll(function() {$('.dataDesci').scrollLeft($(this).scrollLeft());});
+	$('.dataDesci').scroll(function() {$('.dataListi').scrollLeft($(this).scrollLeft());}); 
+	$(".dataListi ul").mouseover(function(){$(this).find('li').css({"background-color":"#F1F1F1"});}).mouseout(function(){$(this).find('li').css({"background-color":""});});
+	$("#soso-model").change(function(){
+		var json = eval('(' + Fa('admin/Monitor/getGroupList', 'modelid='+$(this).val()) + ')'); 
+		$("#soso-group").find('option').remove();
+		$("#soso-group").append('<option value="0">全部</option>');
+		$.each(json,function(index,item){$("#soso-group").append('<option value="'+item.groupId+'">'+item.name+'</option>');});
+	});
+	$("#soso-group").change(function(){
+		var json = eval('(' + Fa('admin/Monitor/findMBAList', 'groupid='+$(this).val()) + ')'); 
+		$("#soso-provider,#soso-area,#soso-brand").find('option').remove();
+		$("#soso-provider,#soso-area,#soso-brand").append('<option value="0">全部</option>');
+		$.each(json.merchant,function(index,item){$("#soso-provider").append('<option value="'+item.merchantId+'">'+item.name+'</option>');});
+		$.each(json.brand,function(index,item){$("#soso-brand").append('<option value="'+item.brandId+'">'+item.name+'</option>');});
+		$.each(json.area,function(index,item){$("#soso-area").append('<option value="'+item.areaId+'">'+item.name+'</option>');});
+	});
+});
+</script>
+</html>

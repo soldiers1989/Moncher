@@ -1,0 +1,281 @@
+@CHARSET "UTF-8";
+html {overflow-x: hidden;  }
+::-ms-clear, ::-ms-reveal{display: none;}
+/*图片路径选择相对路径即可*/
+body{margin:0;padding:0;font-family:"微软雅黑";min-width:1200px;}
+div,ul,li,a,p,h2,h3,h4,label{display:block;margin:0;padding:0;}
+ul{list-style:none;}
+img{display:block;border-style:none;}
+.claer{
+	clear:both;
+}
+#head-main{
+	width:100%;
+	border-bottom:1px solid #CCC;
+}
+#head{
+	width:1200px;
+	min-width:1200px;
+	margin:0 auto;
+	height:100px;
+	background: url(../../admin/images/admin-index-logo.png) no-repeat  left center;
+}
+#head span{
+	font-size:24px;
+	line-height:124px;
+	color:#323232;
+	margin-left:380px;
+}
+#main{
+	width:1200px;
+	min-width:1200px;
+	margin:0 auto;
+}
+.title{
+	height:50px;
+	line-height:50px;
+	color:#666;
+	font-size:13px;
+}
+.userinfo{
+	width:100%;
+	border-bottom:1px dotted #CCC;
+	
+}
+.baseinfo{
+	display:none;
+}
+.userinfo .selects{
+	width:560px;
+	height:40px;
+	margin:0 auto;
+}
+ .inputs{
+	width:560px;
+	padding:0px 20px;
+	margin:10px auto;
+}
+.inputs li{
+	height:40px;
+	width:100%;
+	margin-bottom:10px;
+}
+.inputs  .form-group{
+	height:40px;
+	margin-bottom:0;
+}
+.inputs  .form-group .control-label{
+	float:left;
+	width:80px;
+	margin-bottom:0;
+	margin-right:20px;
+	line-height:40px;
+	text-align:right;
+	font-size:13px;
+	color:#666;
+	height:40px;
+	font-weight:normal;
+}
+ .inputs  .form-group .control-label span{
+	color:red;
+	margin-right:3px;
+}
+.inputs  .form-group .form-control{
+	width:400px;
+	height:36px;
+	margin-top:2px;
+	float:left;
+	border-radius:0;
+}
+.inputs .input-mess{
+	height:40px ;
+	line-height:40px;
+	color:#666;
+	width:255px;
+	float:left;
+	font-size:13px;
+}
+.addbg{
+   background:url(../images/selects.png)  no-repeat center center;
+}
+.addborder{
+	border:1px solid #e9e9e9;
+}
+.delborder{
+	border:none;
+}
+.userinfo .selects li{
+	height:40px;
+	width:125px;
+	margin-left:0px;
+	margin-right:12px;
+	cursor: pointer; 
+	line-height:40px;
+	text-align:center;
+	font-size:13px;
+	float:left;
+}
+.button{
+	width:100%;
+}
+.button a{
+	display:block;
+	text-decoration:none;
+	height:40px;
+	line-height:40px;
+	border:0;
+	width:255px;
+	margin-left:515px;
+	text-align:center;
+    background:#e60012;
+	font-size:20px;
+	color:#FFF;
+	letter-spacing:12px;
+}
+.button a:link{
+	text-decoration:none;
+	color:#FFF;
+}
+.button a:visited{
+	text-decoration:none;
+	color:#FFF;
+}
+.button a:hover{
+	text-decoration:none;
+	color:#FFF;
+}
+.button a:active{
+	text-decoration:none;
+	color:#FFF;
+}
+.XieYi{
+	line-height:36px;
+	font-size:13px;
+}
+.XieYi input[type="checkbox"]{
+	display:block;
+	float:left;
+	margin-top:12px;
+}
+.XieYi a{
+	display:inline;
+	color:#e60012;
+}
+.radio-css{
+	height:120px;
+	width:400px;
+	float:left;
+}
+.radio-css span {
+	display:block;
+	float:left;
+	width:80px;
+	height:24px;
+	line-height:24px;
+	font-size:13px;
+	color:#666;
+}
+.radio-css span input[type="checkbox"]{
+	display:block;
+	margin-right:4px;
+	margin-top:6px;
+	float:left;
+}
+.imgFile {
+	width:100px;
+	height:100px;
+	float:left;
+	margin-right:2px;
+	background:url(../../admin/images/photo_icon.png) center center / 100px 100px no-repeat;
+}
+.imgImg {
+	display:none;
+	width:100px;
+	height:100px;
+	border:1px dotted #CCC;
+	float:left;
+	margin-right:2px;
+    position:relative;
+	top:0;
+	left:0;
+	z-index:900;
+}
+.files {
+	display:block;
+	width:100px;
+	height:100px;
+	filter:alpha(opacity=0);
+	opacity:0;
+	position:relative;
+	top:0;
+	left:0;
+	z-index:1000;
+	margin-top:-100px;
+}
+.dropup{
+	float:left;
+}
+.dropup .btn{
+	height:40px;
+	border-radius:0;
+	width:192px;
+}
+.dropup ul{
+	min-width:192px;
+}
+.dropup ul li{
+	text-align:center;
+	height:24px;
+	cursor: pointer; 
+}
+.dropdown{
+	display:inline-block;
+}
+.dropdown a{
+	color:#e60012;
+	height:24px;
+	line-height:24px;
+}
+.dropdown  a:link{
+	color:#e60012;
+}
+.dropdown a:visite{
+	color:#e60012;
+}
+.dropdown a:hover{
+	color:#e60012;
+}
+.dropdown a:active{
+	color:#e60012;
+}
+.dropdown .dropdown-menu{
+	width:120px;
+	min-width:120px;
+}
+.dropdown .dropdown-menu li{
+	width:118px;
+	min-width:118px;
+	line-height:36px;
+	text-align:center;
+	cursor: pointer; 
+	
+	
+}
+.dropdown .dropdown-menu li:hover{
+	background:#e60012;
+	color:#FFF;
+}
+#footx{
+	height:50px;
+	width:100%;
+	min-width:1200px;
+	margin:0 auto;
+	padding:25px 0px;
+	margin-top:20px;
+	border-top:1px solid #CCC;
+}
+#footx p{
+	line-height:25px;
+	text-align:center;
+	color:#666666;
+}

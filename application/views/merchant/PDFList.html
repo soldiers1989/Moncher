@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="renderer" content="webkit">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<base href="<?php echo base_url();?>" />
+<title>CADA云数聚</title>
+<!--引入jauery文件-->
+<script src="static/global/js/jquery.1.11.3.min.js"></script>
+<!--引用框架样式文件-->
+<link href="static/global/plugins/Bootstrap/css/bootstrap.css" rel="stylesheet">
+<!--引入框架脚本文件-->
+<script src="static/global/plugins/Bootstrap/js/bootstrap.min.js"></script>
+<!--引入弹框脚本文件-->
+<script src="static/global/plugins/Layer/layer.js"></script>
+<!--引入全局CSS文件-->
+<link href="static/admin/css/cada-admin-min.css" rel="stylesheet">
+<!--引入全局脚本文件-->
+<script src="static/merchant/js/cada-merchant-min.js"></script>
+<!--引入搜索脚本文件-->
+<script src="static/admin/js/cada-admin-search.js"></script>
+<!--引入日期脚本文件-->
+<script src="<?php echo base_url();?>static/global/js/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript">
+/**比较两个时间大小*/
+function cha(Date1,Date2){
+    var date1 = new Date(Date1);
+    var date2 = new Date(Date2);
+	return date1.getTime() < date2.getTime()?true:false;
+}
+$(function(){
+	 var now =new Date();var mon=now.getMonth();var yer=now.getFullYear();
+	 $("#startDate").val('<?php echo $startDate;?>');$("#lastDate").val('<?php echo $lastDate;?>');
+	 var nowDate=yer+'-'+'0'+(mon+2);
+		$(".btn-danger").click(function(){
+			  if($.trim($("#startDate").val()).length>0 && $.trim($("#lastDate").val()).length>0){
+				  if(!cha($("#startDate").val(),nowDate) || !cha($("#lastDate").val(),nowDate)){layer.msg('时间超出范围!');return ;}
+				  if(!cha($("#startDate").val(),$("#lastDate").val())){layer.msg('开始时间应小于结束时间');return ; }
+				   $('.form-inline').submit();
+			}else{
+				layer.msg('请选择时间');
+			}
+		});
+	$('.form-inline').css("border","none");
+	$('.main').css("height",$(window).height()-$('.soso').height()-35+'px');
+});
+</script>
+<style>
+.clear{
+clear:both;
+}
+ul{
+list-style:none;
+margin:0;
+padding:0;
+}
+.soso{
+padding:4px 12px;
+width:98%;
+background:#FFF;
+border:1px solid #e5e5e5;
+border-radius:5px;
+margin:5px auto;
+}
+.form-group{
+margin-right:8px;
+}
+.main{
+background:#FFF;
+border-radius:5px;
+border:1px solid #e5e5e5;
+width:98%;
+height:500px;
+margin:0 auto;
+margin-top:12px;
+}
+.main  ul{
+margin:0 auto; 
+width:100%
+list-style:none;
+margin:0;
+}
+.main  ul li{
+float:left;
+background:#FFF;
+line-height:36px;
+font-size:13px;
+border-bottom:1px dashed #e5e5e5;
+}
+.main  ul .lia{
+width:80%;
+text-indent:12px;
+}
+.main  ul .lia span{
+font-size:36px;
+}
+.main  ul .libs{
+width:10%;
+}
+.main  ul .lic{
+width:10%;
+}
+</style>
+</head>
+<body style="background:#f1f1f1;">
+<div class="soso">
+<form class="form-inline" action="merchant/PDFN/index" method="post">
+    <div class="form-group">
+    <label for="menu-url">选择时间</label>
+    <input type="text" class="form-control Wdate" id="startDate" name="startDate" placeholder="开始时间" style="width:150px;" onfocus="WdatePicker({dateFmt:'yyyy-MM'});">
+  </div>
+    <div class="form-group">
+    <label for="menu-url">选择时间</label>
+    <input type="text" class="form-control Wdate" id="lastDate" name="lastDate" placeholder="开始时间" style="width:150px;" onfocus="WdatePicker({dateFmt:'yyyy-MM'});">
+  </div>
+  &nbsp;&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-danger" >查找</button>
+</form>
+</div>
+<div class="main">
+    <?php foreach($list as $item){?>
+	<ul><li class="lia"><?php echo $item['yeari'];?>年<?php echo $item['monthxii'];?>月售后服务数据报告</li><li class="libs"><?php echo $item['yeari'];?>-<?php echo $item['monthxii'];?>-<?php echo date('t',strtotime($item['yeari'].'-'.$item['monthxii'].'-01'));?></li>
+			<li class="lic"><a href="merchant/PDFN/download?y=<?php echo abs($item['yeari']);?>&m=<?php echo abs($item['monthxii']);?>">下载</a></li><div style="clear"></div></ul>
+	<?php }?>
+</div>
+</body>
+</html>

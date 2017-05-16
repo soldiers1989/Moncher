@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="renderer" content="webkit">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<base href="<?php echo base_url();?>" />
+<title>CADA云数聚</title>
+<!--引入jauery文件-->
+<script src="static/global/js/jquery.1.11.3.min.js"></script>
+<!--引用框架样式文件-->
+<link href="static/global/plugins/Bootstrap/css/bootstrap.css" rel="stylesheet">
+<!--引入框架脚本文件-->
+<script src="static/global/plugins/Bootstrap/js/bootstrap.min.js"></script>
+<!--引入弹框脚本文件-->
+<script src="static/global/plugins/Layer/layer.js"></script>
+<!--引入全局CSS文件-->
+<link href="static/admin/css/cada-admin-min.css" rel="stylesheet">
+<!--引入全局脚本文件-->
+<script src="static/merchant/js/cada-merchant-min.js"></script>
+<!--引入搜索脚本文件-->
+<script src="static/admin/js/cada-admin-search.js"></script>
+<!--引入日期脚本文件-->
+<script src="<?php echo base_url();?>static/global/js/My97DatePicker/WdatePicker.js"></script>
+</head>
+<body>
+<div id="cada-admin-menu" class="cada-admin-main">
+<form class="form-inline" action="index.php/merchant/feedback/search" method="post" id="formz" icon="feedback">
+   <div class="form-group">
+    <label for="menu-name">处理状态</label>
+	 <select class="form-control" id="area-type" style="width:120px;" name="status">
+	 <option value="">选择</option>
+	 <option value="1">待处理</option>
+	 <option value="2">处理中</option>
+	 <option value="3">已处理</option>
+	 <option value="4">已忽略</option>
+	</select>
+  </div>
+  <div class="form-group">
+    <label for="menu-name">反馈类型</label>
+	 <select class="form-control" id="area-type" style="width:120px;" name="types">
+	 <option value="">其他</option>
+	 <option value="">平台操作</option>
+	 <option value="">分析类别</option>
+	</select>
+  </div>
+   <div class="form-group">
+    <label for="menu-url">反馈时间</label>
+    <input type="text" class="form-control Wdate" name="startFeedDate" placeholder="开始时间" style="width:120px;" onfocus="WdatePicker({isShowWeek:true});">
+    <input type="text" class="form-control Wdate" name="lastFeedDate"   placeholder="结束时间"  style="width:120px;" onfocus="WdatePicker({isShowWeek:true});">
+  </div>
+    <div class="form-group">
+    <label for="menu-url">处理时间</label>
+    <input type="text" class="form-control Wdate" name="startReplyDate" placeholder="开始时间"  style="width:120px;" onfocus="WdatePicker({isShowWeek:true});">
+    <input type="text" class="form-control Wdate" name="lastReplyDate"   placeholder="结束时间"  style="width:120px;" onfocus="WdatePicker({isShowWeek:true});">
+  </div>
+  &nbsp;&nbsp;&nbsp;&nbsp;<button type="submit" class="btn btn-danger" >查找</button>&nbsp;&nbsp;
+  <button type="button" class="btn btn-danger" onclick="javascript:addShow('feedback');">我要反馈</button>
+</form>
+<div class="dataDesc">
+<ul>
+  <li class="Idx">ID</li>
+  <li class="onex">标题</li>
+  <li class="onex">商户</li>
+  <li class="typex">联系方式</li>
+  <li class="typex">类型</li>
+  <li class="markx">处理状态</li>
+  <li class="markx">反馈类型</li>
+  <li class="timex">反馈时间</li>
+  <li class="timex">处理时间</li>
+  <li class="typex">满意度</li>
+  <li class="userx">操作人员</li>
+  <li class="timex">操作时间</li>
+  <li class="playx">操作</li>
+</ul>
+</div>
+<div class="dataList">
+<?php foreach($list as $key=>$val){?>
+<ul>
+  <li class="Idx"><?php   echo  $key+1;?></li>
+  <li class="onex"><?php echo $val['title'];?></li>
+  <li class="onex"><?php echo $val['provider'];?></li>
+  <li class="typex"><?php echo $val['tel'];?></li>
+  <li class="typex"><?php echo $val['type'];?></li>
+  <li class="markx"><?php echo $val['status'];?></li>
+  <li class="markx"><?php echo $val['feedbackType'];?></li>
+  <li class="timex"><?php echo $val['feedbackTime'];?></li>
+  <li class="timex"><?php echo $val['replyTime'];?></li>
+  <li class="typex"><?php echo $val['satisfaction'];?></li>
+  <li class="userx"><?php echo $val['operatorName'];?></li>
+  <li class="timex"><?php echo $val['operationTime'];?></li>
+  <li class="playx"><a href="javascript:saveShow('feedback','<?php echo $val['id']?>');" class="btn btn-info">查看</a>&nbsp;&nbsp;
+  </li>
+</ul>
+<?php }?>
+</div>
+<div class="relist" ><span>总记录数量<?php echo count($list);?>条,  &nbsp;每页显示100条</span></div>
+<div class="pagev"><?php echo $page;?></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,145 @@
+@CHARSET "UTF-8";
+html {overflow-x: hidden; overflow-y:hidden; }
+::-ms-clear, ::-ms-reveal{display: none;}
+/*图片路径选择相对路径即可*/
+body{margin:0;padding:0;font-family:"微软雅黑";min-width:1200px;min-height:675px;}
+div,ul,li,a,p,h2,h3,h4,label{display:block;margin:0;padding:0;}
+ul{list-style:none;}
+img{display:block;border-style:none;}
+#main-bg{
+	width:100%;
+    min-width:1200px;
+	background: url(../images/login-bg.png)   center center  no-repeat;
+	max-height:684px;
+	min-height:425px;
+}
+#head{
+	width:1200px;
+	min-width:1200px;
+	margin:0 auto;
+	height:100px;
+	background: url(../../admin/images/admin-index-logo.png) no-repeat  left center;
+}
+#head span{
+	font-size:24px;
+	line-height:124px;
+	color:#323232;
+	margin-left:380px;
+}
+#main{
+	width:1200px;
+	min-width:1200px;
+	margin:0 auto;
+}
+.main-l{
+	width:640px;
+	padding:0px 30px;
+	float:left;
+}
+.main-l .main-l-t{
+	height:145px;
+	width:100%;
+	background: url(../images/login-main-t.png) center center    no-repeat;
+	background-size:contain;
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/login-main-t.png',sizingMethod='scale');
+}
+.main-l .main-l-b{
+	height:400px;
+	width:100%;
+	background: url(../images/login-main-b.png) center center    no-repeat;
+	background-size:contain;
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/login-main-b.png',sizingMethod='scale');
+}
+.main-r{
+	width:500px;
+	float:left;
+}
+.main-r .main-r-m{
+	width:380px;
+	padding:45px 40px;
+	height:380px;
+	margin:0 auto;
+    background: url(../images/form-main.png) center center  no-repeat;
+	background-size:contain;
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/form-main.png',sizingMethod='scale');
+}
+.main-r .main-r-m h2{
+	color:#323232;
+	text-align:center;
+	font-weight:normal;
+	margin:12px 0px;
+}
+.main-r .main-r-m ul li{
+	height:40px;
+	line-height:40px;
+	margin-bottom:12px;
+}
+.main-r .main-r-m ul li label{
+	font-size:14px;
+	font-weight:normal;
+	float:left;
+	width:60px;
+	color:#666;
+	letter-spacing:2px;
+}
+.main-r .main-r-m ul li .input-group{
+	height:40px;
+	border-radius:0px;
+}
+.main-r .main-r-m ul li .input-group-addon{
+	border-radius:0px;
+	background:#FFF;
+}
+.main-r .main-r-m ul li .form-control{
+	height:40px;
+	line-height:28px;
+	border-radius:0px;
+}
+.main-r .main-r-m ul li .icon1{
+	background: url(../images/login-user.png) no-repeat  center center;
+}
+.main-r .main-r-m ul li .icon2{
+	background: url(../images/login-pass.png) no-repeat  center center;
+}
+.main-r .main-r-m ul li img{
+	width:98px;
+	height:40px;
+	display:block;
+	float:right;
+	cursor: pointer; 
+}
+.main-r .main-r-m ul li .button{
+	width:100%;
+	height:40px;
+	border:0;
+	background:#e60012;
+	line-height:30px;
+	font-size:20px;
+	color:#FFF;
+	letter-spacing:8px;
+}
+.links{
+	width:100%;
+	margin-top:4px;
+}
+.links a{
+	float:right;
+	margin-left:8px;
+	color:#323232;
+}
+.clear{
+	clear:both;
+}
+#footx{
+	height:50px;
+	width:1200px;
+	min-width:1200px;
+	margin:0 auto;
+	padding:25px 0px;
+	margin-top:0px;
+}
+#footx p{
+	line-height:25px;
+	text-align:center;
+	color:#666666;
+}

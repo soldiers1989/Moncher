@@ -1,0 +1,748 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<title>CADA云数聚-微信采集端-套路版</title>   
+<base href="<?php echo base_url();?>" />
+<!--引用字体样式文件-->
+<link href="static/global/plugins/FontAwesome/css/font-awesome.css" rel="stylesheet">
+<!--引入jauery文件-->
+<script src="static/global/js/jquery.1.11.3.min.js"></script>       
+<script type="text/javascript">
+/**数据检查状态*/
+var checkStatus=false;
+var  jsonData=<?php echo $json;?>;
+var  message="";
+/**是否是第一次*/
+var  infoId;
+var  valueId;
+var  checkid;
+/**是否提交结果*/
+var submitStatus=false;
+var userJosnData="";
+var quesJosnData="";
+var answJosnData="";
+/**获取试题以及选项*/
+function getAlls(qid,vid){
+	var we; 
+	$.ajax({type: "GET", url: $('base').attr('href')+"collection/WeChat/getQuestionOne", async: false,
+				   data: "id="+$('#questid').val()+"&qid="+qid+"&vid="+vid,success:function(msg){we=msg;}});
+	return we;
+}
+/**创建试题答案*/
+function  setOptions(we){
+	var answerList=we.options;
+	var answerItem='';
+	$.each(answerList,function(fn,answerData){
+			if(we.we.type=="1"){/**单选*/ 
+				answerItem=answerItem+"<li><input type='radio'  name='checkbox' value='"+answerData.id+"' '  textlog='"+answerData.type+"' sonflag='"+
+																	  answerData.labels+"' parentid='"+we.we.id+"' id='option"+answerData.id+"'/>&nbsp<label for='option"+answerData.id+"'>"+answerData.name+"</label><div style='clear: both;'></div></li>";
+			}else if(we.we.type=="2"){/**多选*/
+				answerItem=answerItem+"<li><input type='checkbox'  name='checkbox' value='"+answerData.id+"'  sonflag='"+
+																	  answerData.labels+"' parentid='"+we.we.id+"' id='option"+answerData.id+"'/>&nbsp<label for='option"+answerData.id+"'>"+answerData.name+"</label><div style='clear: both;'></div></li>";
+			}else if(we.we.type=="3"){/**填空*/
+				answerItem=answerItem+"<textarea name='"+answerData.id+"' sonflag='"+answerData.labels+"' parentid='"+we.we.id+ 
+														  "' style='width:98%;height:80px;font-size:16px;color:#333;font-family:微软雅黑;border:1px solid #FFF;margin-top:1px;'>.</textarea>"; 
+			}
+	});
+return answerItem;
+}
+/**获取当前时间*/
+function getNowFormatDate(){
+    var date = new Date();
+    var seperator1 = "-";
+    var seperator2 = ":";
+    var month = date.getMonth() + 1;
+    var strDate = date.getDate();
+    if (month >= 1 && month <= 9){month = "0" + month;}
+    if (strDate >= 0 && strDate <= 9){strDate = "0" + strDate;}
+    var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate+ " " + date.getHours() + seperator2 + date.getMinutes()+ seperator2 + date.getSeconds();
+    return currentdate;
+} 
+//--设置选项样式
+function options(answerItem){
+	$("#quest").append("<li  id='quest-2' ><ul>"+answerItem+"</ul></li>");
+	$("#quest-2").css("padding-left","10px");
+	$("#quest-2 ul").css("background","#FFF");
+	$("#quest-2 ul").css("opacity","0.618"); 
+	$("#quest-2 ul").css("border","1px solid #333");
+	$("#quest-2 ul").css("list-style","none"); 
+	$("#quest-2 ul").css("width","97%");
+	$("#quest-2 ul").css("-moz-border-radius","5px");
+	$("#quest-2 ul").css(" -webkit-border-radius","5px");
+	$("#quest-2 ul").css("border-radius","5px");
+	$("#quest-2 ul").css("margin","0px");	
+	$("#quest-2 ul").css("padding","0px"); 
+	$("#quest-2 li").css("padding-top","10px");
+	$("#quest-2 li").css("padding-left","8px"); 
+	$("#quest-2 li").css("padding-bottom","10px");
+	$("#quest-2 li").css("font-size","16px");
+	$("#quest-2 li").css("font-family","微软雅黑");
+	$("#quest-2 li").css("border-top","1px solid #EEE");
+	$("#quest-2 li:first").css("border-top","0px"); 
+	$("#quest-2 li label").css("display","block"); 
+	$("#quest-2 li label").css("width","90%");
+	$("#quest-2 li input:radio").css("float","left");
+	$("#quest-2 li input:checkbox").css("float","left");
+	$("#quest-2 li label").css("float","left");
+}
+/**创建一级试题*/
+function createQuestion(we){
+	$("#quest").css("padding-left","0px");
+	$(document).scrollTop(0);
+	infoId=we.we.id;var index;var imgurl='operator'+$('#randnum').val()+'.png';
+	if(we.we.index>0){index=we.we.index;	}else{index=we.we.index*-1;$("#button-2").text("提交问卷");submitStatus=true;}
+	$("#quest").append('<div style="display:block;background:#017BE8;width:100%;height:42px;font-size:16px;text-align:left;text-indent:4px;line-height:42px;color:#fff;" onclick="javascript:indexShow();">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-angle-left" style="font-size:22px;">&nbsp;</i>返回</div>');
+	$("#quest").append("<li id='operator'><a href='javascript:void(0)' style='display:block;width:150px;height:150px;margin:0 auto;margin-top:12px;margin-bottom:12px;border:0px solid #FFF;border-radius:75px;'><img src='static/wechat/images/Routine/"+imgurl+"' width='150' height='150'></img></a></li>");
+	$("#quest").append("<li  id='quest-1' >"+we.we.name+"<input type='hidden' name='id' questype='"+we.we.type+"' value='"+ we.we.id+"'/></li>");
+	$("#quest-1").css("padding-left","8px"); 
+	$("#quest-1").css("padding-bottom","5px");
+	$("#quest-1").css("font-size","18px");
+	$("#quest-1").css("font-family","微软雅黑");
+	$("#quest-1").css("color","#333");
+	options(setOptions(we));
+}
+/**提交答案方法*/
+function submitAnswer(){
+	jsonData.endTime=getNowFormatDate();
+	$.ajax({
+	   type: "POST",  url: $('base').attr('href')+"collection/WeChat/added",  async: false,
+	   data:{"userdata":JSON.stringify(jsonData),"answdata":"["+answJosnData+"]"},
+	   success:function(json){
+			answJosnData="";
+			jsonData=eval('(' + json + ')');
+			$('#questmain,#wechatbg').css('display','none');$('#readshow')[0].innerHTML='';$('#readshow').css('display','block');
+			submitStatus=false;
+			makeReadShow(jsonData['questionnaireId'],jsonData['resultScore'],jsonData['resultAllScore']);
+		}
+	});
+}
+/**执行引导模块*/
+function leadOpen(){
+	$('#leadshow,#endIndex,#countshow').css('display','none');
+	$('#questmain').css('display','block');
+	checkid=true;
+	$("#title").remove();
+	$("#button-2").text("下一题");
+	$("#quest")[0].innerHTML='';
+	we=eval('(' + getAlls(0,0) + ')');
+	createQuestion(we);
+}
+/**执行答题模块*/
+function openOne(questid){
+	checkid=false;
+	$('#questid').val(questid);
+	$("#readshow").css("display","none");
+	$('#leadshow').css('display','block');
+	jsonData.beginTime=getNowFormatDate();
+	jsonData.questionnaireId=questid;
+	findModuleInfo(questid);
+	makeLeadShow(questid);						  
+}
+/**执行下一题*/
+function nextToQuestion(){
+	if(checkContentWithValid()){
+		if(submitStatus){submitAnswer();return;}
+		if(checkid){
+			$("#quest")[0].innerHTML='';
+			we=eval('(' + getAlls(infoId,valueId) + ')');
+			createQuestion(we);	
+			return;
+		}
+	}else{
+		if(message==""){
+			alert("请您将信息填写完整或选择相应的答案！")
+		}else{
+			alert(message);
+		}
+	}
+}
+/**判断是否勾选*/
+function nextTo(validStatus){
+	var flag=0;
+	var questype=$("#quest-1 input").attr("questype");
+	if (questype=="3"){/**检测填空题*/
+		valueId=-1;
+		$.each($("#quest-2 textarea"),function(fn,answer){ 
+			if($.trim($(answer).val())<=0){ 
+				validStatus=false; 
+			}else{ 
+				if($.trim(answJosnData).length<=0){
+					answJosnData='{"id":"'+$(answer).attr("name")+'","parentid":"'+$(answer).attr("parentid")+'","value":"'+$(answer).val()+'"}';
+				}else{
+					answJosnData=answJosnData+',{"id":"'+$(answer).attr("name")+'","parentid":"'+$(answer).attr("parentid")+'","value":"'+$(answer).val()+'"}';
+				}
+			}
+		});
+	}else if(questype=="1"){/**检测单选题*/
+		var cbvalue=$('#quest-2 input:radio[name="checkbox"]:checked').val();
+		if(cbvalue=="undefined"||$.trim(cbvalue).length<=0){
+			validStatus=false;
+		}else{
+			valueId=cbvalue;
+			$.each($("#quest-2 input"),function(fn,answer){  
+				if(cbvalue==$(answer).val()){
+					if($(answer).attr("textlog")!='1'){
+					   if($.trim(answJosnData).length<=0){
+							answJosnData='{"id":"'+$(answer).val()+'","parentid":"'+$(answer).attr("parentid")+'","value":"1"}';
+						}else{
+							answJosnData=answJosnData+',{"id":"'+$(answer).val()+'","parentid":"'+$(answer).attr("parentid")+'","value":"1"}';
+						}  
+					}
+				}else{
+					if($.trim(answJosnData).length<=0){
+						answJosnData='{"id":"'+$(answer).val()+'","parentid":"'+$(answer).attr("parentid")+'","value":"0"}';
+					}else{
+						answJosnData=answJosnData+',{"id":"'+$(answer).val()+'","parentid":"'+$(answer).attr("parentid")+'","value":"0"}';
+					}
+				}  
+			});
+		}
+	}else if (questype=="2"){/**检测多选题*/
+		valueId=-1;
+		$.each($("#quest-2 input"),function(fn,answer){if($(answer)[0].checked){ flag=1; }});
+		if(flag==0){
+				validStatus=false;
+		}else{
+			var excanswer2;
+			$.each($("#quest-2 input"),function(fn,answer){ 
+				if($(answer)[0].checked){
+					if($.trim(answJosnData).length<=0){
+						answJosnData='{"id":"'+$(answer).val()+'","parentid":"'+$(answer).attr("parentid")+'","value":"1"}';
+					}else{
+						answJosnData=answJosnData+',{"id":"'+$(answer).val()+'","parentid":"'+$(answer).attr("parentid")+'","value":"1"}';
+					} 
+					excanswer2=answer; 
+				}else{
+					if($.trim(answJosnData).length<=0){
+						answJosnData='{"id":"'+$(answer).val()+'","parentid":"'+$(answer).attr("parentid")+'","value":"0"}';
+					}else{
+						answJosnData=answJosnData+',{"id":"'+$(answer).val()+'","parentid":"'+$(answer).attr("parentid")+'","value":"0"}';
+					}
+				} 	 
+			});
+		}	
+	}
+	return validStatus;
+}
+/**检测题题*/
+function checkContentWithValid(){
+	var validStatus=true;
+	if(!checkStatus){
+		validStatus=baseInfo(validStatus);
+		validStatus && startTime(validStatus);
+	}else if(checkStatus&&!submitStatus){
+		validStatus=nextTo(validStatus);
+	}else if(checkStatus&&submitStatus){
+		validStatus=nextTo(validStatus);
+	}
+	return validStatus; 
+}
+/**传入ID判断历史是否存在*/
+function history(questionnaireId){
+    var status=true;
+	if (jsonData.historyScore.length<=0) return true;
+	for(var i=0;i<jsonData.historyScore.length;i++){
+		if(questionnaireId==jsonData.historyScore[i]['questionnaireId']){
+			status=false;
+			break;
+		}
+	}
+	return status;
+}
+/**传入获取问卷内容*/
+function findModuleInfo(questionnaireId){
+	for(var i=0;i<jsonData.models.length;i++){
+		if(questionnaireId==jsonData.models[i]['questionnaireId']){
+			jsonData.moduleId=jsonData.models[i]['moduleId'];
+			jsonData.moduleTitle=jsonData.models[i]['title'];
+			jsonData.primitive=jsonData.models[i]['weight'];
+		}
+	}
+}
+/**生成选择文本*/
+function toLabels(thinkStr){
+	thinkStr='<ul style="display:block;list-style:none;color:#666;font-weight:bold;position:relative;font-size:12px;padding:0 5%;margin:0;padding-bottom:24px;" id="oneId">';
+	var tree={"服务顾问":'A',"服务设施":'B',"维修质量":'C',"维修时间":'E',"维修价格":'D'};
+	for(var i=0;i<jsonData.models.length;i++){
+		if(!history(jsonData.models[i]['questionnaireId'])){
+			thinkStr+='<li style="font-size:16px;font-family:微软雅黑;display:block;float:left;width:32%;height:130px;text-align:center;'+(i==3?'margin-left:16.6%;':'')+'"><label  style="background:url(static/wechat/images/Routine/'+tree[jsonData.models[i]['title']]+'ii.png)  center center/90px 104px no-repeat;display:block;width:100px;height:104px;margin:0 auto;margin-top:10%;border:0px solid #FFF;" for="radio1"  id="label'+jsonData.models[i]['questionnaireId']+'" thinkId="'+jsonData.models[i]['questionnaireId']+'"></label >'+jsonData.models[i]['title']+'</li>';
+		}else{
+			thinkStr+='<li style="font-size:16px;font-family:微软雅黑;display:block;float:left;width:32%;height:130px;text-align:center;'+(i==3?'margin-left:16.6%;':'')+'"><label  style="background:url(static/wechat/images/Routine/'+tree[jsonData.models[i]['title']]+'i.png)   center center/90px 104px no-repeat;display:block;width:100px;height:104px;margin:0 auto;margin-top:10%;border:0px solid #FFF;" for="radio1"  id="label'+jsonData.models[i]['questionnaireId']+'" thinkId="'+jsonData.models[i]['questionnaireId']+'"></label >'+jsonData.models[i]['title']+'</li>';
+		}
+	}
+	thinkStr+='<li style="clear:both"></li></ul>';
+	return thinkStr;
+}
+/**退出提醒页面*/
+function dieMessage(){confirm("确认结束本次调研？") && window.location.reload();}
+/**移除点击样式*/
+function removeClick(){
+	for(var i=0;i<jsonData.models.length;i++){
+		var  id=jsonData.models[i]['questionnaireId'];
+		 !history(id) ? $("#label"+id).off("click"):$("#label"+id).on("click",function(){openOne($(this).attr('thinkId'));});
+	}
+}
+/**生成引导页面*/
+function makeLeadShow(questid){
+	$("#leadshow")[0].innerHTML='';
+	$("#endshow")[0].innerHTML="";
+	$("#leadshow").append('<div style="display:block;z-index:982;position:absolute;top:0px;left:0px;background:#017BE8;width:100%;height:42px;font-size:16px;text-align:left;text-indent:4px;line-height:42px;color:#fff;" onclick="javascript:indexShow();">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-angle-left" style="font-size:22px;">&nbsp;</i>返回</div>');
+	var tree={"服务顾问":'O1',"服务设施":'O2',"维修质量":'O3',"维修时间":'O5',"维修价格":'O4'};
+	for(var i=0;i<jsonData.models.length;i++){
+		questid== jsonData.models[i]['questionnaireId'] && $("#leadshow").append('<img  id="leadshowImg" src="static/wechat/images/Routine/'+tree[jsonData.models[i]['title']]+'.png" width="100%" style="display:block;" onclick="javascript:leadOpen();"/>');
+	}
+	$('#leadshowImg').height($(window).height()-42);
+	$('#leadshowImg').css("margin-top","42px");
+}
+/**生成基础信息*/
+function makeReadShow(showIndex,messArray1,messArray2){
+	var imgurl='operator'+$('#randnum').val()+'.png',thinkStr='';
+	$("#readshow").css("display","block");
+	$("#readshow")[0].innerHTML="";
+	$("#readshow").append('<div style="display:block;background:#017BE8;width:100%;height:42px;font-size:16px;text-align:left;text-indent:4px;line-height:42px;color:#fff;" onclick="javascript:dieMessage();">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-angle-left" style="font-size:22px;">&nbsp;</i>返回</div>');
+	$("#readshow").append("<div id='operator'><a href='javascript:void(0)' style='display:block;width:150px;height:150px;margin:12px auto;border:0px solid #FFF;border-radius:75px;'><img src='static/wechat/images/Routine/"+imgurl+"' width='150' height='150'></img></a></div>");
+	if(showIndex<=0){
+	$("#readshow").append('<div id="checkText" style="text-align:center;font-family:微软雅黑;font-size:16px;padding:18px 5%;font-weight:300;color:#666;;line-height:24px;">'+
+											'<span>恭喜您成为本店的第<span style="color:#FA8B00;font-size:36px;font-weight:bold;">'+jsonData.size+'</span>位</span><br/>'+
+											'<span style="color:#FA8B00;">“汽车售后服务质量提升”</span>的参与者！<br/><span>请选择您在售后服务中的<span style="color:#FA8B00;">关注点</span>：</span></div>');
+	}else{
+		for(var i=0;i<jsonData.models.length;i++){
+			if  (showIndex == jsonData.models[i]['questionnaireId']) {
+				 var textLook= '您对本店<span style="color:#FA8B00;font-weight:bold;">【'+jsonData.models[i]['title']+'】</span>的评分为：<span style="color:#FA8B00;font-weight:bold;">'+messArray1+'分</span><br/>'+'本店<span style="color:#FA8B00;font-weight:bold;">【'+jsonData.models[i]['title']+'】</span>的综合评分为：<span style="color:#FA8B00;font-weight:bold;">'+messArray2+'分</span><br/><span>(满分为100分)</span><br/><span style="color:#FA8B00;font-weight:bold;font-size:24px;line-height:30px;">感谢您的参与！</span>';
+			}
+		}
+	   $("#readshow").append('<div id="checkText" style="font-size:14px;text-align:center;padding:12px 5%;color:#666;line-height:24px;font-weight:bold;">'+textLook+'</div>');
+	   $("#readshow").append('<div style="margin-top:12px;text-align:center;font-size:18px;font-family:微软雅黑;font-weight:bold;line-height:36px;">请继续选择您感兴趣的关注点</div>');		 
+	   $("#readshow").append('<div style="width:30%;margin:12px auto;">'+
+											   '<span style="float:left;width:33.3%;height:50px;display:block;background:url(static/wechat/images/Routine/DoD.png) center 28px no-repeat;font-size:24px;font-family:微软雅黑;text-align:center;color:#fa8b00;">戳</span>'+
+											   '<span style="float:left;width:33.3%;height:50px;display:block;background:url(static/wechat/images/Routine/DoD.png) center 28px no-repeat;font-size:24px;font-family:微软雅黑;text-align:center;color:#fa8b00;">戳</span>'+
+											   '<span style="float:left;width:33.3%;height:50px;display:block;background:url(static/wechat/images/Routine/DoD.png) center 28px no-repeat;font-size:24px;font-family:微软雅黑;text-align:center;color:#fa8b00;">戳</span><div style="clear:both;"></div></div>');		
+	}
+	$("#readshow").append(toLabels(thinkStr));
+	removeClick();
+	/**如果满足条件就渲染结束页面*/
+	jsonData.historyScore.length >= jsonData.models.length && countShow();
+}
+/**保存基础信息*/
+function startTime(validStatus){
+	if (validStatus){ 
+	userJosnData="";
+	quesJosnData="";
+	answJosnData=""; 
+	checkStatus=true;
+	jsonData.age=$("#ageHidden").val();
+	jsonData.sex=$("#ageHidden").val();
+	jsonData.carId=$("#carid").val();
+	jsonData.year=$("#yearHidden").val();
+	jsonData.vocation=$("#vocaHidden").val();
+	jsonData.money=$("#moneHidden").val();
+	jsonData.education=$("#educHidden").val();
+	//jsonData.latitude,json.longitude;
+	$("#sex").val()==1?$("#randnum").val(5):$("#randnum").val(6);
+	$('#sayHi,#backcode,#questmain').css('display','none');
+	makeReadShow(0,5,5);
+	}
+}
+/**保存基础信息*/
+function baseInfo(validStatus){
+	var baseMess={"carid":'请选择您的车型',"sex":'请选择性别',"ageHidden":'请选择年龄范围',"yearHidden":'请选择购车年限',"moneHidden":'请选择年输入范围',"educHidden":'请选择学历信息',"vocaHidden":'请选择职业类别'};
+	for(var key  in  baseMess ){
+		if($.trim($("#"+key).val()).length<=0){
+		validStatus=false;
+		message=baseMess[key];
+		break;
+		}
+	}
+	return validStatus;
+}
+/**结束前统计页面*/
+function countShow(){
+	$("#readshow,#questmain,#endIndex,#leadshow").css("display","none");
+	$("#countshow").css("display","block");
+	$("#leadshow,#endshow")[0].innerHTML='';
+	var index;
+	var imgurl='operator'+$('#randnum').val()+'.png';
+	var youself="<div id='five50'>";
+	for(var i=0;i<jsonData.historyScore.length;i++){
+		youself+="<p><span>您对本店</span><span style='color:#fa8b00;font-weight:bold;'>【"+jsonData.historyScore[i]['title']+"】</span>的评分为：<span style='color:#fa8b00;font-weight:bold;'>"+jsonData.historyScore[i]['score']+"分</span></p>";
+	}
+	youself+="</div>";
+	$("#countshow").append('<div style="display:block;background:#017BE8;position:absolute;z-index:982;width:100%;height:42px;font-size:16px;text-align:left;text-indent:4px;line-height:42px;color:#fff;" onclick="javascript:dieMessage();">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-angle-left" style="22px;">&nbsp;</i>返回</div>');
+	$("#countshow").append("<div id='caseCss'>"+youself+"<div id='lastP'><span style='color:#fa8b00;font-weight:blod;font-size:16px;'>感谢您对本店\"售后服务提升\"给予的建议!</span></div></div>");
+	$("#caseCss").css({"background":"url(static/wechat/images/Routine/Case.png) center center/ "+$(window).width()*0.9+"px  "+$(window).width()*0.9/1.6+"px no-repeat","height":$(window).width()*0.9/1.6+"px","width":$(window).width()*0.9+"px","position":"absolute","left":"5%","top":(($(window).width()*0.8)/1.6+75)+"px"});
+	$("#countshow").append('<img  id="countShowAir"src="static/wechat/images/Routine/Airfly.png" style="display:block;"/>');
+	$("#countShowAir").css({"position":"absolute","left":"10%","top":"80px","width":$(window).width()*0.8+"px","height":$(window).width()*0.8/1.6+"px"});
+	$("#caseCss p").css({"font-size":"14px","margin":"0","padding":"0","width":"96%","margin-left":"2%","margin-bottom":"8px","color":"#333","font-family":"微软雅黑","text-align":"center"});
+	var  fiveHeight,topHeight;
+	fiveHeight=$("#five50").height()>=100?24:[(($(window).width()*0.9/1.6)-$("#five50").height())/2.4];
+	$("#five50").css({"margin-top":fiveHeight+"px"});
+	$("#caseCss #lastP").css({"position":"absolute","width":"100%","text-align":"center","top":"160px"});
+	$("#countshow").append('<img  id="countShowImg"src="static/wechat/images/Routine/countshow.png" style="display:block;"/>');
+	$("#countShowImg").css({"margin-top":"42px","height":($(window).height()-24)+"px","width":$(window).width()+"px"});
+}
+/**首页点击方法*/
+function indexShow(){
+	$("#questlogin,#endIndex,#leadshow,#endshow,#countshow,#questmain").css("display","none");
+	if(jsonData.historyScore.length>0){
+		checkStatus=true;
+		$('#readshow')[0].innerHTML='';
+		$('#sayHi,#backcode,#questmain').css('display','none');
+		$('#readshow').css('display','block');
+		makeReadShow(0,5,5);
+	}else{
+		var status=jsonData.questionnaireId>0;
+		jsonData.questionnaireId=0;
+	    status ?makeReadShow(0,5,5):$('#questmain').css('display','block');
+	}
+}
+</script>
+</head>
+<body>
+<!--启动页面-->
+<div id="questlogin" style=" display:block;position:absolute;width: 100%; height: 100%;" onclick="javascript:indexShow();">
+<img  id="startimg"src="static/wechat/images/Routine/startshow.png" width="100%" style="display:block;z-index:980;"/>
+</div>
+<!--判断页面-->
+<div id="readshow" style=" display:none;position:absolute;width: 100%; height: 100%;z-index:980;">
+</div>
+<!--引导页面-->
+<div id="leadshow" style=" display:none;position:absolute;width: 100%; height: 100%;z-index:980;">
+</div>
+<!--结束前页面-->
+<div id="endIndex" style=" display:none;position:absolute;width: 100%; height: 100%;z-index:980;">
+</div>
+<!--结束页面-->
+<div id="endshow" style=" display:none;position:absolute;width: 100%; height: 100%;">
+</div>
+<!--统计页面-->
+<div id="countshow" style=" display:none;position:absolute;width: 100%; height: 100%;">
+</div>
+<!--程序主页-->
+<div  id="questmain" style='display:none;'>
+<div  id="backcode" onclick="javascript:dieMessage();"  style="display:block;background:#017BE8;width:100%;height:42px;text-align:center;line-height:42px;font-size:16px;text-align:left;text-indent:4px;line-height:42px;color:#fff;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-angle-left" style="font-size:22px;">&nbsp;</i>返回</div>
+<div id="sayHi" style="background:#EFEFEF;text-indent:24px;line-height:24px;font-size:16px;color:#3b3b3b;font-weight:bold;">嗨,您好!我是本店的店长助理,我将全程陪伴您来完成本次售后服务体验。在开始之前我们先认识一下吧:</div> 
+<div id ="content">
+<ul  id="quest">
+<li id="car2" style="height:50px;width:100%;line-height:50px;background:#fff;"><ul>
+<li style="background:url(static/wechat/images/Routine/Info.png)  2px center /18px 18px no-repeat;float:left;font-family:微软雅黑;font-size:16px;color:#333;text-indent:30px;">您的车型:</li>
+<li id="car3" style="float:left;font-size:12px;color:#333;text-indent:6px;"></li> 
+<input  style="height:30px;border:1px;font-size:16px;color:#333;"  type="hidden"  name="carid" id="carid" />
+</ul></li>
+<li id="sexid1" style="height:50px;width:100%;border-top:1px solid #CBCBCB;line-height:50px;background:#fff;"><ul>
+<li style="background:url(static/wechat/images/Routine/Info.png)  2px center /18px 18px no-repeat;float:left;font-family:微软雅黑;font-size:16px;color:#333;text-indent:30px;">您的性别:</li>
+<li id="sexid5" style="float:left;font-size:12px;color:#333;text-indent:6px;"></li>
+<input style="height:30px;border:1px;font-size:16px;color:#333;" type="hidden" name="sex" id="sex"/> 
+</ul></li>
+<li  id="age" style="height:50px;width:100%;border-top:1px solid #CBCBCB;line-height:50px;background:#fff;" onclick="javascript:radioCss('age');"><ul>
+<li style="background:url(static/wechat/images/Routine/Info.png) 2px center /18px 18px no-repeat;float:left;font-family:微软雅黑;font-size:16px;color:#333;text-indent:30px;">您的年龄:</li>
+<li id="ageBox" style="float:left;font-size:12px;color:#333;text-indent:6px;"></li>
+<input type="hidden" name="age" id="ageHidden"/> 
+</ul></li>
+<li  id="year" style="height:50px;width:100%;border-top:1px solid #CBCBCB;line-height:50px;background:#fff;" onclick="javascript:radioCss('year');"><ul>
+<li style="background:url(static/wechat/images/Routine/Info.png)  2px center /18px 18px no-repeat;float:left;font-family:微软雅黑;font-size:16px;color:#333;text-indent:30px;">购车年限:</li>
+<li id="yearBox" style="float:left;font-size:12px;color:#333;text-indent:6px;"></li>
+<input type="hidden" name="year" id="yearHidden"/> 
+</ul></li>
+<li id="mone" style="height:50px;width:100%;border-top:1px solid #CBCBCB;line-height:50px;background:#fff;" onclick="javascript:radioCss('mone');"><ul>
+<li style="background:url(static/wechat/images/Routine/Info.png)  2px center /18px 18px no-repeat;float:left;font-family:微软雅黑;font-size:16px;color:#333;text-indent:30px;">您的年收入:</li>
+<li id="moneBox" style="float:left;font-size:12px;color:#333;text-indent:6px;"></li> 
+<input type="hidden"  name="money" id="moneHidden" />
+</ul></li>
+<li id="educ" style="height:50px;width:100%;border-top:1px solid #CBCBCB;line-height:50px;background:#fff;" onclick="javascript:radioCss('educ');"><ul>
+<li style="background:url(static/wechat/images/Routine/Info.png)  2px center /18px 18px no-repeat;float:left;font-family:微软雅黑;font-size:16px;color:#333;text-indent:30px;">您的学历:</li>
+<li id="educBox" style="float:left;font-size:12px;color:#333;text-indent:6px;"></li>
+<input  type="hidden" name="education" id="educHidden"/> 
+</ul></li>
+<li  id="voca" style="height:50px;width:100%;border-top:1px solid #CBCBCB;border-bottom:1px solid #CBCBCB;line-height:50px;background:#FFF;" onclick="javascript:radioCss('voca');"><ul>
+<li style="background:url(static/wechat/images/Routine/Info.png)  2px center /18px 18px no-repeat;float:left;font-family:微软雅黑;font-size:16px;color:#333;text-indent:30px;">您的职业:</li>
+<li id="vocaBox" style="float:left;font-size:12px;color:#333;text-indent:6px;"></li>
+<input type="hidden" name="vocation" id="vocaHidden" />
+</ul>
+</li>
+</ul>
+</div>
+<!--性别控件-->
+<div id="sexid2" style='display:none'></div>
+<div id="sexid3" style='display:none'>
+<ul> 
+<li sexv="1" style="height:40px;font-size:16px;color:#333;text-align:center;width:100%;border-top:1px solid #DDD; border-left:1px solid #FFF;border-right:1px solid #FFF;line-height:40px;background:#FFF">男</li>
+<li sexv="2" style="height:40px;font-size:16px;color:#333;text-align:center;width:100%;border:1px solid #DDD;line-height:40px;background:#FFF">女</li>
+</ul>
+</div>
+<!--年龄控件-->
+<div id="ageDiv" style='display:none'></div>
+<div id="ageSon" style='display:none'>
+<ul> 
+<li style="height:40px;font-size:16px;color:#333;text-align:center;width:100%;border-top:1px solid #DDD; border-left:1px solid #FFF;border-right:1px solid #FFF;line-height:40px;background:#FFF">60岁及以上</li>
+<li style="height:40px;font-size:16px;color:#333;text-align:center;width:100%;border-top:1px solid #DDD; border-left:1px solid #FFF;border-right:1px solid #FFF;line-height:40px;background:#FFF">50-59岁</li>
+<li style="height:40px;font-size:16px;color:#333;text-align:center;width:100%;border-top:1px solid #DDD; border-left:1px solid #FFF;border-right:1px solid #FFF;line-height:40px;background:#FFF">40-49岁</li>
+<li style="height:40px;font-size:16px;color:#333;text-align:center;width:100%;border-top:1px solid #DDD; border-left:1px solid #FFF;border-right:1px solid #FFF;line-height:40px;background:#FFF">30-39岁</li>
+<li style="height:40px;font-size:16px;color:#333;text-align:center;width:100%;border:1px solid #DDD;line-height:40px;background:#FFF;">18-29岁</li>
+</ul>
+</div> 
+<!--年限控件-->
+<div id="yearDiv" style='display:none'></div>
+<div id="yearSon" style='display:none'>
+<ul> 
+<li style="height:40px;font-size:16px;color:#333;text-align:center;width:100%;border-top:1px solid #DDD; border-left:1px solid #FFF;border-right:1px solid #FFF;line-height:40px;background:#FFF">5年以上</li>
+<li style="height:40px;font-size:16px;color:#333;text-align:center;width:100%;border-top:1px solid #DDD; border-left:1px solid #FFF;border-right:1px solid #FFF;line-height:40px;background:#FFF">3-5年之间</li>
+<li style="height:40px;font-size:16px;color:#333;text-align:center;width:100%;border-top:1px solid #DDD; border-left:1px solid #FFF;border-right:1px solid #FFF;line-height:40px;background:#FFF">1-3年之间</li>
+<li style="height:40px;font-size:16px;color:#333;text-align:center;width:100%;border:1px solid #DDD;line-height:40px;background:#FFF;">1年以内</li>
+</ul>
+</div> 
+<!--收入控件-->
+<div id="moneDiv" style='display:none'></div>
+<div id="moneSon" style='display:none'>
+<ul> 
+<li style="height:40px;font-size:16px;color:#333;text-align:center;width:100%;border-top:1px solid #DDD; border-left:1px solid #FFF;border-right:1px solid #FFF;line-height:40px;background:#FFF";>30万元以上</li>
+<li style="height:40px;font-size:16px;color:#333;text-align:center;width:100%;border-top:1px solid #DDD; border-left:1px solid #FFF;border-right:1px solid #FFF;line-height:40px;background:#FFF";>20-30万元之间</li>
+<li style="height:40px;font-size:16px;color:#333;text-align:center;width:100%;border-top:1px solid #DDD; border-left:1px solid #FFF;border-right:1px solid #FFF;line-height:40px;background:#FFF";>10-20万元之间</li>
+<li style="height:40px;font-size:16px;color:#333;text-align:center;width:100%;border-top:1px solid #DDD; border-left:1px solid #FFF;border-right:1px solid #FFF;line-height:40px;background:#FFF";>5-10万元之间</li>
+<li style="height:40px;font-size:16px;color:#333;text-align:center;width:100%;border:1px solid #DDD;line-height:40px;background:#FFF;">5万元以下</li>
+</ul>
+</div> 
+<!--学历控件-->
+<div id="educDiv" style='display:none'></div>
+<div id="educSon" style='display:none'>
+<ul> 
+<li style="height:40px;font-size:16px;color:#333;text-align:center;width:100%;border-top:1px solid #DDD; border-left:1px solid #FFF;border-right:1px solid #FFF;line-height:40px;background:#FFF";>硕士及以上</li>
+<li style="height:40px;font-size:16px;color:#333;text-align:center;width:100%;border-top:1px solid #DDD; border-left:1px solid #FFF;border-right:1px solid #FFF;line-height:40px;background:#FFF";>本科</li>
+<li style="height:40px;font-size:16px;color:#333;text-align:center;width:100%;border-top:1px solid #DDD; border-left:1px solid #FFF;border-right:1px solid #FFF;line-height:40px;background:#FFF";>大专</li>
+<li style="height:40px;font-size:16px;color:#333;text-align:center;width:100%;border-top:1px solid #DDD; border-left:1px solid #FFF;border-right:1px solid #FFF;line-height:40px;background:#FFF";>高中(含高职，技校等)</li>
+<li style="height:40px;font-size:16px;color:#333;text-align:center;width:100%;border:1px solid #DDD;line-height:40px;background:#FFF;">初中及以下</li>
+</ul>
+</div>
+<!--收入控件-->
+<div id="vocaDiv" style='display:none'></div>
+<div id="vocaSon" style='display:none'>
+<ul> 
+<li style="height:40px;font-size:16px;color:#333;text-align:center;width:100%;border-top:1px solid #DDD; border-left:1px solid #FFF;border-right:1px solid #FFF;line-height:40px;background:#FFF";>高层管理人员（含单位、公司高层领导）</li>
+<li style="height:40px;font-size:16px;color:#333;text-align:center;width:100%;border-top:1px solid #DDD; border-left:1px solid #FFF;border-right:1px solid #FFF;line-height:40px;background:#FFF";>中层管理人员（含单位、公司环节干部）</li>
+<li style="height:40px;font-size:16px;color:#333;text-align:center;width:100%;border-top:1px solid #DDD; border-left:1px solid #FFF;border-right:1px solid #FFF;line-height:40px;background:#FFF";>普通职员</li>
+<li style="height:40px;font-size:16px;color:#333;text-align:center;width:100%;border-top:1px solid #DDD; border-left:1px solid #FFF;border-right:1px solid #FFF;line-height:40px;background:#FFF";>教育界人员</li>
+<li style="height:40px;font-size:16px;color:#333;text-align:center;width:100%;border-top:1px solid #DDD; border-left:1px solid #FFF;border-right:1px solid #FFF;line-height:40px;background:#FFF";>律师、会计师、文艺工作者</li>
+<li style="height:40px;font-size:16px;color:#333;text-align:center;width:100%;border-top:1px solid #DDD; border-left:1px solid #FFF;border-right:1px solid #FFF;line-height:40px;background:#FFF";>私营公司老板</li>
+<li style="height:40px;font-size:16px;color:#333;text-align:center;width:100%;border-top:1px solid #DDD; border-left:1px solid #FFF;border-right:1px solid #FFF;line-height:40px;background:#FFF";>科技、体育、卫生行业普通人员</li>
+<li style="height:40px;font-size:16px;color:#333;text-align:center;width:100%;border-top:1px solid #DDD; border-left:1px solid #FFF;border-right:1px solid #FFF;line-height:40px;background:#FFF";>个体工商业者</li>
+<li  style="height:40px;font-size:16px;color:#333;text-align:center;width:100%;border-top:1px solid #DDD; border-left:1px solid #FFF;border-right:1px solid #FFF;line-height:40px;background:#FFF";>自由职业者</li>
+<li style="height:40px;font-size:16px;color:#333;text-align:center;width:100%;border-top:1px solid #DDD; border-left:1px solid #FFF;border-right:1px solid #FFF;line-height:40px;background:#FFF";>其他</li>
+<li style="height:40px;font-size:16px;color:#333;text-align:center;width:100%;border-top:1px solid #DDD; border-left:1px solid #FFF;border-right:1px solid #FFF;line-height:40px;background:#FFF";>无业</li>
+<li style="height:40px;font-size:16px;color:#333;text-align:center;width:100%;border:1px solid #DDD;line-height:40px;background:#FFF;">拒绝回答</li>
+</ul>
+</div>  			 
+<!--品牌控件-->
+<div id="car1" style='display:none;position:absolute;top:0px;left:0px;width:100%;background:#fff;'>
+<div id="car1-1" style="width:90%;overflow-y:auto;float:left">
+<ul></ul> 
+</div>
+<div id="car1-7" style="position:fixed;width:10%;left:90%;overflow-y:auto;float:left;background:#FFF;">
+<ul></ul>
+</div>
+</div>
+<!--按钮控件-->
+<div id="button" class="button">
+<div id="button-1" class="button-1"><a  id="button-2" class="button-2" href="javascript:nextToQuestion();" >戳,GO!</a>  </div>
+</div>
+<!--全文参数-->
+<input  id="questid" type="hidden" value="" />
+<input id="randnum" type="hidden" value="5" />
+<script type="text/javascript">
+(function(){
+	//--基础样式设定
+	 baseCss();
+	//--判断浏览器
+	var wi=$(window).width();//获取浏览器宽度	
+	var hr=$(document).height();//获取页面高度
+	$("#sexid1").click(function(){	
+		var height=$(document).height();
+		$("#sexid2").css("display","block");
+		$("#sexid2").css("width","100%"); 
+		$("#sexid2").css("height",height);
+		$("#sexid2").css("position","absolute");
+		$("#sexid2").css("top","0px");
+		$("#sexid2").css("left","0px");
+		$("#sexid2").css("z-index","990");
+		$("#sexid2").css("background","#333");
+		$("#sexid2").css("opacity","0.618"); 
+		$("#sexid3").css("display","block");
+		$("#sexid3").css("width","100%");
+		$("#sexid3").css("position","absolute");
+		$("#sexid3").css("top",($(this).offset().top+50)+"px");
+		$("#sexid3").css("left","0px");
+		$("#sexid3").css("z-index","991");
+	});
+	/**选择汽车品牌*/
+	$("#sexid3 li").click(function(){
+		$("#sexid2").css("display","none");
+		$("#sexid3").css("display","none");
+		$("#sexid5")[0].innerHTML=$(this)[0].innerHTML;
+		$("#sex").val($(this).attr("sexv"));
+	});	
+	$("#six60").on("click",function(){getCode();});
+  /**点击车型创建品牌*/
+   $("#car2").click(function(){
+		createCarBrand();
+		$("#car1").css("display","block");
+		$("#car1").css("height",$("#car1-1 ul").height());
+		$("#car1-1").css("background","#F0F0F0")
+		$("#car1-2").css("background","#F8F8F8")
+		$("#car1").css("z-index","992");
+		$("#car1-1").css("height",$("#car1-1 ul").height());
+		$("#car1-7").css("height",$(window).height()); 
+	});
+})();
+/**选择控件CSS*/
+function radioCss(div){
+var height=$(document).height();
+$(document).scrollTop(0);
+$("#"+div+"Div").css("display","block");
+$("#"+div+"Div").css("width","100%"); 
+$("#"+div+"Div").css("height",height);
+$("#"+div+"Div").css("position","absolute");
+$("#"+div+"Div").css("top","0px");
+$("#"+div+"Div").css("left","0px");
+$("#"+div+"Div").css("z-index","990");
+$("#"+div+"Div").css("background","#333");
+$("#"+div+"Div").css("opacity","0.618"); 
+$("#"+div+"Son").css("display","block");
+$("#"+div+"Son").css("width","100%");
+$("#"+div+"Son").css("position","absolute");
+$("#"+div+"Son").css("top","0px");
+$("#"+div+"Son").css("left","0px");
+$("#"+div+"Son").css("z-index","991");
+$("#"+div+"Son").css("top",($(window).height()-$("#"+div+"Son").height())/2+"px");
+$("#"+div+"Son li").click(function(){
+	$("#"+div+"Div").css("display","none");
+	$("#"+div+"Son").css("display","none");
+	$("#"+div+"Box")[0].innerHTML=$(this)[0].innerHTML;
+	$("#"+div+"Hidden").val($(this)[0].innerHTML);
+});	
+}
+/**创建车辆品牌*/
+function createCarBrand(){ 
+	var brand=eval('(' + getCarBrand() + ')');
+	 $("#car1-1 ul")[0].innerHTML='';
+	 $("#car1-7").css({"display":"block"});
+	for(var key in brand){
+		$("#car1-7 ul").append("<li bcode='"+key+"'>"+key+"</li>");
+		$("#car1-7 ul li").css({"width":"100%","text-align":"center","margin-top":"8px","color":"#666"});
+		$("#car1-1 ul").append("<div id='brandCode"+key+"' style='height:40px;line-height:40px;border-bottom:1px solid #FFF;color:#666;font-size:14px;text-indent:12px;background:#FFF;'>"+key+"</div>");
+		$.each(brand[key],function(fn,brandData){
+			$("#car1-1 ul").append("<li carv1='"+brandData.id+"'  rank='"+brandData.rank+"' style='height:40px;line-height:40px;border-bottom:1px solid #FFF;'>"+
+						"<span style='display:block;float:left;width:40px;'>&nbsp;&nbsp;"+
+						"<img src='"+brandData.logo+"' style='height:25px;width:25px;position:relative;top:8px;'></span>"+
+						"<span style='display:block;float:left;font-size:16px;color:#333;'>&nbsp;&nbsp;"+(brandData.name).substr(0, 10)+"</span>"+
+					"</li>");
+		 });			
+	}
+	$("#car1-7 ul li").click(function(){
+		$(document).scrollTop($("#brandCode"+$(this).attr('bcode')).offset().top);
+	});
+	clickCreateCarType();
+}
+/**点击创建汽车品牌车型*/
+function clickCreateCarType(){
+$("#car1-1 li").click(function(){
+	createCarType($(this).attr("carv1"));
+	jsonData.brandId=$(this).attr("carv1");
+	jsonData.rank=$(this).attr("rank");
+ });
+}
+/**创建车辆分类*/ 
+function createCarType(cbid){
+var typeList=eval('(' + getCarType(cbid) + ')');
+$("#car1").css("height",$("#questmain").height()+30+"px");
+$("#car1-1").css({"width":"100%","height":$("#questmain").height()+30+"px"});
+$("#car1-7").css({"display":"none"});
+$("#car1-1 ul").css("height",$("#questmain").height()+30+"px");
+$(document).scrollTop(0);
+$("#car1-1 ul")[0].innerHTML='';
+if(typeList.length>0){
+	$.each(typeList,function(fn,typeData){
+		$("#car1-1 ul").append(
+			"<li carv2='"+typeData.id+"' style='height:40px;line-height:40px;font-size:16px;color:#333;border-bottom:1px solid #FFF;'>"+
+			"&nbsp;&nbsp;"+typeData.name+"</li>"
+		);
+	}); 
+	$("#car1-1 li:first").css("background","#F0F0F0");
+	$("#car1-1 ul li").click(function(){
+	   $(this).css("background","#F0F0F0");
+		$("#car3")[0].innerHTML=$.trim($(this).text());
+		$("#carid").val($(this).attr("carv2")); 
+		$("#car1").css("display","none");
+	
+	});
+}
+}
+/**获取车品牌*/
+function getCarBrand(){
+	var carBrandList;
+	$.ajax({type: "POST",url: $('base').attr('href')+"collection/WeChat/getBrand", async: false,
+					data: "brandid=0",success:function(cb){carBrandList=cb;}});
+	return carBrandList;
+}
+/**获取车类型*/
+function getCarType(cbid){
+	var carTypeList;
+	$.ajax({type: "POST",url: $('base').attr('href')+"collection/WeChat/getBrand", async: false,
+					data: "brandid="+cbid,success:function(ct){carTypeList=ct;}});
+	return carTypeList;
+}
+var i=0;
+/**基础样式设定*/
+function baseCss(){
+	$("*").css("margin","0px");	
+	$("*").css("padding","0px");
+	$("a").css("text-decoration","none");
+	$("body").css("background","#F1F1F1");
+	$('body').css('overflow-y','hidden');
+	$('#startimg').height($(window).height());
+	$('#endshowimg').height($(window).height());
+	$("#leadshowimg").height($(window).height());
+	$("ul").css("list-style","none"); 
+	$(".title").css("position","relative");
+	$(".title").css("font-size","24px");
+	$(".title").css("width","100%");
+	$(".title").css("z-index","980");
+	$(".title").css("background","#9fd7ff");
+	$(".title").css("color","#333");
+	$(".title").css("text-align","center");
+	$(".title").css("height","42px");
+	$(".title").css("line-height","42px");
+	$("#content").css("position","relative");
+	$("#sayHi").css("padding-top","24px");
+	$("#sayHi").css("padding-bottom","12px");
+	$("#sayHi").css("padding-left","5%");
+	$("#sayHi").css("padding-right","5%");
+	$("#quest").css("padding-left","10%");
+	$("#content").css("background","#fff");
+	buttonClass();
+} 
+/**按钮基础样式*/
+function buttonClass(){
+	$(".button").css("height","60px");
+	$(".button").css("line-height","60px");
+	$(".button").css("position","relative");
+	$(".button").css("top","30px"); 
+	$(".button-1").css("height","40px");
+	$(".button-1").css("line-height","40px"); 
+	$(".button-1").css("width","80%");
+	$(".button-1").css("background","#017BE8");
+	$(".button-1").css("-moz-border-radius","8px");
+	$(".button-1").css(" -webkit-border-radius","8px");
+	$(".button-1").css("border-radius","8px");
+	$(".button-1").css("text-align","center");
+	$(".button-1").css("margin","auto"); 
+	$(".button-2").css("color","#fff");
+	$(".button-2").css("display","block");
+	$(".button-2").css("font-family","微软雅黑");
+	$(".button-2").css("font-size","19px");
+}
+</script>
+</body>
+</html>

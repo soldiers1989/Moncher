@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="renderer" content="webkit">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<base href="<?php echo base_url();?>" />
+<title>CADA云数聚-菜单管理</title>
+<!--引入jauery文件-->
+<script src="static/global/js/jquery.1.11.3.min.js"></script>
+<!--引入滚动条CSS样式文件-->
+<link rel="stylesheet" href="static/global/plugins/Scoller/jquery.mCustomScrollbar.css">
+<!--引入滚动条脚本文件-->
+<script src="static/global/plugins/Scoller/jquery.mCustomScrollbar.concat.min.js"></script>
+<!--引用字体样式文件-->
+<link href="static/global/plugins/FontAwesome/css/font-awesome.css" rel="stylesheet">
+<!--引用框架样式文件-->
+<link href="static/global/plugins/Bootstrap/css/bootstrap.css" rel="stylesheet">
+<!--引入框架脚本文件-->
+<script src="static/global/plugins/Bootstrap/js/bootstrap.min.js"></script>
+<!--引入弹框脚本文件-->
+<script src="static/global/plugins/Layer/layer.js"></script>
+<!--引入日期脚本文件-->
+<script src="<?php echo base_url();?>static/global/js/My97DatePicker/WdatePicker.js"></script>
+<!--引入全局CSS文件-->
+<link href="static/admin/css/cada-admin-min.css" rel="stylesheet">
+<!--引入全局脚本文件-->
+<script src="static/admin/js/cada-admin.js"></script>
+<!--引入搜索脚本文件-->
+<script src="static/admin/js/cada-admin-search.js"></script>
+</head>
+<script>
+/**异步请求数据方法*/
+function FX(url, data) {
+	var message;
+	$.ajax({type: "POST",url: U + url,async: false,
+			   data: data,success: function(msg) {message = msg;}
+	});
+	return message;
+}
+$(function(){
+	$("#soso-model").change(function(){
+		var json = eval('(' + FX('admin/Report/getGroupList', 'modelid='+$(this).val()) + ')'); 
+		$("#soso-group").find('option').remove();
+		$("#soso-group").append('<option value="0">全部</option>');
+		$.each(json,function(index,item){$("#soso-group").append('<option value="'+item.groupId+'">'+item.name+'</option>');});
+	});
+	$("#soso-group").change(function(){
+		var json = eval('(' + FX('admin/Report/findMBAList', 'groupid='+$(this).val()) + ')'); 
+		$("#soso-provider").find('option').remove();
+		$("#soso-provider").append('<option value="0">全部</option>');
+		$.each(json,function(index,item){$("#soso-provider").append('<option value="'+item.merchantId+'">'+item.name+'</option>');});
+	});
+})
+</script>
+<body>
+<div id="cada-admin-menu" class="cada-admin-main">
+<form class="form-inline" method="post" action="admin/Report/index?t=1"  id="formz" icon="menu">
+   <div class="form-group">
+    <label for="menu-name">调研模型</label>
+	 <select class="form-control" 	 id="soso-model"  	name="modelid" 	style="width:120px;">
+	 <option value="0">全部</option>
+	  <?php foreach($model as $a){?>
+	  <option value="<?php echo $a['id']?>" <?php echo $modelid==$a['id']?'selected':'';?>><?php echo $a['title'];?></option>
+	  <?php }?>
+	</select>
+  </div>
+   <div class="form-group">
+    <label for="menu-name">选择集团</label>
+	 <select class="form-control"  id="soso-group" 	name="groupid" style="width:120px;">
+	 <option value="0">全部</option>
+	  <?php foreach($group as $a){?>
+	  <option value="<?php echo $a['groupId']?>" <?php echo $groupid==$a['groupId']?'selected':'';?>><?php echo $a['name'];?></option>
+	  <?php }?>
+	</select>
+  </div>
+   <div class="form-group">
+    <label for="menu-name">选择门店</label>
+	 <select class="form-control" id="soso-provider" name="providerid" style="width:120px;">
+	 <option value="0">全部</option>
+	  <?php foreach($merchant as $a){?>
+	  <option value="<?php echo $a['merchantId']?>" <?php echo $providerid==$a['merchantId']?'selected':'';?>><?php echo $a['name'];?></option>
+	  <?php }?>
+	</select>
+  </div>
+    <div class="form-group">
+    <label for="menu-url">选择时间</label>
+    <input type="text" class="form-control Wdate" name="startDate" placeholder="开始时间" style="width:120px;" 	onfocus="WdatePicker({dateFmt:'yyyy-MM'});"	value="<?php echo $startDate;?>">
+    <input type="text" class="form-control Wdate" name="endDate"   placeholder="结束时间"  style="width:120px;" 	onfocus="WdatePicker({dateFmt:'yyyy-MM'});"	value="<?php echo $endDate;?>">
+  </div>
+  &nbsp;&nbsp;&nbsp;&nbsp;<button type="submit" class="btn btn-danger" >查找</button>
+</form>
+<div class="dataDesc">
+<ul>
+  <li class="Idx">ID</li>
+  <li class="onex">门店名称</li>
+  <li class="markx">报告类型</li>
+  <li class="onex">报告名称</li>
+  <li class="typex">生成类型</li>
+  <li class="userx">年份</li>
+  <li class="timex">月份</li>
+  <li class="playx">操作</li>
+</ul>
+</div>
+<div class="dataList">
+<?php foreach($list as $key=>$item){ ?>
+<ul>
+  <li class="Idx"><?php echo ($key+1) ;?></li>
+  <li class="onex"><?php echo $item['provider'];?></li>
+  <li class="markx">门店</li>
+  <li class="onex"><?php echo $item['yeari'];?>年<?php echo $item['monthxii'];?>月售后服务数据报告</li>
+  <li class="typex">自动生成</li>
+  <li class="userx"><?php echo $item['yeari'];?>年</li>
+  <li class="timex"><?php echo $item['monthxii'];?>月</li>
+  <li class="playx"><a href="merchant/PDFN/download?mid=<?php echo $modelid;?>&id=<?php echo $item['merchantId']?>&y=<?php echo abs($item['yeari']);?>&m=<?php echo abs($item['monthxii']);?>">下载</a></li>
+</ul>
+<?php }?>
+</div>
+<div class="relist" ><span>总记录数量<?php echo count($list);?>条,  &nbsp;每页显示100条</span></div>
+<div class="pagev"><?php echo $page;?></div>
+</div>
+</body>
+</html>

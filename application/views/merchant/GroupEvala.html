@@ -1,0 +1,804 @@
+<?php  $this->load->view('admin/head.html');?>
+<!-- highchart插件 -->
+<script src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script>
+<script src="http://cdn.hcharts.cn/highcharts/modules/exporting.js"></script>
+<script src="static/merchant/js/height_one.js"></script>
+<script src="static/merchant/js/height_two.js"></script>
+<!-- 时间插件 -->
+<script type="text/javascript" src="<?php echo base_url();?>static/global/js/My97DatePicker/WdatePicker.js"></script>
+<!--引入js部分  -->
+<script src="static/merchant/js/cada-merchant-geval.js"></script>
+<!-- 本页css -->
+<link href="static/merchant/css/cada-merchant-geval.css" rel="stylesheet">
+<script>
+/**比较两个时间大小*/
+function cha(Date1,Date2){
+    var date1 = new Date(Date1);
+    var date2 = new Date(Date2);
+	return date1.getTime() < date2.getTime()?true:false;
+}
+/**异步请求数据方法*/
+function Fx(data) {
+	var message;
+	$.ajax({type: "POST",url: U + 'merchant/Anagroup/findEvalaQuestionTop',async: false,
+			   data: data,success: function(msg) {message = msg;}
+	});
+	return message;
+}
+$(function(){
+ var now =new Date();var mon=now.getMonth();var yer=now.getFullYear();
+ $("#startDate").val('<?php echo $startDate;?>');$("#lastDate").val('<?php echo $lastDate;?>');
+ var nowDate=yer+'-'+'0'+(mon+2);
+ 	$(".btn-danger").click(function(){
+		  if($.trim($("#startDate").val()).length>0 && $.trim($("#lastDate").val()).length>0){
+			  if(!cha($("#startDate").val(),nowDate) || !cha($("#lastDate").val(),nowDate)){layer.msg('时间超出范围!');return ;}
+			  if(!cha($("#startDate").val(),$("#lastDate").val())){layer.msg('开始时间应小于结束时间');return ; }
+			   $('.form-inline').submit();
+		}else{
+			layer.msg('请选择时间');
+		}
+	});
+  /**神奇的一幕*/
+  $('.showModels a').click(function(){
+	  var rank=$(this).attr('SKY').split('|');
+	   $('#missTitle').text(rank[0]);
+	   var datastr='startDate='+$('#startDate').val()+'&endDate='+$('#lastDate').val()+'&questionnaireid='+rank[2]+'&rank='+rank[1];
+	   var muse = eval('(' + Fx(datastr) + ')'); 
+	   $('.content_ul').remove();
+	   $.each(muse.Qa,function(index,item){
+			var str=parseInt(item.A3)>0?'<span style="font-weight:1000;font-size:14px;color:red;">↑</span>':'<span style="font-weight:1000;font-size:14px;color:green;">↓</span>';
+			$('#addTop').append('<ul class="content_ul"><li style="width:70%;text-align:left;">'+(index+1)+item.title+'</li>'+'<li style="width:10%;">'+item.A1+'</li><li style="width:10%;">'+item.A2+'</li>'+'<li style="width:10%; text-align:left;">'+str+Math.abs(parseInt(item.A3))+'</li></ul>');
+	   });
+	   $.each(muse.Qb,function(index,item){
+	        var str=parseInt(item.A3)>0?'<span style="font-weight:1000;font-size:14px;color:red;">↑</span>':'<span style="font-weight:1000;font-size:14px;color:green;">↓</span>';
+			$('#delTop').append('<ul class="content_ul"><li style="width:70%;text-align:left;">'+(index+1)+item.title+'</li>'+'<li style="width:10%;">'+item.A1+'</li><li style="width:10%;">'+item.A2+'</li>'+'<li style="width:10%; text-align:left;">'+str+Math.abs(parseInt(item.A3))+'</li></ul>');
+	   });
+	    $('html, body').animate({scrollTop:$('#missTitle').offset().top},1000);
+  });
+});
+</script>
+<!-- 搜索模块 -->
+<div class="search_model" style="width:99.6%;">
+	<div class="namei">
+	<p><a  href="merchant/Anagroup/groupEvala" style="background:#e60012;color:#FFF;margin-left:10%;">总体</a><a  href="merchant/Anagroup/groupEvali">单店</a><a  href="merchant/Anagroup/groupEvalii" >双店</a></p>
+	</div>
+	<form class="form-inline" method="post" action="merchant/Anagroup/groupEvala">
+		<div class="form-group">
+		<label for="menu-url">开始时间</label>
+		<input type="text" class="form-control Wdate" id="startDate" name="startDate" placeholder="开始时间" style="width:150px;" onfocus="WdatePicker({dateFmt:'yyyy-MM'});">
+	  </div>
+		<div class="form-group">
+		<label for="menu-url">结束时间</label>
+		<input type="text" class="form-control Wdate" id="lastDate"  name="lastDate"   placeholder="开始时间" style="width:150px;" onfocus="WdatePicker({dateFmt:'yyyy-MM'});">
+	  </div>
+	  &nbsp;&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-danger" >查找</button>
+	</form>
+</div>
+<!-- 总体&行业 -->
+<div class="total">
+	<div class="total_data" style="float:left;">
+	<div class="tot_tit">总体（高端）</div>
+		<div id="skypie1"  class="skypie" style="width:30%;height:125px;float:left;" SKY="<?php echo $start;?>|#029bd5|<?php echo $score['F1'];?>"></div>
+		<div class="resis"><span class="size1 color1"><?php echo $score['F1'];?></span>/100 <span class="span1 bg1">分</span></div>
+		<div id="skypie2"  class="skypie" style="width:30%;height:125px;float:left;" SKY="<?php echo $last;?>|#00a3e1|<?php echo $score['F2'];?>"></div>
+		<div class="resis"><span class="size1 color2"><?php echo $score['F2'];?></span>/100 <span class="span1 bg2">分</span></div>
+	</div>
+	<div class="ind_data"  style="float:left;">
+	<div class="tot_tit">行业（高端）</div>
+		<div id="skypie3"  class="skypie" style="width:30%;height:125px;float:left;" SKY="<?php echo $start;?>|#efcb06|<?php echo $score['F3'];?>"></div>
+		<div class="resis"><span class="size1 color3"><?php echo $score['F3'];?></span>/100 <span class="span1 bg3">分</span></div>
+		<div id="skypie4"  class="skypie" style="width:30%;height:125px;float:left;" SKY="<?php echo $last;?>|#fce807|<?php echo $score['F4'];?>"></div>
+		<div class="resis"><span class="size1 color4"><?php echo $score['F4'];?></span>/100 <span class="span1 bg4">分</span></div>
+	</div>
+	<div class="clear"></div>
+</div>
+<!-- 相邻月份模块对比 -->
+<div class="model">
+	<!-- 服务顾问 -->
+	<div class="fwgw_eval"style="float:left;">
+		    <div class="fwgw_tit">服务顾问（高端）</div>
+				<div class="pc_tit">本店评测得分</div>
+				<div class="one_data">
+						<div class="me_tit"><?php echo $start;?></div>
+						<div class="me_line">
+						<div class="gl_sty"   style="position:relative;left:0;width:<?php echo $model[0]['F1']?>%;background-color:#7CB5EC;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+						</div>
+						<div class="me_score"><?php echo $model[0]['F1']?>分</div>
+						<div class="clear"></div>
+				</div>
+				<div class="one_data">
+						<div class="me_tit"><?php echo $last;?></div>
+						<div class="me_line">
+						<div style="position:relative;left:0;width:<?php echo $model[0]['F2']?>%;background-color:#7CB5EC;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+						</div>
+						<div class="me_score"><?php echo $model[0]['F2']?>分</div>
+						<div class="clear"></div>
+				</div>
+				<div class="pc_tit">行业评测得分</div>
+				<div class="one_data">
+						<div class="me_tit"><?php echo $start;?></div>
+						<div class="me_line">
+						<div class="gl_sty"   style="position:relative;left:0;width:<?php echo $model[0]['F3']?>%;background-color:#F9E80A;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+						</div>
+						<div class="me_score"><?php echo $model[0]['F3']?>分</div>
+						<div class="clear"></div>
+				</div>
+				<div class="one_data">
+						<div class="me_tit"><?php echo $last;?></div>
+						<div class="me_line">
+						<div style="position:relative;left:0;width:<?php echo $model[0]['F4']?>%;background-color:#F9E80A;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+						</div>
+						<div class="me_score"><?php echo $model[0]['F4']?>分</div>
+						<div class="clear"></div>
+				</div>
+			<div class="showModels"><a href="javascript:void(0);" SKY="服务顾问（高端）|1|<?php echo $model[0]['questionnaireId']?>">查看详情</a></div>
+		<div class="clear"></div>
+	</div>
+	<!-- 服务设施 -->
+	<div class="fwss_eval" style="float:left;">
+		<div class="fwgw_tit">服务设施（高端）</div>
+		<!-- me -->
+		<div class="pc_tit">本店评测得分</div>
+		<div class="one_data">
+			<div class="me_tit"><?php echo $start;?></div>
+			<div class="me_line">
+			<div class="gl_sty"   style="position:relative;left:0;width:<?php echo $model[1]['F1']?>%;background-color:#01A8B0;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+			</div>
+			<div class="me_score"><?php echo $model[1]['F1']?>分</div>
+			<div class="clear"></div>
+		</div>
+		<div class="one_data">
+			<div class="me_tit" ><?php echo $last;?></div>
+			<div class="me_line">
+			<div style="position:relative;left:0;width:<?php echo $model[1]['F2']?>%;background-color:#01A8B0;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+			</div>
+			<div class="me_score"><?php echo $model[1]['F2']?>分</div>
+			<div class="clear"></div>
+		</div>
+		<!-- other -->
+		<div class="pc_tit">行业评测得分</div>
+		<div class="one_data">
+			<div class="me_tit" ><?php echo $start;?></div>
+			<div class="me_line">
+			<div class="gl_sty"   style="position:relative;left:0;width:<?php echo $model[1]['F3']?>%;background-color:#EFCB06;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+			</div>
+			<div class="me_score"><?php echo $model[1]['F3']?>分</div>
+			<div class="clear"></div>
+		</div>
+		<div class="one_data">
+			<div class="me_tit" ><?php echo $last;?></div>
+			<div class="me_line">
+			<div style="position:relative;left:0;width:<?php echo $model[1]['F4']?>%;background-color:#EFCB06;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+			</div>
+			<div class="me_score"><?php echo $model[1]['F4']?>分</div>
+			<div class="clear"></div>
+		</div>
+		<div class="showModels"><a href="javascript:void(0);" SKY="服务设施（高端）|1|<?php echo $model[1]['questionnaireId']?>">查看详情</a></div>
+	<div class="clear"></div>
+ </div>
+	<!-- 维修质量 -->
+	<div class="wxzl_eval" style="float:left;">
+		<div class="fwgw_tit">维修质量（高端）</div>
+		<div class="pc_tit">本店评测得分</div>
+		<div class="one_data">
+				<div class="me_tit" ><?php echo $start;?></div>
+				<div class="me_line">
+				<div class="gl_sty"   style="position:relative;left:0;width:<?php echo $model[2]['F1']?>%;background-color:#E45A02;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+				</div>
+				<div class="me_score"><?php echo $model[2]['F1']?>分</div>
+				<div class="clear"></div>
+		</div>
+		<div class="one_data">
+			<div class="me_tit" ><?php echo $last;?></div>
+			<div class="me_line">
+			<div style="position:relative;left:0;width:<?php echo $model[2]['F2']?>%;background-color:#E45A02;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+			</div>
+			<div class="me_score"><?php echo $model[2]['F2']?>分</div>
+			<div class="clear"></div>
+	    </div>
+		<!-- other -->
+		<div class="pc_tit">行业评测得分</div>
+		<div class="one_data">
+			<div class="me_tit" ><?php echo $start;?></div>
+			<div class="me_line">
+			<div class="gl_sty"   style="position:relative;left:0;width:<?php echo $model[2]['F3']?>%;background-color:#EFCB06;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+			</div>
+			<div class="me_score"><?php echo $model[2]['F3']?>分</div>
+			<div class="clear"></div>
+		</div>
+		<div class="one_data">
+			<div class="me_tit" ><?php echo $last;?></div>
+			<div class="me_line">
+			<div style="position:relative;left:0;width:<?php echo $model[2]['F4']?>%;background-color:#EFCB06;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+			</div>
+			<div class="me_score"><?php echo $model[2]['F4']?>分</div>
+			<div class="clear"></div>
+		</div>
+		<div class="showModels"><a href="javascript:void(0);" SKY="维修质量（高端）|1|<?php echo $model[2]['questionnaireId']?>">查看详情</a></div>
+		<div class="clear"></div>
+	</div>
+	<!-- 维修价格 -->
+	<div class="wxjj_eval" style="float:left;">
+               <div class="fwgw_tit">维修时间（高端）</div>
+				<div class="pc_tit">本店评测得分</div>
+				<div class="one_data">
+						<div class="me_tit" ><?php echo $start;?></div>
+						<div class="me_line">
+						<div class="gl_sty"   style="position:relative;left:0;width:<?php echo $model[3]['F1']?>%;background-color:#019E47;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+						</div>
+						<div class="me_score"><?php echo $model[3]['F1']?>分</div>
+						<div class="clear"></div>
+				</div>
+				<div class="one_data">
+						<div class="me_tit" ><?php echo $last;?></div>
+						<div class="me_line">
+						<div style="position:relative;left:0;width:<?php echo $model[3]['F2']?>%;background-color:#019E47;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+						</div>
+						<div class="me_score"><?php echo $model[3]['F2']?>分</div>
+						<div class="clear"></div>
+				</div>
+		<!-- other -->
+				<div class="pc_tit">行业评测得分</div>
+				<div class="one_data">
+						<div class="me_tit" ><?php echo $start;?></div>
+						<div class="me_line">
+						<div class="gl_sty"   style="position:relative;left:0;width:<?php echo $model[3]['F3']?>%;background-color:#EFCB06;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+						</div>
+						<div class="me_score"><?php echo $model[3]['F3']?>分</div>
+						<div class="clear"></div>
+				</div>
+				<div class="one_data">
+						<div class="me_tit" ><?php echo $last;?></div>
+						<div class="me_line">
+						<div style="position:relative;left:0;width:<?php echo $model[3]['F4']?>%;background-color:#EFCB06;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+						</div>
+						<div class="me_score"><?php echo $model[3]['F4']?>分</div>
+						<div class="clear"></div>
+				</div>
+		<div class="showModels"><a href="javascript:void(0);" SKY="维修时间（高端）|1|<?php echo $model[3]['questionnaireId']?>">查看详情</a></div>
+		<div class="clear"></div>
+	</div>
+	<!-- 维修时间 -->
+	<div class="wxss_eval" style="float:left;">
+		  <div class="fwgw_tit">维修价格（高端）</div>
+		<!-- me -->
+				<div class="pc_tit">本店评测得分</div>
+				<div class="one_data">
+						<div class="me_tit" ><?php echo $start;?></div>
+						<div class="me_line">
+						<div class="gl_sty"   style="position:relative;left:0;width:<?php echo $model[4]['F1']?>%;background-color:#E18901;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+						</div>
+						<div class="me_score"><?php echo $model[4]['F1']?>分</div>
+						<div class="clear"></div>
+				</div>
+				<div class="one_data">
+						<div class="me_tit" ><?php echo $last;?></div>
+						<div class="me_line">
+						<div style="position:relative;left:0;width:<?php echo $model[4]['F2']?>%;background-color:#E18901;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+						</div>
+						<div class="me_score"><?php echo $model[4]['F2']?>分</div>
+						<div class="clear"></div>
+				</div>
+				<div class="pc_tit">行业评测得分</div>
+				<div class="one_data">
+						<div class="me_tit" ><?php echo $start;?></div>
+						<div class="me_line">
+						<div class="gl_sty"   style="position:relative;left:0;width:<?php echo $model[4]['F3']?>%;background-color:#EFCB06;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+						</div>
+						<div class="me_score"><?php echo $model[4]['F3']?>分</div>
+						<div class="clear"></div>
+				</div>
+				<div class="one_data">
+						<div class="me_tit" ><?php echo $last;?></div>
+						<div class="me_line">
+						<div style="position:relative;left:0;width:<?php echo $model[4]['F4']?>%;background-color:#EFCB06;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+						</div>
+						<div class="me_score"><?php echo $model[4]['F4']?>分</div>
+						<div class="clear"></div>
+				</div>
+		<div class="showModels"><a href="javascript:void(0);" SKY="维修价格（高端）|1|<?php echo $model[4]['questionnaireId']?>">查看详情</a></div>
+		<div class="clear"></div>
+	 </div>
+	<div class="clear"></div>
+</div>
+<!-- 总体&行业 -->
+<div class="total">
+	<div class="total_data" style="float:left;">
+	<div class="tot_tit">总体（中端）</div>
+		<div id="skypie5"  class="skypie" style="width:30%;height:125px;float:left;" SKY="<?php echo $start;?>|#029bd5|<?php echo $score['F5'];?>"></div>
+		<div class="resis"><span class="size1 color1"><?php echo $score['F5'];?></span>/100 <span class="span1 bg1">分</span></div>
+		<div id="skypie6"  class="skypie" style="width:30%;height:125px;float:left;" SKY="<?php echo $last;?>|#00a3e1|<?php echo $score['F6'];?>"></div>
+		<div class="resis"><span class="size1 color2"><?php echo $score['F6'];?></span>/100 <span class="span1 bg2">分</span></div>
+	</div>
+	<div class="ind_data"  style="float:left;">
+	<div class="tot_tit">行业（中端）</div>
+		<div id="skypie7"  class="skypie" style="width:30%;height:125px;float:left;" SKY="<?php echo $start;?>|#efcb06|<?php echo $score['F7'];?>"></div>
+		<div class="resis"><span class="size1 color3"><?php echo $score['F7'];?></span>/100 <span class="span1 bg3">分</span></div>
+		<div id="skypie8"  class="skypie" style="width:30%;height:125px;float:left;" SKY="<?php echo $last;?>|#fce807|<?php echo $score['F8'];?>"></div>
+		<div class="resis"><span class="size1 color4"><?php echo $score['F8'];?></span>/100 <span class="span1 bg4">分</span></div>
+	</div>
+	<div class="clear"></div>
+</div>
+<!-- 相邻月份模块对比 -->
+<div class="model">
+	<!-- 服务顾问 -->
+	<div class="fwgw_eval"style="float:left;">
+		    <div class="fwgw_tit">服务顾问（中端）</div>
+				<div class="pc_tit">本店评测得分</div>
+				<div class="one_data">
+						<div class="me_tit"><?php echo $start;?></div>
+						<div class="me_line">
+						<div class="gl_sty"   style="position:relative;left:0;width:<?php echo $model[0]['F5']?>%;background-color:#7CB5EC;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+						</div>
+						<div class="me_score"><?php echo $model[0]['F5']?>分</div>
+						<div class="clear"></div>
+				</div>
+				<div class="one_data">
+						<div class="me_tit"><?php echo $last;?></div>
+						<div class="me_line">
+						<div style="position:relative;left:0;width:<?php echo $model[0]['F6']?>%;background-color:#7CB5EC;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+						</div>
+						<div class="me_score"><?php echo $model[0]['F6']?>分</div>
+						<div class="clear"></div>
+				</div>
+				<div class="pc_tit">行业评测得分</div>
+				<div class="one_data">
+						<div class="me_tit"><?php echo $start;?></div>
+						<div class="me_line">
+						<div class="gl_sty"   style="position:relative;left:0;width:<?php echo $model[0]['F7']?>%;background-color:#F9E80A;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+						</div>
+						<div class="me_score"><?php echo $model[0]['F7']?>分</div>
+						<div class="clear"></div>
+				</div>
+				<div class="one_data">
+						<div class="me_tit"><?php echo $last;?></div>
+						<div class="me_line">
+						<div style="position:relative;left:0;width:<?php echo $model[0]['F8']?>%;background-color:#F9E80A;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+						</div>
+						<div class="me_score"><?php echo $model[0]['F8']?>分</div>
+						<div class="clear"></div>
+				</div>
+		<div class="showModels"><a href="javascript:void(0);" SKY="服务顾问（中端）|2|<?php echo $model[0]['questionnaireId']?>">查看详情</a></div>
+		<div class="clear"></div>
+	</div>
+	<!-- 服务设施 -->
+	<div class="fwss_eval" style="float:left;">
+		<div class="fwgw_tit">服务设施（中端）</div>
+		<!-- me -->
+		<div class="pc_tit">本店评测得分</div>
+		<div class="one_data">
+			<div class="me_tit"><?php echo $start;?></div>
+			<div class="me_line">
+			<div class="gl_sty"   style="position:relative;left:0;width:<?php echo $model[1]['F5']?>%;background-color:#01A8B0;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+			</div>
+			<div class="me_score"><?php echo $model[1]['F5']?>分</div>
+			<div class="clear"></div>
+		</div>
+		<div class="one_data">
+			<div class="me_tit" ><?php echo $last;?></div>
+			<div class="me_line">
+			<div style="position:relative;left:0;width:<?php echo $model[1]['F6']?>%;background-color:#01A8B0;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+			</div>
+			<div class="me_score"><?php echo $model[1]['F6']?>分</div>
+			<div class="clear"></div>
+		</div>
+		<!-- other -->
+		<div class="pc_tit">行业评测得分</div>
+		<div class="one_data">
+			<div class="me_tit" ><?php echo $start;?></div>
+			<div class="me_line">
+			<div class="gl_sty"   style="position:relative;left:0;width:<?php echo $model[1]['F7']?>%;background-color:#EFCB06;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+			</div>
+			<div class="me_score"><?php echo $model[1]['F7']?>分</div>
+			<div class="clear"></div>
+		</div>
+		<div class="one_data">
+			<div class="me_tit" ><?php echo $last;?></div>
+			<div class="me_line">
+			<div style="position:relative;left:0;width:<?php echo $model[1]['F8']?>%;background-color:#EFCB06;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+			</div>
+			<div class="me_score"><?php echo $model[1]['F8']?>分</div>
+			<div class="clear"></div>
+		</div>
+	<div class="showModels"><a href="javascript:void(0);" SKY="服务设施（中端）|2|<?php echo $model[1]['questionnaireId']?>">查看详情</a></div>
+	<div class="clear"></div>
+ </div>
+	<!-- 维修质量 -->
+	<div class="wxzl_eval" style="float:left;">
+		<div class="fwgw_tit">维修质量（中端）</div>
+		<div class="pc_tit">本店评测得分</div>
+		<div class="one_data">
+				<div class="me_tit" ><?php echo $start;?></div>
+				<div class="me_line">
+				<div class="gl_sty"   style="position:relative;left:0;width:<?php echo $model[2]['F5']?>%;background-color:#E45A02;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+				</div>
+				<div class="me_score"><?php echo $model[2]['F5']?>分</div>
+				<div class="clear"></div>
+		</div>
+		<div class="one_data">
+			<div class="me_tit" ><?php echo $last;?></div>
+			<div class="me_line">
+			<div style="position:relative;left:0;width:<?php echo $model[2]['F6']?>%;background-color:#E45A02;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+			</div>
+			<div class="me_score"><?php echo $model[2]['F6']?>分</div>
+			<div class="clear"></div>
+	    </div>
+		<!-- other -->
+		<div class="pc_tit">行业评测得分</div>
+		<div class="one_data">
+			<div class="me_tit" ><?php echo $start;?></div>
+			<div class="me_line">
+			<div class="gl_sty"   style="position:relative;left:0;width:<?php echo $model[2]['F7']?>%;background-color:#EFCB06;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+			</div>
+			<div class="me_score"><?php echo $model[2]['F7']?>分</div>
+			<div class="clear"></div>
+		</div>
+		<div class="one_data">
+			<div class="me_tit" ><?php echo $last;?></div>
+			<div class="me_line">
+			<div style="position:relative;left:0;width:<?php echo $model[2]['F8']?>%;background-color:#EFCB06;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+			</div>
+			<div class="me_score"><?php echo $model[2]['F8']?>分</div>
+			<div class="clear"></div>
+		</div>
+		<div class="showModels"><a href="javascript:void(0);" SKY="维修质量（中端）|2|<?php echo $model[2]['questionnaireId']?>">查看详情</a></div>
+		<div class="clear"></div>
+	</div>
+	<!-- 维修价格 -->
+	<div class="wxjj_eval" style="float:left;">
+               <div class="fwgw_tit">维修时间（中端）</div>
+				<div class="pc_tit">本店评测得分</div>
+				<div class="one_data">
+						<div class="me_tit" ><?php echo $start;?></div>
+						<div class="me_line">
+						<div class="gl_sty"   style="position:relative;left:0;width:<?php echo $model[3]['F5']?>%;background-color:#019E47;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+						</div>
+						<div class="me_score"><?php echo $model[3]['F5']?>分</div>
+						<div class="clear"></div>
+				</div>
+				<div class="one_data">
+						<div class="me_tit" ><?php echo $last;?></div>
+						<div class="me_line">
+						<div style="position:relative;left:0;width:<?php echo $model[3]['F6']?>%;background-color:#019E47;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+						</div>
+						<div class="me_score"><?php echo $model[3]['F6']?>分</div>
+						<div class="clear"></div>
+				</div>
+		<!-- other -->
+				<div class="pc_tit">行业评测得分</div>
+				<div class="one_data">
+						<div class="me_tit" ><?php echo $start;?></div>
+						<div class="me_line">
+						<div class="gl_sty"   style="position:relative;left:0;width:<?php echo $model[3]['F7']?>%;background-color:#EFCB06;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+						</div>
+						<div class="me_score"><?php echo $model[3]['F7']?>分</div>
+						<div class="clear"></div>
+				</div>
+				<div class="one_data">
+						<div class="me_tit" ><?php echo $last;?></div>
+						<div class="me_line">
+						<div style="position:relative;left:0;width:<?php echo $model[3]['F8']?>%;background-color:#EFCB06;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+						</div>
+						<div class="me_score"><?php echo $model[3]['F8']?>分</div>
+						<div class="clear"></div>
+				</div>
+		<div class="clear"></div>
+		<div class="showModels"><a href="javascript:void(0);" SKY="维修时间（中端）|2|<?php echo $model[3]['questionnaireId']?>">查看详情</a></div>
+	</div>
+	<!-- 维修时间 -->
+	<div class="wxss_eval" style="float:left;">
+		  <div class="fwgw_tit">维修价格（中端）</div>
+		<!-- me -->
+				<div class="pc_tit">本店评测得分</div>
+				<div class="one_data">
+						<div class="me_tit" ><?php echo $start;?></div>
+						<div class="me_line">
+						<div class="gl_sty"   style="position:relative;left:0;width:<?php echo $model[4]['F5']?>%;background-color:#E18901;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+						</div>
+						<div class="me_score"><?php echo $model[4]['F5']?>分</div>
+						<div class="clear"></div>
+				</div>
+				<div class="one_data">
+						<div class="me_tit" ><?php echo $last;?></div>
+						<div class="me_line">
+						<div style="position:relative;left:0;width:<?php echo $model[4]['F6']?>%;background-color:#E18901;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+						</div>
+						<div class="me_score"><?php echo $model[4]['F6']?>分</div>
+						<div class="clear"></div>
+				</div>
+				<div class="pc_tit">行业评测得分</div>
+				<div class="one_data">
+						<div class="me_tit" ><?php echo $start;?></div>
+						<div class="me_line">
+						<div class="gl_sty"   style="position:relative;left:0;width:<?php echo $model[4]['F7']?>%;background-color:#EFCB06;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+						</div>
+						<div class="me_score"><?php echo $model[4]['F7']?>分</div>
+						<div class="clear"></div>
+				</div>
+				<div class="one_data">
+						<div class="me_tit" ><?php echo $last;?></div>
+						<div class="me_line">
+						<div style="position:relative;left:0;width:<?php echo $model[4]['F8']?>%;background-color:#EFCB06;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+						</div>
+						<div class="me_score"><?php echo $model[4]['F8']?>分</div>
+						<div class="clear"></div>
+				</div>
+		<div class="showModels"><a href="javascript:void(0);" SKY="维修价格（中端）|2|<?php echo $model[4]['questionnaireId']?>">查看详情</a></div>
+		<div class="clear"></div>
+	 </div>
+	<div class="clear"></div>
+</div>
+<!-- 总体&行业 -->
+<div class="total">
+	<div class="total_data" style="float:left;">
+	<div class="tot_tit">总体（自主）</div>
+		<div id="skypie9"  class="skypie" style="width:30%;height:125px;float:left;" SKY="<?php echo $start;?>|#029bd5|<?php echo $score['F9'];?>"></div>
+		<div class="resis"><span class="size1 color1"><?php echo $score['F9'];?></span>/100 <span class="span1 bg1">分</span></div>
+		<div id="skypie10"  class="skypie" style="width:30%;height:125px;float:left;" SKY="<?php echo $last;?>|#00a3e1|<?php echo $score['F10'];?>"></div>
+		<div class="resis"><span class="size1 color2"><?php echo $score['F10'];?></span>/100 <span class="span1 bg2">分</span></div>
+	</div>
+	<div class="ind_data"  style="float:left;">
+	<div class="tot_tit">行业（自主）</div>
+		<div id="skypie11"  class="skypie" style="width:30%;height:125px;float:left;" SKY="<?php echo $start;?>|#efcb06|<?php echo $score['F11'];?>"></div>
+		<div class="resis"><span class="size1 color3"><?php echo $score['F11'];?></span>/100 <span class="span1 bg3">分</span></div>
+		<div id="skypie12"  class="skypie" style="width:30%;height:125px;float:left;" SKY="<?php echo $last;?>|#fce807|<?php echo $score['F12'];?>"></div>
+		<div class="resis"><span class="size1 color4"><?php echo $score['F12'];?></span>/100 <span class="span1 bg4">分</span></div>
+	</div>
+	<div class="clear"></div>
+</div>
+<!-- 相邻月份模块对比 -->
+<div class="model">
+	<!-- 服务顾问 -->
+	<div class="fwgw_eval"style="float:left;">
+		    <div class="fwgw_tit">服务顾问（自主）</div>
+				<div class="pc_tit">本店评测得分</div>
+				<div class="one_data">
+						<div class="me_tit"><?php echo $start;?></div>
+						<div class="me_line">
+						<div class="gl_sty"   style="position:relative;left:0;width:<?php echo $model[0]['F9']?>%;background-color:#7CB5EC;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+						</div>
+						<div class="me_score"><?php echo $model[0]['F9']?>分</div>
+						<div class="clear"></div>
+				</div>
+				<div class="one_data">
+						<div class="me_tit"><?php echo $last;?></div>
+						<div class="me_line">
+						<div style="position:relative;left:0;width:<?php echo $model[0]['F10']?>%;background-color:#7CB5EC;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+						</div>
+						<div class="me_score"><?php echo $model[0]['F10']?>分</div>
+						<div class="clear"></div>
+				</div>
+				<div class="pc_tit">行业评测得分</div>
+				<div class="one_data">
+						<div class="me_tit"><?php echo $start;?></div>
+						<div class="me_line">
+						<div class="gl_sty"   style="position:relative;left:0;width:<?php echo $model[0]['F11']?>%;background-color:#F9E80A;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+						</div>
+						<div class="me_score"><?php echo $model[0]['F11']?>分</div>
+						<div class="clear"></div>
+				</div>
+				<div class="one_data">
+						<div class="me_tit"><?php echo $last;?></div>
+						<div class="me_line">
+						<div style="position:relative;left:0;width:<?php echo $model[0]['F12']?>%;background-color:#F9E80A;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+						</div>
+						<div class="me_score"><?php echo $model[0]['F12']?>分</div>
+						<div class="clear"></div>
+				</div>
+		<div class="showModels"><a href="javascript:void(0);" SKY="服务顾问（自主）|3|<?php echo $model[0]['questionnaireId']?>">查看详情</a></div>
+		<div class="clear"></div>
+	</div>
+	<!-- 服务设施 -->
+	<div class="fwss_eval" style="float:left;">
+		<div class="fwgw_tit">服务设施（自主）</div>
+		<!-- me -->
+		<div class="pc_tit">本店评测得分</div>
+		<div class="one_data">
+			<div class="me_tit"><?php echo $start;?></div>
+			<div class="me_line">
+			<div class="gl_sty"   style="position:relative;left:0;width:<?php echo $model[1]['F9']?>%;background-color:#01A8B0;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+			</div>
+			<div class="me_score"><?php echo $model[1]['F9']?>分</div>
+			<div class="clear"></div>
+		</div>
+		<div class="one_data">
+			<div class="me_tit" ><?php echo $last;?></div>
+			<div class="me_line">
+			<div style="position:relative;left:0;width:<?php echo $model[1]['F10']?>%;background-color:#01A8B0;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+			</div>
+			<div class="me_score"><?php echo $model[1]['F10']?>分</div>
+			<div class="clear"></div>
+		</div>
+		<!-- other -->
+		<div class="pc_tit">行业评测得分</div>
+		<div class="one_data">
+			<div class="me_tit" ><?php echo $start;?></div>
+			<div class="me_line">
+			<div class="gl_sty"   style="position:relative;left:0;width:<?php echo $model[1]['F11']?>%;background-color:#EFCB06;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+			</div>
+			<div class="me_score"><?php echo $model[1]['F11']?>分</div>
+			<div class="clear"></div>
+		</div>
+		<div class="one_data">
+			<div class="me_tit" ><?php echo $last;?></div>
+			<div class="me_line">
+			<div style="position:relative;left:0;width:<?php echo $model[1]['F12']?>%;background-color:#EFCB06;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+			</div>
+			<div class="me_score"><?php echo $model[1]['F12']?>分</div>
+			<div class="clear"></div>
+		</div>
+	<div class="showModels"><a href="javascript:void(0);" SKY="服务设施（自主）|3|<?php echo $model[1]['questionnaireId']?>">查看详情</a></div>
+	<div class="clear"></div>
+ </div>
+	<!-- 维修质量 -->
+	<div class="wxzl_eval" style="float:left;">
+		<div class="fwgw_tit">维修质量（自主）</div>
+		<div class="pc_tit">本店评测得分</div>
+		<div class="one_data">
+				<div class="me_tit" ><?php echo $start;?></div>
+				<div class="me_line">
+				<div class="gl_sty"   style="position:relative;left:0;width:<?php echo $model[2]['F9']?>%;background-color:#E45A02;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+				</div>
+				<div class="me_score"><?php echo $model[2]['F9']?>分</div>
+				<div class="clear"></div>
+		</div>
+		<div class="one_data">
+			<div class="me_tit" ><?php echo $last;?></div>
+			<div class="me_line">
+			<div style="position:relative;left:0;width:<?php echo $model[2]['F10']?>%;background-color:#E45A02;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+			</div>
+			<div class="me_score"><?php echo $model[2]['F10']?>分</div>
+			<div class="clear"></div>
+	    </div>
+		<!-- other -->
+		<div class="pc_tit">行业评测得分</div>
+		<div class="one_data">
+			<div class="me_tit" ><?php echo $start;?></div>
+			<div class="me_line">
+			<div class="gl_sty"   style="position:relative;left:0;width:<?php echo $model[2]['F11']?>%;background-color:#EFCB06;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+			</div>
+			<div class="me_score"><?php echo $model[2]['F11']?>分</div>
+			<div class="clear"></div>
+		</div>
+		<div class="one_data">
+			<div class="me_tit" ><?php echo $last;?></div>
+			<div class="me_line">
+			<div style="position:relative;left:0;width:<?php echo $model[2]['F12']?>%;background-color:#EFCB06;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+			</div>
+			<div class="me_score"><?php echo $model[2]['F12']?>分</div>
+			<div class="clear"></div>
+		</div>
+	    <div class="showModels"><a href="javascript:void(0);" SKY="维修质量（自主）|3|<?php echo $model[2]['questionnaireId']?>">查看详情</a></div>
+		<div class="clear"></div>
+	</div>
+	<!-- 维修价格 -->
+	<div class="wxjj_eval" style="float:left;">
+               <div class="fwgw_tit">维修时间（自主）</div>
+				<div class="pc_tit">本店评测得分</div>
+				<div class="one_data">
+						<div class="me_tit" ><?php echo $start;?></div>
+						<div class="me_line">
+						<div class="gl_sty"   style="position:relative;left:0;width:<?php echo $model[3]['F9']?>%;background-color:#019E47;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+						</div>
+						<div class="me_score"><?php echo $model[3]['F9']?>分</div>
+						<div class="clear"></div>
+				</div>
+				<div class="one_data">
+						<div class="me_tit" ><?php echo $last;?></div>
+						<div class="me_line">
+						<div style="position:relative;left:0;width:<?php echo $model[3]['F10']?>%;background-color:#019E47;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+						</div>
+						<div class="me_score"><?php echo $model[3]['F10']?>分</div>
+						<div class="clear"></div>
+				</div>
+		<!-- other -->
+				<div class="pc_tit">行业评测得分</div>
+				<div class="one_data">
+						<div class="me_tit" ><?php echo $start;?></div>
+						<div class="me_line">
+						<div class="gl_sty"   style="position:relative;left:0;width:<?php echo $model[3]['F11']?>%;background-color:#EFCB06;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+						</div>
+						<div class="me_score"><?php echo $model[3]['F11']?>分</div>
+						<div class="clear"></div>
+				</div>
+				<div class="one_data">
+						<div class="me_tit" ><?php echo $last;?></div>
+						<div class="me_line">
+						<div style="position:relative;left:0;width:<?php echo $model[3]['F12']?>%;background-color:#EFCB06;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+						</div>
+						<div class="me_score"><?php echo $model[3]['F12']?>分</div>
+						<div class="clear"></div>
+				</div>
+		<div class="showModels"><a href="javascript:void(0);" SKY="维修时间（自主）|3|<?php echo $model[3]['questionnaireId']?>">查看详情</a></div>
+		<div class="clear"></div>
+	</div>
+	<!-- 维修时间 -->
+	<div class="wxss_eval" style="float:left;">
+		  <div class="fwgw_tit">维修价格（自主）</div>
+		<!-- me -->
+				<div class="pc_tit">本店评测得分</div>
+				<div class="one_data">
+						<div class="me_tit" ><?php echo $start;?></div>
+						<div class="me_line">
+						<div class="gl_sty"   style="position:relative;left:0;width:<?php echo $model[4]['F9']?>%;background-color:#E18901;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+						</div>
+						<div class="me_score"><?php echo $model[4]['F9']?>分</div>
+						<div class="clear"></div>
+				</div>
+				<div class="one_data">
+						<div class="me_tit" ><?php echo $last;?></div>
+						<div class="me_line">
+						<div style="position:relative;left:0;width:<?php echo $model[4]['F10']?>%;background-color:#E18901;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+						</div>
+						<div class="me_score"><?php echo $model[4]['F10']?>分</div>
+						<div class="clear"></div>
+				</div>
+				<div class="pc_tit">行业评测得分</div>
+				<div class="one_data">
+						<div class="me_tit" ><?php echo $start;?></div>
+						<div class="me_line">
+						<div class="gl_sty"   style="position:relative;left:0;width:<?php echo $model[4]['F11']?>%;background-color:#EFCB06;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+						</div>
+						<div class="me_score"><?php echo $model[4]['F11']?>分</div>
+						<div class="clear"></div>
+				</div>
+				<div class="one_data">
+						<div class="me_tit" ><?php echo $last;?></div>
+						<div class="me_line">
+						<div style="position:relative;left:0;width:<?php echo $model[4]['F12']?>%;background-color:#EFCB06;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+						</div>
+						<div class="me_score"><?php echo $model[4]['F12']?>分</div>
+						<div class="clear"></div>
+				</div>
+		<div class="showModels"><a href="javascript:void(0);" SKY="维修时间（自主）|3|<?php echo $model[4]['questionnaireId']?>">查看详情</a></div>
+		<div class="clear"></div>
+	 </div>
+	<div class="clear"></div>
+</div>
+</div>
+<!-- 服务顾问指标-->
+<div class="gw_model">
+	<div class="title" style="float:left;" id="missTitle">服务顾问（高端）</div>
+	<!-- 最高指标开始 -->
+	<div class="top_index" style="float:left;">
+		<div class="top_tit">最高指标得分</div>
+		<div class="index_tit" id="addTop">
+		<ul class="tit_ul">
+		<li style="width:70%;">指标</li>
+		<li style="width:10%;"><?php echo $start;?></li>
+		<li style="width:10%;"><?php echo $last;?></li>
+		<li style="width:10%;text-align:left;">差值</li>
+		</ul>
+		<?php foreach($Fa AS $k=>$f){?>
+	   <ul class="content_ul">
+		<li style="width:70%;text-align:left;"><?php echo $k+1;?>.<?php echo $f['title'];?></li>
+		<li style="width:10%;"><?php echo $f['A1'];?></li>
+		<li style="width:10%;"><?php echo $f['A2'];?></li>
+		<li style="width:10%;text-align:left;"><?php echo $f['A3']>0?'<span style="font-weight:1000;font-size:14px;color:red;">↑</span>':'<span style="font-weight:1000;font-size:14px;color:green;">↓</span>';?><?php echo abs($f['A3']);?></li>
+		</ul>
+		<?php }?>
+	   </div>
+	</div>
+	<!-- 最低指标开始 -->
+	<div class="top_index" style="float:left;">
+	<div class="top_tit">最低指标得分</div>
+	<div class="index_tit" id="delTop">
+	<ul class="tit_ul">
+	<li style="width:70%;">指标</li>
+	<li style="width:10%;"><?php echo $start;?></li>
+	<li style="width:10%;"><?php echo $last;?></li>
+	<li style="width:10%;text-align:left;">差值</li>
+	</ul>
+	<?php foreach($Fb AS $k=>$f){?>
+	   <ul class="content_ul">
+		<li style="width:70%;text-align:left;"><?php echo $k+1;?>.<?php echo $f['title'];?></li>
+		<li style="width:10%;"><?php echo $f['A1'];?></li>
+		<li style="width:10%;"><?php echo $f['A2'];?></li>
+		<li style="width:10%; text-align:left;"><?php echo $f['A3']>0?'<span style="font-weight:1000;font-size:14px;color:red;">↑</span>':'<span style="font-weight:1000;font-size:14px;color:green;">↓</span>';?><?php echo abs($f['A3']);?></li>
+		</ul>
+		<?php }?>
+	</div>
+	</div>
+</div>
+</body>
+</html>

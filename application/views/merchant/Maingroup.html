@@ -1,0 +1,380 @@
+<?php  $this->load->view('admin/head.html');?>
+<!-- highchart插件 -->
+<script src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script>
+<script src="http://cdn.hcharts.cn/highcharts/modules/exporting.js"></script>
+
+<script src="https://img.hcharts.cn/highmaps/highmaps.js"></script>
+<script src="https://img.hcharts.cn/highcharts/modules/drilldown.js"></script>
+<script src="http://code.highcharts.com/maps/modules/map.js"></script>
+
+<script src="static/merchant/js/height_one.js"></script>
+<script src="static/merchant/js/height_two.js"></script> 
+
+
+<!-- 本页css -->
+<link href="static/merchant/css/maingroup.css" rel="stylesheet">
+<!-- <link href="static/merchant/css/cada-merchant-main.css" rel="stylesheet"> -->
+   <!--引入js部分  -->
+<script src="static/merchant/js/maingroup.js"></script>
+<!-- 渲染数据 -->
+<script>
+var all_scoress=<?php echo $all_score;?>;		//总得分高中低
+ var five_scoress=<?php echo $five_score;?>;      //五个模块得分高中低
+ var five_size=<?php echo $five_size;?>;         //五个样本量
+ var rank_top=<?php echo $rank_top;?>;		//高排名
+ var rank_mid=<?php echo $rank_mid;?>;	  //中排名
+ var rank_low=<?php echo $rank_low;?>;	  //低排名
+ var num=<?php echo $num;?>; //门店数量
+ var key_index=<?php echo $key_index;?>;  //关键指标
+ var maps=<?php echo $map;?>;    //地图数据
+</script>
+<!-- map -->
+<!-- 外层div -->
+
+<div class="main  "  >
+<!-- 查询部分///////////////// -->
+<div class="search" >
+<div class="ser_sample" >
+<div style="font-size:22px;color:#1F81C1;letter-spacing:3px;"> 用户参与样本量&nbsp;:&nbsp;<span><?php echo $group_num[0]['g_num'];?></span><span style="font-size:14px;">(本集团)</span></div>
+</div>
+<div class="ser_amount">
+<div style="font-size:22px;color:#F55738;letter-spacing:3px;"> 用户参与样本量&nbsp;:&nbsp;<span><?php echo $group_num[0]['h_num'];?></span><span  style="font-size:14px;">(平台全部)</span></div>
+</div>
+</div>
+<!--总分 /////////////////////////// -->
+<div class="total">
+	<div class="total_data" style="float:left;">
+	<div class="tot_tit">高端</div>
+	
+		<div class="resis  top_g" style="text-align:center;width:30%;float:left;height:30px;"><span class="size1 color1"></span>/100 <span class="span1 bg1">分</span></div>
+		<div class="resis  top_h" style="text-align:center;width:30%;float:left;height:30px;"><span class="size1 color2"></span>/100 <span class="span1 bg2">分</span></div>
+		<div class="resis  " style="text-align:center;width:40%;float:left;height:30px;"><span class="color1  toop"></span>/<?php echo $cont;?>名</div>
+		
+		
+		<div id="my_top_score" style="float:left;width:30%;height:100px;"></div>
+		<div id="ind_top_score" style="float:left;width:30%;height:100px;"></div>
+		<div id="group_rank" style="float:left;	   width:40%;height:100px;border-right:1px solid #ccc;">
+		</div>
+		<div  class="me_top" style="float:left;width:30%;height:40px;text-align:center;line-height:30px;font-size:12px;"></div>
+		<div  class="hy" style="float:left;width:30%;height:40px;text-align:center;line-height:30px;font-size:12px;">行业</div>
+		<div  class="rank" style="float:left;width:40%;height:40px;text-align:center;line-height:30px;font-size:12px;">排名</div>
+		
+	</div>
+
+
+	<div class="total_data" style="float:left;">
+	<div class="tot_tit">中端</div>
+	
+		<div class="resis  mid_g" style="text-align:center;width:30%;float:left;height:30px;"><span class="size1 " style="color:#44BE26"></span>/100 <span class="span1 " style="background:#44BE26">分</span></div>
+		<div class="resis  mid_h" style="text-align:center;width:30%;float:left;height:30px;"><span class="size1 color2" ></span>/100 <span class="span1 bg2">分</span></div>
+		<div class="resis  " style="text-align:center;width:40%;float:left;height:30px;"><span class="miid" style="color:#44BE26"></span>/<?php echo $conm;?>名</div>
+		
+		
+		<div id="my_mid_score" style="float:left;width:30%;height:100px;"></div>
+		<div id="ind_mid_score" style="float:left;width:30%;height:100px;"></div>
+		<div id="group_mid_rank" style="float:left;width:40%;height:100px;border-right:1px solid #ccc;"></div>
+		
+		<div  class="me_mid" style="float:left;width:30%;height:40px;text-align:center;line-height:40px;font-size:12px;"></div>
+<div  class="hy" style="float:left;width:30%;height:40px;text-align:center;line-height:40px;font-size:12px;">行业</div>
+<div  class="rank" style="float:left;width:40%;height:40px;text-align:center;line-height:40px;font-size:12px;">排名</div>
+		
+	</div>
+
+	<div class="total_data_low" style="float:left;">
+	<div class="tot_tit">自主</div>
+	
+		<div class="resis  low_g" style="text-align:center;width:30%;float:left;height:30px;"><span class="size1 " style="color:#0494C9"></span>/100 <span class="span1 "  style="background:#0494C9">分</span></div>
+		<div class="resis  low_h" style="text-align:center;width:30%;float:left;height:30px;"><span class="size1 color2" ></span>/100 <span class="span1 bg2">分</span></div>
+		<div class="resis  " style="text-align:center;width:40%;float:left;height:30px;"><span class="loow" style="color:#0494C9"></span>/<?php echo $conl;?>名</div>
+		
+		
+		<div id="my_bottom_score" style="float:left;width:30%;height:100px;"></div>
+		<div id="ind_bottom_score" style="float:left;width:30%;height:100px;"></div>
+		<div id="group_bottom_rank" style="float:left;width:40%;height:100px;border-right:1px solid #ccc;"></div>
+		
+		<div  class="me_mid" style="float:left;width:30%;height:40px;text-align:center;line-height:40px;font-size:12px;"></div>
+		<div  class="hy" style="float:left;width:30%;height:40px;text-align:center;line-height:40px;font-size:12px;">行业</div>
+		<div  class="rank" style="float:left;width:40%;height:40px;text-align:center;line-height:40px;font-size:12px;">排名</div>
+		
+	</div>
+</div>
+<!--关键指标分析 /////////////////////////// -->
+<div class="important_index">
+	<!--标题  -->
+	<div class="imp_tit">关键指标分析</div>
+	<!-- 一次修复率 -->
+	<div class="one_index" style="margin-left:0.5%;">
+	        <div class="one-titles">① 一次修复率</div>
+			<div class="one-titlex">每次维修/保养是否能解决您的问题？</div>
+			<div id="xf_index" class="one-tree"></div>
+			<div class="one-less">
+				<p><span style="background:#15A354;">&nbsp;</span>可以解决 (<?php echo $key_index_txt[0]['S1'];?>%)</p>
+				<p><span style="background:#0064AE;">&nbsp;</span>需要多次返修 (<?php echo $key_index_txt[0]['S2'];?>%)</p>
+				<p><span style="background:#EC8F54;">&nbsp;</span>需要返修一次 (<?php echo $key_index_txt[0]['S3'];?>%)</p>
+		    </div>			
+	</div>
+	<!-- NPS -->
+	<div class="one_index">
+		 <div class="one-titles">② 净推荐率，即NPS</div>
+		 <div class="one-titlex">您是否会推荐他人来这家门店维修保养？</div>
+		<div id="nps_index" class="one-tree"></div>
+			<div class="one-less">
+				<p><span style="background:#15A354;">&nbsp;</span>会 (<?php echo $key_index_txt[0]['S4'];?>%)</p>
+				<p><span style="background:#E35A02;">&nbsp;</span>不会 (<?php echo $key_index_txt[0]['S5'];?>%)</p>
+		    </div>		
+	</div>
+	<!-- 忠诚度 -->
+	<div class="one_index">
+		 <div class="one-titles">③ 售后服务忠诚度</div>
+		 <div class="one-titlex">您下次还会选择来这家店维修保养？</div>
+		 <div id="loyal_index" class="one-tree"></div>
+			<div class="one-less">
+				<p><span style="background:#029BD5;">&nbsp;</span>会 (<?php echo $key_index_txt[0]['S6'];?>% )</p>
+				<p><span style="background:#0064AE;">&nbsp;</span>不会 (<?php echo $key_index_txt[0]['S7'];?>%)</p>
+		    </div>				 
+	</div>
+</div>
+<!--本月评测得分-->
+<div class="gw_model  ">
+<div style="float:left;width:49.7%;margin-right:0.6%;background:#fff;height:250px;box-shadow:#ccc 0px 0px 2px;border-radius:5px;">
+<div style="float:left;border-bottom:1px solid #ccc;width:100%;height:60px;">
+<div  style="float:left;width:30%;height:30px;line-height:60px;margin-left:5px;font-size:18px;">本月平均评测得分</div>
+	<div  style="float:right;text-align:center;width:40%;line-height:60px;height:30px;">
+	<button  class="btn btn-danger butinfo top_but" >高端</button>
+	<button  class="btn btn-danger butinfo  mid_but" >中端</button>
+	<button  class="btn btn-danger butinfo  low_but" >自主</button>
+	<div  style="float:right; color:#6DB7F7;margin-right:5px;"><a style="color:#6DB7F7"  href="index.php/merchant/Monitor/monitorAll">查看详情</a></div>
+	</div>
+</div>
+<div class="five_score five_top">
+<div id="fwgw_score_top"    style="width:20%;height:160px;float:left;"></div>
+<div id="fwss_score_top" style="width:20%;height:160px;float:left;"></div>
+<div id="wxzl_score_top" style="width:20%;height:160px;float:left;"></div>
+<div id="wxjg_score_top" style="width:20%;height:160px;float:left;"></div>
+<div id="wxss_score_top" style="width:20%;height:160px;float:left;"></div>
+ 	<?php foreach($que as $vs):?>
+<div class="mo_tit"><?php echo $vs['title'];?></div>
+   <?php endforeach;?>  
+</div>
+
+<div class="five_score five_mid">
+<div id="fwgw_score_mid"    style="width:20%;height:160px;float:left;"></div>
+<div id="fwss_score_mid" style="width:20%;height:160px;float:left;"></div>
+<div id="wxzl_score_mid" style="width:20%;height:160px;float:left;"></div>
+<div id="wxjg_score_mid" style="width:20%;height:160px;float:left;"></div>
+<div id="wxss_score_mid" style="width:20%;height:160px;float:left;border-right:1px solid #ccc;"></div>
+<?php foreach($que as $vs):?>
+<div class="mo_tit"><?php echo $vs['title'];?></div>
+   <?php endforeach;?>  
+</div>
+
+<div class="five_score five_low">
+<div id="fwgw_score_low"    style="width:20%;height:160px;float:left;"></div>
+<div id="fwss_score_low" 		style="width:20%;height:160px;float:left;"></div>
+<div id="wxzl_score_low" style="width:20%;height:160px;float:left;"></div>
+<div id="wxjg_score_low" style="width:20%;height:160px;float:left;"></div>
+<div id="wxss_score_low" style="width:20%;height:160px;float:left;border-right:1px solid #ccc;"></div>
+ 	<?php foreach($que as $vs):?>
+<div class="mo_tit"><?php echo $vs['title'];?></div>
+   <?php endforeach;?>  
+</div>
+
+</div>
+
+<div style="float:left;width:49.7%;background:#fff;height:250px;box-shadow:#ccc 0px 0px 2px;border-radius:5px;">
+<div style="float:left;border-bottom:1px solid #ccc;width:100%;height:60px;">
+<div  style="float:left;width:30%;height:30px;line-height:60px;margin-left:5px;font-size:18px;">本月用户参与样本量</div>
+	<div  style="float:right;text-align:center;width:40%;line-height:60px;height:30px;">
+	<button  class="btn btn-danger butinfo top_size" >高端</button>
+	<button  class="btn btn-danger butinfo mid_size" >中端</button>
+	<button  class="btn btn-danger butinfo low_size" >自主</button>
+	<div  style="float:right; color:#6DB7F7;margin-right:5px;"><a style="color:#6DB7F7"  href="index.php/merchant/Monitor/monitorAll">查看详情</a></div>
+	</div>
+</div>
+<div class="clear"></div>
+<div class="sample  s_top"style="margin-top:20px;">
+			<?php foreach($five_size as $v):?>
+				<div class="model_score" style="width:95%;height:32px;">
+						<div class="me_tit" style="float:left;margin-left:5%;font-size:12px;color:#5D5050;width:15%;"><?php echo $v['title'];?></div>
+						<div style="width:60%;background:#CDCCCB;float:left;margin-left:12px;border-radius:4px;height:14px;">
+						<div class="gl_sty"   style="position:relative;left:0;width:<?php echo $v['top_pre'];?>%;background-color:<?php echo $v['color'];?>;display:block;float:left;font-siez:12px;color:#fff;border-radius:4px;height:14px;"></div>
+						</div>
+						<div style="float:left;display:block;margin-left:5%;font-size:12px;color:#5D5050;"><?php echo $v['top_gs'];?></div>
+				</div>
+				<?php endforeach;?>
+</div>
+<div class="sample  s_mid" style="margin-top:20px;">
+		<?php foreach($five_size as $v):?>
+				<div class="model_score" style="width:95%;height:32px;">
+						<div class="me_tit" style="float:left;margin-left:5%;font-size:12px;color:#5D5050;width:15%;"><?php echo $v['title'];?></div>
+						<div style="width:60%;background:#CDCCCB;float:left;margin-left:12px;border-radius:4px;height:14px;">
+						<div class="gl_sty"   style="position:relative;left:0;width:<?php echo $v['mid_pre'];?>%;background-color:<?php echo $v['color'];?>;display:block;float:left;font-siez:12px;color:#fff;border-radius:4px;height:14px;"></div>
+						</div>
+						<div style="float:left;display:block;margin-left:5%;font-size:12px;color:#5D5050;"><?php echo $v['mid_gs'];?></div>
+				</div>
+				<?php endforeach;?>
+</div>
+<div class="sample  s_low" style="margin-top:20px;">
+	<?php foreach($five_size as $v):?>
+				<div class="model_score" style="width:95%;height:32px;">
+						<div class="me_tit" style="float:left;margin-left:5%;font-size:12px;color:#5D5050;width:15%;"><?php echo $v['title'];?></div>
+						<div style="width:60%;background:#CDCCCB;float:left;margin-left:12px;border-radius:4px;height:14px;">
+						<div class="gl_sty"   style="position:relative;left:0;width:<?php echo $v['low_pre'];?>%;background-color:<?php echo $v['color'];?>;display:block;float:left;font-siez:12px;color:#fff;border-radius:4px;height:14px;"></div>
+						</div>
+						<div style="float:left;display:block;margin-left:5%;font-size:12px;color:#5D5050;"><?php echo $v['low_gs'];?></div>
+				</div>
+				<?php endforeach;?>
+</div>
+</div>
+</div>
+
+<!-- 年度各模块详细评测得分------------------------->
+<div class="year_model">
+<div class="left_rank">
+<div style="margin-bottom:10px;border-bottom:1px solid #ccc;float:left;width:85%;text-align:left;height:30px;line-height:30px;font-size:16px;color:#959898;">&nbsp;门店排行</div>
+<div style="border-bottom:1px solid #ccc;float:left;width:15%;height:30px;line-height:30px;font-size:16px;text-align:left;">
+<span class="_desc" style='curosr:pointer;font-weight:800;color:red;'>▲</span>
+<span class="_asc" style='curosr:pointer;font-weight:800;'>▼</span>
+</div>
+<div class="list  l_desc" style="height:360px;">
+<?php foreach($store_rank_desc  as $key=>$v):?>
+<ul style="margin-top:-3px;">
+<?php if($key<3){?>
+	<li>
+		<ol style="display:block;list-style:none;height:30px;line-height:30px;width:100%;margin:0;padding:0;">
+			<li style="width:5%;float:left;color:red;margin:0;padding:0;height:30px;line-height:30px;"><?php echo $key+1;?>.</li>
+			<li style="width:80%;float:left;color:red;margin:0;padding:0;height:30px;line-height:30px;"><a  style="color:#555;display:inline;float:left;text-decoration:none;" href="merchant/Anastore/storeMain?id=<?php echo $v['merchantId'];?>"><?php echo $v['name'];?></a></li>
+			<li style="width:15%;float:left;margin:0;text-align:left;padding:0;height:30px;line-height:30px;color:<?php echo $v['color'];?>;"><?php echo $v['type'];?></span><?php echo $v['bscore']?>分</li>
+			<div style="clear:both;"></div>
+		</ol>
+	</li>
+<?php }else{?>
+		<li>
+		<ol style="display:block;list-style:none;height:30px;line-height:30px;width:100%;margin:0;padding:0;">
+			<li style="width:5%;float:left;color:#555;margin:0;padding:0;height:30px;line-height:30px;"><?php echo $key+1;?>.</li>
+			<li style="width:80%;float:left;color:#555;margin:0;padding:0;height:30px;line-height:30px;"><a  style="color:#555;display:inline;float:left;text-decoration:none;" href="merchant/Anastore/storeMain?id=<?php echo $v['merchantId'];?>"><?php echo $v['name'];?></a></li>
+			<li style="width:15%;float:left;margin:0;text-align:left;padding:0;height:30px;line-height:30px;color:<?php echo $v['color'];?>;"><?php echo $v['type'];?></span><?php echo $v['bscore']?>分</li>
+			<div style="clear:both;"></div>
+		</ol>
+	</li>
+<?php }?>
+</ul>
+	<?php endforeach;?>
+</div>
+<div class="list  l_asc"  style="height:360px;">
+	<?php foreach($store_rank_ASC  as $key=>$v):?>
+<ul style="margin-top:-3px;">
+<?php if($key<3){?>
+	<li>
+		<ol style="display:block;list-style:none;height:30px;line-height:30px;width:100%;margin:0;padding:0;">
+			<li style="width:5%;float:left;color:red;margin:0;padding:0;height:30px;line-height:30px;"><?php echo $key+1;?>.</li>
+			<li style="width:80%;float:left;color:red;margin:0;padding:0;height:30px;line-height:30px;"><a  style="color:#555;display:inline;float:left;text-decoration:none;" href="merchant/Anastore/storeMain?id=<?php echo $v['merchantId'];?>"><?php echo $v['name'];?></a></li>
+			<li style="width:15%;float:left;margin:0;text-align:left;padding:0;height:30px;line-height:30px;color:<?php echo $v['color'];?>;"><?php echo $v['type'];?></span><?php echo $v['bscore']?>分</li>
+			<div style="clear:both;"></div>
+		</ol>
+	</li>
+<?php }else{?>
+		<li>
+		<ol style="display:block;list-style:none;height:30px;line-height:30px;width:100%;margin:0;padding:0;">
+			<li style="width:5%;float:left;color:#555;margin:0;padding:0;height:30px;line-height:30px;"><?php echo $key+1;?>.</li>
+			<li style="width:80%;float:left;color:#555;margin:0;padding:0;height:30px;line-height:30px;"><a  style="color:#555;display:inline;float:left;text-decoration:none;" href="merchant/Anastore/storeMain?id=<?php echo $v['merchantId'];?>"><?php echo $v['name'];?></a></li>
+			<li style="width:15%;float:left;margin:0;text-align:left;padding:0;height:30px;line-height:30px;color:<?php echo $v['color'];?>;"><?php echo $v['type'];?></span><?php echo $v['bscore']?>分</li>
+			<div style="clear:both;"></div>
+		</ol>
+	</li>
+<?php }?>
+</ul>
+	<?php endforeach;?>
+</div>
+
+</div>
+<!-- 区域 （地图）-->
+<div class="map" style="float:left;">
+<!-- 地图 -->
+	
+	<script src="https://img.hcharts.cn/highcharts/modules/drilldown.js"></script> 
+	<div id="container1" style="height:400px;"></div>
+
+	<script>
+	Highcharts.setOptions({
+    lang: {
+        drillUpText: '< 返回 “{series.name}”'
+    }
+});
+var map = null,
+
+    geochina = 'https://data.jianshukeji.com/jsonp?filename=geochina/',
+    unDrilldown = ['taiwan', 'xianggang', 'aomen'];
+// 获取中国地图数据并初始化图表
+$.getJSON(geochina + 'china.json&callback=?', function(mapdata) {
+    var data = [];
+
+    for(var i=0;i<mapdata.features.length;i++){ 
+    	var status=false;
+     	$.each(maps,function(index,item){
+  			   if(mapdata.features[i].properties.name==index){  
+  				   mapdata.features[i].properties.areacode=item['score'];
+  				   mapdata.features[i].properties.parent=item['size'] ;
+  				   status=true;
+  				   return;
+  			   }
+    	}); 
+        if(!status){
+			   mapdata.features[i].properties.areacode=0;
+			   mapdata.features[i].properties.parent=0;
+        }
+     }
+    
+    // 随机数据
+    Highcharts.each(mapdata.features, function(md, index) {
+        data.push({
+            name: md.properties.name,
+            drilldown: md.properties.filename,
+            value: Math.floor((Math.random() * 100) + 1) // 生成 1 ~ 100 随机值
+        });
+    });
+    	map = new Highcharts.Map('container1', {
+    	exporting: {enabled:false},
+		credits: {enabled: false},
+        title: { text: ''},
+		mapNavigation: {enabled: false, buttonOptions: {verticalAlign: 'bottom'}},
+        tooltip: {
+            useHTML: true,
+            headerFormat: '<table><tr><td>{point.name}</td></tr>',
+            pointFormat: '<tr><td>区域名称:</td><td>{point.properties.fullname}</td></tr>' +
+            '<tr><td>测评得分:</td><td>{point.properties.areacode}</td></tr>' +
+            '<tr><td>用户参与：</td><td>{point.properties.parent}</td></tr>'  ,
+            footerFormat: '</table>'
+        },
+/*        colorAxis: {min: 0,minColor: '#fff',
+            maxColor: '#006cee',
+            labels:{
+                style:{
+                    "color":"red","fontWeight":"bold"
+                }
+            }
+        },  */
+        series: [{
+            data: data,
+            mapData: mapdata,
+            joinBy: 'name',
+            name: '  ',
+            states: {
+                hover: {
+                    color: '#a4edba'
+                }
+            }
+        }]
+    });
+});
+</script>
+</div>
+
+</div>
+
+</div>
+
+<!-- 时间插件 -->
+<script type="text/javascript" src="<?php echo base_url();?>static/global/js/My97DatePicker/WdatePicker.js"></script>
+</body>
+</html>

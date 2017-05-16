@@ -1,0 +1,584 @@
+<?php  $this->load->view('admin/head.html');?>
+<!-- highchart插件 -->
+<script src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script>
+<script src="http://cdn.hcharts.cn/highcharts/modules/exporting.js"></script>
+<script src="static/merchant/js/height_one.js"></script>
+<script src="static/merchant/js/height_two.js"></script>
+<!-- 时间插件 -->
+<script type="text/javascript" src="<?php echo base_url();?>static/global/js/My97DatePicker/WdatePicker.js"></script>
+<!--引入js部分  -->
+<script>
+var tree=<?php echo $jsonNPS;?>;
+/**比较两个时间大小*/
+function cha(Date1,Date2){
+    var date1 = new Date(Date1);
+    var date2 = new Date(Date2);
+	return date1.getTime() < date2.getTime()?true:false;
+}
+/**总体数据**/
+function showScore(that,score){
+	$(that).highcharts({
+	    chart: {margin:[-5,0,-5,0]},
+	    title: {text: score[0],align: 'center',verticalAlign: 'middle',y:50},
+	    exporting: {enabled:false},credits: {enabled: false},
+	    tooltip: {headerFormat: '',pointFormat: '<b>{point.percentage:.1f}</b>'},
+	    plotOptions: {
+		pie: {size:150,colors:[score[1],'#CDCCCB'],dataLabels: {enabled: true,distance: false,style: {fontWeight: 'bold',color: 'white', textShadow: '0px 1px 2px #CDCCCB'}},
+		startAngle: -90,endAngle: 90,center: ['50%', '80%']}},
+	    series: [{type: 'pie',name: '得分',innerSize: '40%', data: [['',parseFloat(score[2])],['',100-parseFloat(score[2])]]}]
+	});
+	var arr=[];
+}
+$(function(){
+	$(".form-inline").css({"border":"none"});
+	/**关键指标对比一*/
+	 var chart = Highcharts.chart('container', {
+	        chart: {type: 'column'},
+	        title: {text: '一次修复率'},
+	        subtitle: {text: '每次维修保养是否能解决你的问题呢？',x: 30},
+    		plotOptions: {column:{ dataLabels:{enabled:true,  style:{color:'#D7DEE9'}}}},
+	        xAxis: { categories: ['<?php echo $start;?>', '<?php echo $last;?>'],labels: {x: -10}},
+	        yAxis: { allowDecimals: false,title: {text: ''}},
+	        exporting: {enabled:false},credits: {enabled: false},
+	        series: [{name: '可以修复',data: [parseFloat(tree.S1), parseFloat(tree.S4)],color:"#15A354"}, {name: '需要返修一次',data: [parseFloat(tree.S2), parseFloat(tree.S5)],color:'#0064AE'}, {name: '需要多次返修', data: [parseFloat(tree.S3), parseFloat(tree.S6)],color:'#E35A02'}],
+	        responsive: {rules: [{condition: {maxWidth: 500},chartOptions: {legend: {align: 'center', verticalAlign: 'bottom',layout: 'horizontal'},
+					yAxis: {labels: {align: 'left',x: 0,y: -5},title: {text: null}},credits: { enabled: false}}}]}
+       });
+	/**关键指标对比二*/
+	 var chart = Highcharts.chart('nps', {
+	        chart: {type: 'column'},
+	        title: {text: '净推荐率,即NPS'},
+	        subtitle: {text: '你是否推荐其他人来这家店进行维修保养？', x: 30},
+	        colors:['#21AD71', '#FCBE00'],			
+    		plotOptions: {column:{ dataLabels:{enabled:true,  style:{color:'#D7DEE9'}}}},
+	        xAxis: { categories: ['<?php echo $start;?>', '<?php echo $last;?>'],labels: {x: -10}},
+	        yAxis: { allowDecimals: false,title: {text: ''}},
+	        exporting: {enabled:false},credits: {enabled: false},
+	        series: [{name: '会',data: [parseFloat(tree.S7), parseFloat(tree.S9)],color:'#15A354'}, {name: '不会',data: [parseFloat(tree.S8), parseFloat(tree.S10)],color:'#E35A02'}],
+	        responsive: {rules: [{condition: {maxWidth: 500},chartOptions: {legend: {align: 'center', verticalAlign: 'bottom',layout: 'horizontal'},
+	                    yAxis: {labels: {align: 'left',x: 0,y: -5},title: {text: null}}, credits: { enabled: false}}}]}
+	   });
+		/**关键指标对比三*/
+	 var chart = Highcharts.chart('loyal', {
+	        chart: {type: 'column'},
+	        title: {text: '售后服务忠诚度'},
+	        subtitle: {text: '您下次还会选择来这家店进行维修保养么？', x: 30},
+	        colors:['#0064AE', '#029BD5'],			
+    		plotOptions: {column:{ dataLabels:{enabled:true,  style:{color:'#D7DEE9'}}}},
+	        xAxis: { categories: ['<?php echo $start;?>', '<?php echo $last;?>'],labels: {x: -10}},
+	        yAxis: { allowDecimals: false,title: {text: ''}},
+	        exporting: {enabled:false},credits: {enabled: false},
+	        series: [{name: '会',data: [parseFloat(tree.S11), parseFloat(tree.S13)],color:"#029BD5"}, {name: '不会',data: [parseFloat(tree.S12), parseFloat(tree.S14)],color:'#0064AE'}],
+	        responsive: {rules: [{condition: {maxWidth: 500},chartOptions: {legend: {align: 'center', verticalAlign: 'bottom',layout: 'horizontal'},
+	                    yAxis: {labels: {align: 'left',x: 0,y: -5},title: {text: null}},credits: { enabled: false}}}]}
+	 	});
+	$(".form-inline").css({"border":"none"});
+	 /**总体数据半圆*/
+	 $.each($('.skypie'),function(index,item){
+		 showScore('#skypie'+(index+1),$(item).attr('SKY').split('|'));
+	});
+ var now =new Date();var mon=now.getMonth();var yer=now.getFullYear();
+ $("#startDate").val('<?php echo $startDate;?>');$("#lastDate").val('<?php echo $lastDate;?>');
+ var nowDate=yer+'-'+'0'+(mon+2);
+ 	$(".btn-danger").click(function(){
+		  if($.trim($("#S1").val()).length<=0){layer.msg('请选择门店');return ;}
+		  if($.trim($("#startDate").val()).length>0 && $.trim($("#lastDate").val()).length>0){
+			  if(!cha($("#startDate").val(),nowDate) || !cha($("#lastDate").val(),nowDate)){layer.msg('时间超出范围!');return ;}
+			  if(!cha($("#startDate").val(),$("#lastDate").val())){layer.msg('开始时间应小于结束时间');return ; }
+			   $('.form-inline').submit();
+		}else{
+			layer.msg('请选择时间');
+		}
+	});
+	$('.highcharts-title').css({"font-size":"13px"});
+});
+</script>
+<!-- 本页css -->
+<link href="static/merchant/css/cada-merchant-geval.css" rel="stylesheet">
+<!-- 搜索模块 -->
+<div class="search_model" style="width:99.6%;">
+	<div class="namei">
+	<p><a  href="merchant/Anagroup/groupEvala" style="margin-left:10%;">总体</a><a  href="merchant/Anagroup/groupEvali"  style="background:#e60012;color:#FFF;">单店</a><a  href="merchant/Anagroup/groupEvalii" >双店</a></p>
+	</div>
+	<form class="form-inline" method="post" action="merchant/Anagroup/groupEvali">
+	   <div class="form-group">
+		<label for="menu-name">选择门店</label>
+		 <select class="form-control" id="S1" style="width:150px;" name="providerid">
+		    <option value="">选择门店</option>
+		 	<?php foreach($merchant as $a){?>
+			<option value="<?php echo $a['merchantId'];?>" <?php echo $providerid==$a['merchantId']?'selected':'';?>><?php echo $a['name'];?></option>
+			<?php }?>
+		</select>
+	  </div>
+		<div class="form-group">
+		<label for="menu-url">开始时间</label>
+		<input type="text" class="form-control Wdate" id="startDate" name="startDate" placeholder="开始时间" style="width:150px;" onfocus="WdatePicker({dateFmt:'yyyy-MM'});">
+	  </div>
+		<div class="form-group">
+		<label for="menu-url">结束时间</label>
+		<input type="text" class="form-control Wdate" id="lastDate"  name="lastDate"   placeholder="开始时间" style="width:150px;" onfocus="WdatePicker({dateFmt:'yyyy-MM'});">
+	  </div>
+	  &nbsp;&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-danger" >查找</button>
+	</form>
+</div>
+<!-- 总体&行业 -->
+<div class="total">
+	<div class="total_data" style="float:left;">
+	<div class="tot_tit">总体</div>
+		<div id="skypie1"  class="skypie" style="width:30%;height:125px;float:left;" SKY="<?php echo $start;?>|#029bd5|<?php echo $score['F1'];?>"></div>
+		<div class="resis"><span class="size1 color1"><?php echo $score['F1'];?></span>/100 <span class="span1 bg1">分</span></div>
+		<div id="skypie2"  class="skypie" style="width:30%;height:125px;float:left;" SKY="<?php echo $last;?>|#00a3e1|<?php echo $score['F2'];?>"></div>
+		<div class="resis"><span class="size1 color2"><?php echo $score['F2'];?></span>/100 <span class="span1 bg2">分</span></div>
+	</div>
+	<div class="ind_data"  style="float:left;">
+	<div class="tot_tit">行业</div>
+		<div id="skypie3"  class="skypie" style="width:30%;height:125px;float:left;" SKY="<?php echo $start;?>|#efcb06|<?php echo $score['F3'];?>"></div>
+		<div class="resis"><span class="size1 color3"><?php echo $score['F3'];?></span>/100 <span class="span1 bg3">分</span></div>
+		<div id="skypie4"  class="skypie" style="width:30%;height:125px;float:left;" SKY="<?php echo $last;?>|#fce807|<?php echo $score['F4'];?>"></div>
+		<div class="resis"><span class="size1 color4"><?php echo $score['F4'];?></span>/100 <span class="span1 bg4">分</span></div>
+	</div>
+	<div class="clear"></div>
+</div>
+<!-- 相邻月份模块对比 -->
+<div class="model">
+	<!-- 服务顾问 -->
+	<div class="fwgw_eval"style="float:left;">
+		    <div class="fwgw_tit">服务顾问</div>
+				<div class="pc_tit">本店评测得分</div>
+				<div class="one_data">
+						<div class="me_tit"><?php echo $start;?></div>
+						<div class="me_line">
+						<div class="gl_sty"   style="position:relative;left:0;width:<?php echo $model[0]['F1']?>%;background-color:#7CB5EC;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+						</div>
+						<div class="me_score"><?php echo $model[0]['F1']?>分</div>
+						<div class="clear"></div>
+				</div>
+				<div class="one_data">
+						<div class="me_tit"><?php echo $last;?></div>
+						<div class="me_line">
+						<div style="position:relative;left:0;width:<?php echo $model[0]['F2']?>%;background-color:#7CB5EC;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+						</div>
+						<div class="me_score"><?php echo $model[0]['F2']?>分</div>
+						<div class="clear"></div>
+				</div>
+				<div class="pc_tit">行业评测得分</div>
+				<div class="one_data">
+						<div class="me_tit"><?php echo $start;?></div>
+						<div class="me_line">
+						<div class="gl_sty"   style="position:relative;left:0;width:<?php echo $model[0]['F3']?>%;background-color:#F9E80A;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+						</div>
+						<div class="me_score"><?php echo $model[0]['F3']?>分</div>
+						<div class="clear"></div>
+				</div>
+				<div class="one_data">
+						<div class="me_tit"><?php echo $last;?></div>
+						<div class="me_line">
+						<div style="position:relative;left:0;width:<?php echo $model[0]['F4']?>%;background-color:#F9E80A;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+						</div>
+						<div class="me_score"><?php echo $model[0]['F4']?>分</div>
+						<div class="clear"></div>
+				</div>
+		<div class="clear"></div>
+	</div>
+	<!-- 服务设施 -->
+	<div class="fwss_eval" style="float:left;">
+		<div class="fwgw_tit">服务设施</div>
+		<!-- me -->
+		<div class="pc_tit">本店评测得分</div>
+		<div class="one_data">
+			<div class="me_tit"><?php echo $start;?></div>
+			<div class="me_line">
+			<div class="gl_sty"   style="position:relative;left:0;width:<?php echo $model[1]['F1']?>%;background-color:#01A8B0;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+			</div>
+			<div class="me_score"><?php echo $model[1]['F1']?>分</div>
+			<div class="clear"></div>
+		</div>
+		<div class="one_data">
+			<div class="me_tit" ><?php echo $last;?></div>
+			<div class="me_line">
+			<div style="position:relative;left:0;width:<?php echo $model[1]['F2']?>%;background-color:#01A8B0;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+			</div>
+			<div class="me_score"><?php echo $model[1]['F2']?>分</div>
+			<div class="clear"></div>
+		</div>
+		<!-- other -->
+		<div class="pc_tit">行业评测得分</div>
+		<div class="one_data">
+			<div class="me_tit" ><?php echo $start;?></div>
+			<div class="me_line">
+			<div class="gl_sty"   style="position:relative;left:0;width:<?php echo $model[1]['F3']?>%;background-color:#EFCB06;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+			</div>
+			<div class="me_score"><?php echo $model[1]['F3']?>分</div>
+			<div class="clear"></div>
+		</div>
+		<div class="one_data">
+			<div class="me_tit" ><?php echo $last;?></div>
+			<div class="me_line">
+			<div style="position:relative;left:0;width:<?php echo $model[1]['F4']?>%;background-color:#EFCB06;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+			</div>
+			<div class="me_score"><?php echo $model[1]['F4']?>分</div>
+			<div class="clear"></div>
+		</div>
+	<div class="clear"></div>
+ </div>
+	<!-- 维修质量 -->
+	<div class="wxzl_eval" style="float:left;">
+		<div class="fwgw_tit">维修质量</div>
+		<div class="pc_tit">本店评测得分</div>
+		<div class="one_data">
+				<div class="me_tit" ><?php echo $start;?></div>
+				<div class="me_line">
+				<div class="gl_sty"   style="position:relative;left:0;width:<?php echo $model[2]['F1']?>%;background-color:#E45A02;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+				</div>
+				<div class="me_score"><?php echo $model[2]['F1']?>分</div>
+				<div class="clear"></div>
+		</div>
+		<div class="one_data">
+			<div class="me_tit" ><?php echo $last;?></div>
+			<div class="me_line">
+			<div style="position:relative;left:0;width:<?php echo $model[2]['F2']?>%;background-color:#E45A02;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+			</div>
+			<div class="me_score"><?php echo $model[2]['F2']?>分</div>
+			<div class="clear"></div>
+	    </div>
+		<!-- other -->
+		<div class="pc_tit">行业评测得分</div>
+		<div class="one_data">
+			<div class="me_tit" ><?php echo $start;?></div>
+			<div class="me_line">
+			<div class="gl_sty"   style="position:relative;left:0;width:<?php echo $model[2]['F3']?>%;background-color:#EFCB06;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+			</div>
+			<div class="me_score"><?php echo $model[2]['F3']?>分</div>
+			<div class="clear"></div>
+		</div>
+		<div class="one_data">
+			<div class="me_tit" ><?php echo $last;?></div>
+			<div class="me_line">
+			<div style="position:relative;left:0;width:<?php echo $model[2]['F4']?>%;background-color:#EFCB06;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+			</div>
+			<div class="me_score"><?php echo $model[2]['F4']?>分</div>
+			<div class="clear"></div>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<!-- 维修价格 -->
+	<div class="wxjj_eval" style="float:left;">
+               <div class="fwgw_tit">维修时间</div>
+				<div class="pc_tit">本店评测得分</div>
+				<div class="one_data">
+						<div class="me_tit" ><?php echo $start;?></div>
+						<div class="me_line">
+						<div class="gl_sty"   style="position:relative;left:0;width:<?php echo $model[3]['F1']?>%;background-color:#019E47;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+						</div>
+						<div class="me_score"><?php echo $model[3]['F1']?>分</div>
+						<div class="clear"></div>
+				</div>
+				<div class="one_data">
+						<div class="me_tit" ><?php echo $last;?></div>
+						<div class="me_line">
+						<div style="position:relative;left:0;width:<?php echo $model[3]['F2']?>%;background-color:#019E47;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+						</div>
+						<div class="me_score"><?php echo $model[3]['F2']?>分</div>
+						<div class="clear"></div>
+				</div>
+		<!-- other -->
+				<div class="pc_tit">行业评测得分</div>
+				<div class="one_data">
+						<div class="me_tit" ><?php echo $start;?></div>
+						<div class="me_line">
+						<div class="gl_sty"   style="position:relative;left:0;width:<?php echo $model[3]['F3']?>%;background-color:#EFCB06;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+						</div>
+						<div class="me_score"><?php echo $model[3]['F3']?>分</div>
+						<div class="clear"></div>
+				</div>
+				<div class="one_data">
+						<div class="me_tit" ><?php echo $last;?></div>
+						<div class="me_line">
+						<div style="position:relative;left:0;width:<?php echo $model[3]['F4']?>%;background-color:#EFCB06;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+						</div>
+						<div class="me_score"><?php echo $model[3]['F4']?>分</div>
+						<div class="clear"></div>
+				</div>
+		<div class="clear"></div>
+	</div>
+	<!-- 维修时间 -->
+	<div class="wxss_eval" style="float:left;">
+		  <div class="fwgw_tit">维修价格</div>
+		<!-- me -->
+				<div class="pc_tit">本店评测得分</div>
+				<div class="one_data">
+						<div class="me_tit" ><?php echo $start;?></div>
+						<div class="me_line">
+						<div class="gl_sty"   style="position:relative;left:0;width:<?php echo $model[4]['F1']?>%;background-color:#E18901;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+						</div>
+						<div class="me_score"><?php echo $model[4]['F1']?>分</div>
+						<div class="clear"></div>
+				</div>
+				<div class="one_data">
+						<div class="me_tit" ><?php echo $last;?></div>
+						<div class="me_line">
+						<div style="position:relative;left:0;width:<?php echo $model[4]['F2']?>%;background-color:#E18901;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+						</div>
+						<div class="me_score"><?php echo $model[4]['F2']?>分</div>
+						<div class="clear"></div>
+				</div>
+				<div class="pc_tit">行业评测得分</div>
+				<div class="one_data">
+						<div class="me_tit" ><?php echo $start;?></div>
+						<div class="me_line">
+						<div class="gl_sty"   style="position:relative;left:0;width:<?php echo $model[4]['F3']?>%;background-color:#EFCB06;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+						</div>
+						<div class="me_score"><?php echo $model[4]['F3']?>分</div>
+						<div class="clear"></div>
+				</div>
+				<div class="one_data">
+						<div class="me_tit" ><?php echo $last;?></div>
+						<div class="me_line">
+						<div style="position:relative;left:0;width:<?php echo $model[4]['F4']?>%;background-color:#EFCB06;display:block;float:left;font-siez:14px;color:#fff;border-radius:4px;height:12px;"></div>
+						</div>
+						<div class="me_score"><?php echo $model[4]['F4']?>分</div>
+						<div class="clear"></div>
+				</div>
+		<div class="clear"></div>
+	 </div>
+	<div class="clear"></div>
+</div>
+<!-- 关键指标对比分析-->
+<div class="Contrast">
+    <div class="contrast-text">关键指标对比分析</div>
+		<!-- 关键指标分析一 -->
+	<div class="keyindex_one" style="float:left;border-right:1px solid #ccc;">
+				  <div id="container" style="height:260px;"></div>
+	</div>
+	<!-- 关键指标分析二 -->
+	<div class="keyindex_two" style="float:left;border-right:1px solid #ccc;">
+				<div id="nps" style="height:260px;"></div>
+	</div>
+	<!-- 关键指标分析三 -->
+	<div class="keyindex_three" style="float:left;">
+			 <div id="loyal" style="height:260px;"></div>
+	</div>
+	<div class="clear"></div>
+</div>
+<!-- 服务顾问指标-->
+<div class="gw_model">
+	<div class="title" style="float:left;">服务顾问</div>
+	<!-- 最高指标开始 -->
+	<div class="top_index" style="float:left;">
+		<div class="top_tit">最高指标得分</div>
+		<div class="index_tit">
+		<ul class="tit_ul">
+		<li style="width:70%;">指标</li>
+		<li style="width:10%;"><?php echo $start;?></li>
+		<li style="width:10%;"><?php echo $last;?></li>
+		<li style="width:10%;text-align:left;">差值</li>
+		</ul>
+		<?php foreach($Fa AS $k=>$f){?>
+	   <ul class="content_ul">
+		<li style="width:70%;text-align:left;"><?php echo $k+1;?>.<?php echo $f['title'];?></li>
+		<li style="width:10%;"><?php echo $f['A1'];?></li>
+		<li style="width:10%;"><?php echo $f['A2'];?></li>
+		<li style="width:10%;text-align:left;"><?php echo $f['A3']>0?'<span style="font-weight:1000;font-size:14px;color:red;">↑</span>':'<span style="font-weight:1000;font-size:14px;color:green;">↓</span>';?><?php echo abs($f['A3']);?></li>
+		</ul>
+		<?php }?>
+	   </div>
+	</div>
+	<!-- 最低指标开始 -->
+	<div class="top_index" style="float:left;">
+	<div class="top_tit">最低指标得分</div>
+	<div class="index_tit">
+	<ul class="tit_ul">
+	<li style="width:70%;">指标</li>
+	<li style="width:10%;"><?php echo $start;?></li>
+	<li style="width:10%;"><?php echo $last;?></li>
+	<li style="width:10%;text-align:left;">差值</li>
+	</ul>
+	<?php foreach($Fb AS $k=>$f){?>
+	   <ul class="content_ul">
+		<li style="width:70%;text-align:left;"><?php echo $k+1;?>.<?php echo $f['title'];?></li>
+		<li style="width:10%;"><?php echo $f['A1'];?></li>
+		<li style="width:10%;"><?php echo $f['A2'];?></li>
+		<li style="width:10%; text-align:left;"><?php echo $f['A3']>0?'<span style="font-weight:1000;font-size:14px;color:red;">↑</span>':'<span style="font-weight:1000;font-size:14px;color:green;">↓</span>';?><?php echo abs($f['A3']);?></li>
+		</ul>
+		<?php }?>
+	</div>
+	</div>
+</div>
+<!-- 服务顾问指标-->
+<div class="gw_model">
+	<div class="title" style="float:left;">服务设施</div>
+	<!-- 最高指标开始 -->
+	<div class="top_index" style="float:left;">
+		<div class="top_tit">最高指标得分</div>
+		<div class="index_tit">
+		<ul class="tit_ul">
+		<li style="width:70%;">指标</li>
+		<li style="width:10%;"><?php echo $start;?></li>
+		<li style="width:10%;"><?php echo $last;?></li>
+		<li style="width:10%;text-align:left;">差值</li>
+		</ul>
+		<?php foreach($Sa AS $k=>$f){?>
+	   <ul class="content_ul">
+		<li style="width:70%;text-align:left;"><?php echo $k+1;?>.<?php echo $f['title'];?></li>
+		<li style="width:10%;"><?php echo $f['A1'];?></li>
+		<li style="width:10%;"><?php echo $f['A2'];?></li>
+		<li style="width:10%;text-align:left;"><?php echo $f['A3']>0?'<span style="font-weight:1000;font-size:14px;color:red;">↑</span>':'<span style="font-weight:1000;font-size:14px;color:green;">↓</span>';?><?php echo abs($f['A3']);?></li>
+		</ul>
+		<?php }?>
+	   </div>
+	</div>
+	<!-- 最低指标开始 -->
+	<div class="top_index" style="float:left;">
+	<div class="top_tit">最低指标得分</div>
+	<div class="index_tit">
+	<ul class="tit_ul">
+	<li style="width:70%;">指标</li>
+	<li style="width:10%;"><?php echo $start;?></li>
+	<li style="width:10%;"><?php echo $last;?></li>
+	<li style="width:10%;text-align:left;">差值</li>
+	</ul>
+	<?php foreach($Sb AS $k=>$f){?>
+	   <ul class="content_ul">
+		<li style="width:70%;text-align:left;"><?php echo $k+1;?>.<?php echo $f['title'];?></li>
+		<li style="width:10%;"><?php echo $f['A1'];?></li>
+		<li style="width:10%;"><?php echo $f['A2'];?></li>
+		<li style="width:10%; text-align:left;"><?php echo $f['A3']>0?'<span style="font-weight:1000;font-size:14px;color:red;">↑</span>':'<span style="font-weight:1000;font-size:14px;color:green;">↓</span>';?><?php echo abs($f['A3']);?></li>
+		</ul>
+		<?php }?>
+	</div>
+	</div>
+</div>
+<!-- 服务顾问指标-->
+<div class="gw_model">
+	<div class="title" style="float:left;">维修质量</div>
+	<!-- 最高指标开始 -->
+	<div class="top_index" style="float:left;">
+		<div class="top_tit">最高指标得分</div>
+		<div class="index_tit">
+		<ul class="tit_ul">
+		<li style="width:70%;">指标</li>
+		<li style="width:10%;"><?php echo $start;?></li>
+		<li style="width:10%;"><?php echo $last;?></li>
+		<li style="width:10%;text-align:left;">差值</li>
+		</ul>
+		<?php foreach($Za AS $k=>$f){?>
+	   <ul class="content_ul">
+		<li style="width:70%;text-align:left;"><?php echo $k+1;?>.<?php echo $f['title'];?></li>
+		<li style="width:10%;"><?php echo $f['A1'];?></li>
+		<li style="width:10%;"><?php echo $f['A2'];?></li>
+		<li style="width:10%;text-align:left;"><?php echo $f['A3']>0?'<span style="font-weight:1000;font-size:14px;color:red;">↑</span>':'<span style="font-weight:1000;font-size:14px;color:green;">↓</span>';?><?php echo abs($f['A3']);?></li>
+		</ul>
+		<?php }?>
+	   </div>
+	</div>
+	<!-- 最低指标开始 -->
+	<div class="top_index" style="float:left;">
+	<div class="top_tit">最低指标得分</div>
+	<div class="index_tit">
+	<ul class="tit_ul">
+	<li style="width:70%;">指标</li>
+	<li style="width:10%;"><?php echo $start;?></li>
+	<li style="width:10%;"><?php echo $last;?></li>
+	<li style="width:10%;text-align:left;">差值</li>
+	</ul>
+	<?php foreach($Zb AS $k=>$f){?>
+	   <ul class="content_ul">
+		<li style="width:70%;text-align:left;"><?php echo $k+1;?>.<?php echo $f['title'];?></li>
+		<li style="width:10%;"><?php echo $f['A1'];?></li>
+		<li style="width:10%;"><?php echo $f['A2'];?></li>
+		<li style="width:10%; text-align:left;"><?php echo $f['A3']>0?'<span style="font-weight:1000;font-size:14px;color:red;">↑</span>':'<span style="font-weight:1000;font-size:14px;color:green;">↓</span>';?><?php echo abs($f['A3']);?></li>
+		</ul>
+		<?php }?>
+	</div>
+	</div>
+</div>
+<!-- 服务顾问指标-->
+<div class="gw_model">
+	<div class="title" style="float:left;">维修时间</div>
+	<!-- 最高指标开始 -->
+	<div class="top_index" style="float:left;">
+		<div class="top_tit">最高指标得分</div>
+		<div class="index_tit">
+		<ul class="tit_ul">
+		<li style="width:70%;">指标</li>
+		<li style="width:10%;"><?php echo $start;?></li>
+		<li style="width:10%;"><?php echo $last;?></li>
+		<li style="width:10%;text-align:left;">差值</li>
+		</ul>
+		<?php foreach($Ta AS $k=>$f){?>
+	   <ul class="content_ul">
+		<li style="width:70%;text-align:left;"><?php echo $k+1;?>.<?php echo $f['title'];?></li>
+		<li style="width:10%;"><?php echo $f['A1'];?></li>
+		<li style="width:10%;"><?php echo $f['A2'];?></li>
+		<li style="width:10%;text-align:left;"><?php echo $f['A3']>0?'<span style="font-weight:1000;font-size:14px;color:red;">↑</span>':'<span style="font-weight:1000;font-size:14px;color:green;">↓</span>';?><?php echo abs($f['A3']);?></li>
+		</ul>
+		<?php }?>
+	   </div>
+	</div>
+	<!-- 最低指标开始 -->
+	<div class="top_index" style="float:left;">
+	<div class="top_tit">最低指标得分</div>
+	<div class="index_tit">
+	<ul class="tit_ul">
+	<li style="width:70%;">指标</li>
+	<li style="width:10%;"><?php echo $start;?></li>
+	<li style="width:10%;"><?php echo $last;?></li>
+	<li style="width:10%;text-align:left;">差值</li>
+	</ul>
+	<?php foreach($Tb AS $k=>$f){?>
+	   <ul class="content_ul">
+		<li style="width:70%;text-align:left;"><?php echo $k+1;?>.<?php echo $f['title'];?></li>
+		<li style="width:10%;"><?php echo $f['A1'];?></li>
+		<li style="width:10%;"><?php echo $f['A2'];?></li>
+		<li style="width:10%; text-align:left;"><?php echo $f['A3']>0?'<span style="font-weight:1000;font-size:14px;color:red;">↑</span>':'<span style="font-weight:1000;font-size:14px;color:green;">↓</span>';?><?php echo abs($f['A3']);?></li>
+		</ul>
+		<?php }?>
+	</div>
+	</div>
+</div>
+<!-- 服务顾问指标-->
+<div class="gw_model">
+	<div class="title" style="float:left;">维修价格</div>
+	<!-- 最高指标开始 -->
+	<div class="top_index" style="float:left;">
+		<div class="top_tit">最高指标得分</div>
+		<div class="index_tit">
+		<ul class="tit_ul">
+		<li style="width:70%;">指标</li>
+		<li style="width:10%;"><?php echo $start;?></li>
+		<li style="width:10%;"><?php echo $last;?></li>
+		<li style="width:10%;text-align:left;">差值</li>
+		</ul>
+		<?php foreach($Pa AS $k=>$f){?>
+	   <ul class="content_ul">
+		<li style="width:70%;text-align:left;"><?php echo $k+1;?>.<?php echo $f['title'];?></li>
+		<li style="width:10%;"><?php echo $f['A1'];?></li>
+		<li style="width:10%;"><?php echo $f['A2'];?></li>
+		<li style="width:10%;text-align:left;"><?php echo $f['A3']>0?'<span style="font-weight:1000;font-size:14px;color:red;">↑</span>':'<span style="font-weight:1000;font-size:14px;color:green;">↓</span>';?><?php echo abs($f['A3']);?></li>
+		</ul>
+		<?php }?>
+	   </div>
+	</div>
+	<!-- 最低指标开始 -->
+	<div class="top_index" style="float:left;">
+	<div class="top_tit">最低指标得分</div>
+	<div class="index_tit">
+	<ul class="tit_ul">
+	<li style="width:70%;">指标</li>
+	<li style="width:10%;"><?php echo $start;?></li>
+	<li style="width:10%;"><?php echo $last;?></li>
+	<li style="width:10%;text-align:left;">差值</li>
+	</ul>
+	<?php foreach($Pb AS $k=>$f){?>
+	   <ul class="content_ul">
+		<li style="width:70%;text-align:left;"><?php echo $k+1;?>.<?php echo $f['title'];?></li>
+		<li style="width:10%;"><?php echo $f['A1'];?></li>
+		<li style="width:10%;"><?php echo $f['A2'];?></li>
+		<li style="width:10%; text-align:left;"><?php echo $f['A3']>0?'<span style="font-weight:1000;font-size:14px;color:red;">↑</span>':'<span style="font-weight:1000;font-size:14px;color:green;">↓</span>';?><?php echo abs($f['A3']);?></li>
+		</ul>
+		<?php }?>
+	</div>
+	</div>
+</div>
+</body>
+</html>

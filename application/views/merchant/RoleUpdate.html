@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="renderer" content="webkit">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<base href="<?php echo base_url();?>" />
+<title>CADA云数聚</title>
+<!--引入jauery文件-->
+<script src="static/global/js/jquery.1.11.3.min.js"></script>
+<!--引入滚动条CSS样式文件-->
+<link rel="stylesheet" href="static/global/plugins/Scoller/jquery.mCustomScrollbar.css">
+<!--引入滚动条脚本文件-->
+<script src="static/global/plugins/Scoller/jquery.mCustomScrollbar.concat.min.js"></script>
+<!--引用框架样式文件-->
+<link href="static/global/plugins/Bootstrap/css/bootstrap.css" rel="stylesheet">
+<!--引入框架脚本文件-->
+<script src="static/global/plugins/Bootstrap/js/bootstrap.min.js"></script>
+<!--引入弹框脚本文件-->
+<script src="static/global/plugins/Layer/layer.js"></script>
+<!--引入全局CSS文件-->
+<link href="static/admin/css/cada-admin-min.css" rel="stylesheet">
+<!--引用字体样式文件-->
+<link href="static/global/plugins/FontAwesome/css/font-awesome.css" rel="stylesheet">
+</head>
+<style>
+.role-select{
+	width:180px;
+	height:180px;
+	padding-top:5px;
+	padding-bottom:5px;
+    border-right:1px solid #ddd;
+	border-top:1px solid #ddd;
+	float:left;
+}
+.role-select input[type="checkbox"]{
+	display:block;
+	float:left;
+	margin-top:6px;
+}
+.role-select span i{
+display:block;
+float:left;
+width:15px;
+height:15px;
+margin-left:3px;
+margin-top:6px;
+}
+.role-select ul{
+	list-style:none;
+	margin:0;
+	padding:0;
+	font-size:14px;
+	border:none;
+}
+.role-select ul li{
+	margin:0;
+	padding:0;
+}
+.role-select ul li span{
+	display:block;
+	line-height:28px;
+	height:28px;
+	color:#323232;
+	font-size:13px;
+}
+.role-select ul li ul{
+	list-style:none;
+	margin:0;
+	padding:0;
+	margin-left:36px;
+	display:none;
+	border:none;
+}
+.role-select ul li ul li{
+}
+.role-select ul li ul li span{
+	font-size:13px;
+	display:block;
+}
+.role-select ul li ul li input[type="checkbox"]{
+	display:block;
+	float:left;
+	margin-top:7px;
+}
+.role-select ul li ul li ul{
+	display:none;
+	list-style:none;
+	margin:0;
+	padding:0;
+	margin-left:30px;
+	border:none;
+}
+.role-select ul li ul li ul li{
+	line-height:28px;
+	height:28px;
+	font-size:13px;
+	width:100%;
+}
+</style>
+<body>
+<div id="cada-admin-menu" class="cada-admin-layer">
+<form class="layer_form" method="post" action="index.php/merchant/role/updated">
+<input type="hidden" value="<?php echo $ones['id'];?>" name="id"/> 
+	<div class="role-select" id="role-select">
+		<ul>
+	   <!--菜单一-->
+		<?php foreach($menu as $one){if($one['pId']==0){ ?>
+			<li class="Lee">
+				<span><i class="fa fa-plus-square-o Ms"></i><input type="checkbox" /><i class="fa <?php echo $one['iconUrl'];?>"></i><?php echo $one['navTitle'];?>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+				<ul>
+				<?php foreach($menu as $two){ if($one['id']==$two['pId']){ $think=NULL;foreach($role as $ro){ if($ro['sector']==$two['id']){$think=$ro;break;}}?>
+					<li class="Lison">
+					    <span><i class="fa fa-plus-square-o Muse" style="float:left;margin-top:7px;">&nbsp;</i>
+									 <input type="checkbox"  value="<?php echo $two['id'];?>" name="role[]" <?php echo !empty($think)?'checked="checked"':'';?>/>&nbsp;<?php echo $two['navTitle'];?>
+						</span>
+						<ul>
+							<li><input type="checkbox"  value="1" name="H<?php echo $two['id'];?>[]"   <?php echo in_array(1,explode(';',!empty($think)?$think['symbol']:''))?'checked="checked"':'';?> />&nbsp;增加</li>
+							<li><input type="checkbox"  value="2" name="H<?php echo $two['id'];?>[]" 	 <?php echo in_array(2,explode(';',!empty($think)?$think['symbol']:''))?'checked="checked"':'';?>/>&nbsp;删除</li>
+							<li><input type="checkbox"  value="3" name="H<?php echo $two['id'];?>[]"	 <?php echo in_array(3,explode(';',!empty($think)?$think['symbol']:''))?'checked="checked"':'';?>/>&nbsp;修改</li>
+							<li><input type="checkbox"  value="4" name="H<?php echo $two['id'];?>[]"   <?php echo in_array(4,explode(';',!empty($think)?$think['symbol']:''))?'checked="checked"':'';?>/>&nbsp;搜索</li>
+							<li><input type="checkbox"  value="5" name="H<?php echo $two['id'];?>[]"   <?php echo in_array(5,explode(';',!empty($think)?$think['symbol']:''))?'checked="checked"':'';?>/>&nbsp;导出</li>
+							<li><input type="checkbox"  value="6" name="H<?php echo $two['id'];?>[]"   <?php echo in_array(6,explode(';',!empty($think)?$think['symbol']:''))?'checked="checked"':'';?>/>&nbsp;下载</li>
+						</ul>
+					</li>
+			    <?php }}?>
+			    <!--第二个菜单-->
+				</ul>
+			</li>
+<?php }}?>
+		</ul>
+	</div>
+<ul style="width:400px;float:left;">
+<li>
+    <label for="menu-name" >权限组名称&nbsp;&nbsp;</label>
+    <input type="text" class="form-control titleAll"	 id="r-name" 	placeholder="权限组名称"  name="name" style="width:300px;" value="<?php echo $ones['roleName'];?>" maxlength="16">
+    <div class="clear"></div>
+</li>
+<li>
+    <label for="menu-url" >权限描述&nbsp;&nbsp;</label>
+	<textarea class="form-control textareaAll"  rows="5"  name="description"  style="width:300px;resize:none;"><?php echo $ones['description'];?></textarea>
+    <div class="clear"></div>
+</li>
+<div class="clear"></div>
+</ul>
+<div class="clear"></div>
+<div class="playDiv"><button type="reset" class="btn btn-default" >输入重置</button><button type="button" class="btn btn-info layer_button" >保存信息</button></div>
+</form>
+</div>
+<!--内部脚本-->
+<script>
+/*获取二级菜单选项*/
+var U = $('base').attr('href');
+/**异步请求数据方法*/
+function Fa(url, data) {
+	var message;
+	$.ajax({type: "POST",url: U + 'index.php/' + url,async: false,
+		data: data,success: function(msg) {message = msg;}});
+	return message;
+}
+/**判断必填项是否完成*/
+function status(){
+	if($.trim($("#r-name").val()).length <= 0){
+	   	layer.msg('请选择填写权限组名称', {icon:2,time: 2000});
+	   return false;
+	}
+	var that= $('.Lee ul  li span :input[type="checkbox"]');
+	var thisStatus=false;
+	$.each(that,function(index,item){if($(item).is(':checked')) thisStatus=true;});
+	if(!thisStatus){
+		layer.msg('请选择权限', {icon:2,time: 2000});
+		return false;
+	}else{
+	   return true;
+	} 
+}
+/**程序执行*/
+$(function(){
+   /**菜单点击事件*/
+   $('.Lee > span  .Ms').click(function(){
+		var that=$(this).parent().next('ul');
+		if($(that).css('display')=='none'){
+			$(this).removeClass('fa-plus-square-o');
+			$(this).addClass('fa-minus-square-o');
+			$(that).css("display","block");
+		}else{
+		    $(this).removeClass('fa-minus-square-o');
+			$(this).addClass('fa-plus-square-o');
+			$(that).css("display","none");
+		}
+   });
+   $('.Muse').click(function(){
+		var that=$(this).parent().next('ul');
+		if($(that).css('display')=='none'){
+			$(this).removeClass('fa-plus-square-o');
+			$(this).addClass('fa-minus-square-o');
+			$(that).css("display","block");
+		}else{
+		    $(this).removeClass('fa-minus-square-o');
+			$(this).addClass('fa-plus-square-o');
+			$(that).css("display","none");
+		}
+   });
+   /**菜单勾选事件*/
+   $('.Lee > span :input[type="checkbox"]').click(function(){
+		if($(this).is(':checked')){
+		   $(this).parent().parent().find('ul :input[type="checkbox"]').prop("checked",true);
+		}else{
+		   $(this).parent().parent().find('ul :input[type="checkbox"]').prop("checked",false);
+		}
+   });
+   $('.Muse + :input[type="checkbox"]').click(function(){
+		if($(this).is(':checked')){
+		   $(this).parent().parent().find('ul :input[type="checkbox"]').prop("checked",true);
+		}else{
+		   $(this).parent().parent().find('ul :input[type="checkbox"]').prop("checked",false);
+		}
+   });
+   $('.Lison ul li :input[type="checkbox"]').click(function(){
+		 var thisStatus=$(this).is(':checked');
+		 var thatStatus=$(this).parent().parent().parent().find('span :input[type="checkbox"]').is(':checked');
+		 var that=$(this).parent().parent().parent().find('ul li :input[type="checkbox"]');
+		if(thisStatus  && !thatStatus){
+			$(this).parent().parent().parent().find('span :input[type="checkbox"]').prop("checked",true);
+		}else if(!thisStatus && thatStatus){
+			var status=false;
+			$.each(that,function(index,item){if($(item).is(':checked')) status=true;});
+			!status && $(this).parent().parent().parent().find('span :input[type="checkbox"]').prop("checked",false);
+		}
+   });
+	$('.layer_button').click(function(){
+	   status()  && $('.layer_form').submit();
+	});
+	$(window).on("load",function(){$("#role-select").mCustomScrollbar({theme:"3d-dark",axis:"y"});});
+});
+window.onload=function() {
+	var think=$('.Lee');
+	$.each(think,function(index,item){
+		var that=$(item).find('ul li span :input[type="checkbox"]:checked');
+		  that.length>0 && $(item).find('>span :input[type="checkbox"]').prop("checked",true);
+	});
+}; 
+</script>
+</body>
+</html>

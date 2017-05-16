@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="renderer" content="webkit">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<base href="<?php echo base_url();?>" />
+<title>CADA云数聚-商户登录</title>
+<!--引用字体样式文件-->
+<link href="http://netdna.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+<!--引入页面样式文件-->
+<link rel="stylesheet" href="static/merchant/css/cada-merchant-regis.css">
+<!-- 引入验证码滑动脚本 -->
+<link rel="stylesheet" href="static/global/plugins/unlock/drag.css">
+<!--引入jauery文件-->
+<script src="static/global/js/jquery.1.11.3.min.js"></script>
+<!--引入插件脚本-->
+<script src="static/global/js/jquery.placeholder.js"></script>
+<!--引用框架样式文件-->
+<link href="static/global/plugins/Bootstrap/css/bootstrap.css" rel="stylesheet">
+<!--引入框架脚本文件-->
+<script src="static/global/plugins/Bootstrap/js/bootstrap.min.js"></script>
+<!--引入弹框脚本文件-->
+<script src="static/global/plugins/Layer/layer.js"></script>
+<!--引入插件脚本-->
+<script src="static/global/js/jquery.cookie.js"></script>
+<!--引入页面脚本文件-->
+<script src="static/merchant/js/cada-merchant-findPass.js"></script>
+<style>
+.SX{
+height:40px;
+width:600px;
+margin:0 auto;
+
+}
+.SX .SXC{
+float:left;
+width:200px;
+line-height:44px;
+border-bottom:2px solid #FFF;
+font-size:16px;
+color:#555;
+font-family:"微软雅黑";
+height:40px;
+}
+.SX .SXC span{
+display:inline-block;
+background:#ccc;
+line-height:20px;
+text-align:center;
+color:#FFF;
+border-radius:10px;
+margin-left:58px;
+margin-top:12px;
+margin-right:4px;
+height:20px;
+width:20px;
+float:left;
+}
+</style>
+</head>
+<body>
+<div id="head-main"  onclick="javascript:window.location.href='http://www.cadayun.com/';"><div id="head"><span>找回密码</span></div></div>
+<div id="main">
+<div class="title">您当前的位置:首页&nbsp;> &nbsp;<span style="color:#e60012;">找回密码</span></div>
+<form action="#" method="post" id="Formz">
+<input type="hidden" id="PicStatus" value="0"/>
+<input type="hidden" id="smsStatus" value="0"/>
+<!--设置用户名和密码-->
+<div class="SX">
+	<div class="SXC"><span>1</span>验证身份</div>
+	<div class="SXC"><span>2</span>设置密码</div>
+	<div class="SXC"><span>3</span>成功找回</div>
+	<div style="clear:both;"></div>
+</div>
+<div class="userinfo" style="border-bottom:none;border-top:1px solid #CCC;" id="index-x">
+	<ul class="inputs" style="height:240px;">
+		<li>
+		<div class="form-group">
+		<label   class="control-label"  check="0"><span>*</span>手机号</label>
+		<input type="text" class="form-control"placeholder="输入注册手机号" maxlength="16" name="loginName" id="number">
+		</div>
+		</li>
+		<li>
+		<div class="form-group">
+		<label   class="control-label"  check="0"><span>*</span>图片验证码</label>
+		<input type="text" class="form-control"  placeholder="输入图片验证码" maxlength="4"  id="PicCode" style="width:288px;"/>
+		<div style="width:102px;border:1px solid #ccc;float:left;margin-top:2px;margin-left:10px;">
+			<img id="showCode" src="<?php echo base_url();?>index.php/admin/Login/findCode" width="100" height="34" style="display:block;"/>
+		</div>
+		</div>
+		</li>
+		<li>
+		<div class="form-group">
+		<label   class="control-label"  check="0"><span>*</span>验证码</label>
+		<input type="password" class="form-control"	placeholder="输入短信验证码" maxlength="5" id="smsCode" style="width:200px;">
+	    <div style="width:190px;border:1px solid #CCC;background:#eee;float:left;margin-top:2px;margin-left:10px;height:36px;line-height:36px;text-align:center;" id="smsCodeis">
+			<a href="javascript:void(0);" style="color:#555;">获取短信验证码</a>
+		</div>
+		</div>
+		</li>
+	</ul>
+</div>
+<div class="userinfo" style="border-bottom:none;border-top:1px solid #CCC;" id="index-y">
+	<ul class="inputs" style="height:240px;">
+		<li>
+		<div class="form-group">
+		<label   class="control-label"  check="0"><span>*</span>重置密码</label>
+		<input type="password" class="form-control"  placeholder="输入密码" maxlength="16" name="password" id="password"/>
+		</div>
+		</li>
+		<li>
+		<div class="form-group">
+		<label   class="control-label"  check="0"><span>*</span>确认密码</label>
+		<input type="password" class="form-control"	placeholder="确认密码" maxlength="16" id="passwordi">
+		</div>
+		</li>
+	</ul>
+</div>
+<div class="userinfo" style="border-bottom:none;border-top:1px solid #CCC;" id="index-z">
+</div>
+<div class="button"><a id="submit" href="javascript:void(0);">下一步</a></div>
+</form>
+</div>
+<div id="footx" style="margin-top:200px;"><p>Copyright &copy;  2013-2017 www.cadayun.cn All Rights Reserved</p><p>北京与车行信息技术有限公司</p></div>
+</body>
+</html>

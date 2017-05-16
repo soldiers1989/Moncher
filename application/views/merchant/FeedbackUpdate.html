@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="renderer" content="webkit">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<base href="<?php echo base_url();?>" />
+<title>CADA云数聚</title>
+<!--引入jauery文件-->
+<script src="static/global/js/jquery.1.11.3.min.js"></script>
+<!--引用框架样式文件-->
+<link href="static/global/plugins/Bootstrap/css/bootstrap.css" rel="stylesheet">
+<!--引入框架脚本文件-->
+<script src="static/global/plugins/Bootstrap/js/bootstrap.min.js"></script>
+<!--引入弹框脚本文件-->
+<script src="static/global/plugins/Layer/layer.js"></script>
+<!--引入全局CSS文件-->
+<link href="static/admin/css/cada-admin-min.css" rel="stylesheet">
+<!--引用字体样式文件-->
+<link href="static/global/plugins/FontAwesome/css/font-awesome.css" rel="stylesheet">
+</head>
+<script>
+/**程序执行*/
+$(function(){
+	$('.btn-info').click(function(){
+	   $('#checkStatus').val(3);
+	   $('.layer_form').submit();
+	});
+	$('.btn-success').click(function(){
+	   $('#checkStatus').val(2);
+	   $('.layer_form').submit();
+	});
+	$('.btn-danger').click(function(){
+	   $('#checkStatus').val(4);
+	   $('.layer_form').submit();
+	});
+});
+</script>
+<body>
+<div id="cada-admin-menu" class="cada-admin-layer" style="width:500px;">
+<form class="layer_form" method="post" action="index.php/admin/Feedback/updated">
+<input type="hidden" name="id" value="<?php echo $one['id'];?>"/>
+<input type="hidden" name="satisfaction" id="checkStatus" value=""/>
+<ul>
+<li>
+<label for="menu-name" style="width:80px;">反馈标题:&nbsp;&nbsp;</label>
+<p><?php echo $one['title'];?></p>
+<div class="clear"></div>
+</li>
+<li>
+<label for="menu-name" style="width:80px;">反馈来源:&nbsp;&nbsp;</label>
+<p><?php echo $one['type'];?></p>
+<div class="clear"></div>
+</li>
+<li>
+<label for="menu-name" style="width:80px;">反馈类型:&nbsp;&nbsp;</label>
+<p><?php echo $one['feedbackType'];?></p>
+<div class="clear"></div>
+</li>
+<li>
+<label for="menu-name" style="width:80px;">商户名称:&nbsp;&nbsp;</label>
+<p><?php echo $one['provider'];?></p>
+<div class="clear"></div>
+</li>
+<li>
+<label for="menu-name" style="width:80px;">反馈时间:&nbsp;&nbsp;</label>
+<p><?php echo $one['feedbackTime'];?></p>
+<div class="clear"></div>
+</li>
+<li>
+<label for="menu-name" style="width:80px;">反馈内容:&nbsp;&nbsp;</label>
+<p><?php echo $one['feedbackContens'];?></p>
+<div class="clear"></div>
+</li>
+<li>
+<label for="menu-name" style="width:80px;">&nbsp;&nbsp;</label>
+<p><?php echo strlen($one['picture'])>0?'<img src="upload/merchant/images/'.$one['picture'].'"/>':'';?></p>
+<div class="clear"></div>
+</li>
+</ul>
+<ul style="border-top:2px solid #CCC;">
+<li>
+<label for="menu-name" style="width:80px;">平台反馈:&nbsp;&nbsp;</label>
+<p><?php echo $one['replyContens'];?></p>
+<div class="clear"></div>
+</li>
+<li>
+<button type="button" class="btn btn-success layer_button" style="margin-left:12px;" >非常满意</button>
+<button type="button" class="btn btn-info layer_button" style="margin-left:12px;" >满意</button>
+<button type="button" class="btn btn-danger layer_button" style="margin-left:12px;"  >不满意</button>
+</li>
+</ul>
+</form>
+</div>
+</body>
+</html>

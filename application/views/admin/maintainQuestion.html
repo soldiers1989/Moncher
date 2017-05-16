@@ -1,0 +1,77 @@
+
+<?php  $this->load->view('admin/head.html');?>
+   <!--引入js部分  -->
+ <script src="static/admin/js/maintainquestion.js"></script>
+	<script>
+	//查询重复赋值
+	$(function(){
+		
+		var  json = <?php echo $json;?>;
+		//alert(json);
+		$(".Caas").val(json.CA);
+		$(".Caas")[0].innerHTML=json.CA;
+		$(".start").val(json.cci);
+		$(".end").val(json.ccii);
+	});
+	</script>
+<base href="<?php echo base_url();?>" />
+	<!-- 查询开始 -->
+<div id="cada-admin-menu" class="cada-admin-main">
+<form class="form-inline"  method="POST" action="index.php/admin/Question/Seek"  id="formz" icon="question" id="formz" icon="question">
+	<input type='hidden' value="" name="jsondata"  class="jsoninfo">
+	<div class="form-group">
+    <label for="menu-name">快速查找</label>
+    <input type="text" class="form-control Caas" id="menu-name" placeholder="请输试题名称"  name="CA" style="width:150px;"  maxlength='30' >
+  	</div>
+   
+  <div class="form-group">
+    <label for="menu-url">  开始时间:</label>
+    <input type="text" class="form-control start Wdate" id="datemin" onfocus="WdatePicker({})"  placeholder="开始时间" name="cci" maxlength='20'   style="width:120px;">
+    <label for="menu-url">  结束时间:</label>
+    <input type="text" class="form-control end Wdate" id="datemax"  onfocus="WdatePicker({})" placeholder="结束时间" name="ccii" maxlength='20'   style="width:120px;">
+  </div>
+  &nbsp;&nbsp;<button  class="btn btn-danger butinfo" style="margin-bottom:4px;">查找</button>
+</form>
+	<!-- 查询结束 -->
+    <!-- 表单开始 -->
+<div  class="dataDesc">
+<ul>
+<li class="Idx">序号</li>
+<li class="onex">试题名称</li>
+<li class="userx">操作员</li>
+<li class="typex">类型</li>
+<li class="onex">描述</li>
+<li class="textx">操作时间</li>
+<li class="textx">操作</li>
+</ul>
+
+</div>
+<div class="dataList">
+   <?php foreach($list as $key=>$u):?>
+<ul>
+<li class="Idx"><?php echo $key+1;?></li>
+<li class="onex"><?php echo $u['title'];?></li>
+<li class="userx"><?php echo $u['operatorName'];?></li>
+<li class="typex">
+	<?php if($u['type']=='1'){?>
+	<?php echo "单选";?>
+	<?php }elseif($u['type']=='2'){?>
+	<?php echo "多选";?>
+	<?php }elseif($u['type']=='3'){?>
+	<?php echo "填空";?>
+<?php }?>
+</li>
+<li class="onex"><?php echo $u['description'];?></li>
+<li class="textx"><?php echo $u['operationTime'];?></li>
+<li class="textx">
+				<a class="btn btn-info" href="index.php/admin/Question/updateQuestion?id=<?php echo $u['id'];?>" >编辑</a>
+      			<a href="javascript:delRows('question','<?php echo $u['id'];?>');"   class="btn btn-danger">删除</a>
+ </li>     			
+</ul>
+      <?php endforeach;?>
+</div>
+<!-- 表单结束 -->
+ <div><?php echo $page;?></div> 
+</div>
+<script type="text/javascript" src="<?php echo base_url();?>static/global/js/My97DatePicker/WdatePicker.js"></script>
+<?php  $this->load->view('admin/foot.html');?>

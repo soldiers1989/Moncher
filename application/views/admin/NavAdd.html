@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="renderer" content="webkit">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<base href="<?php echo base_url();?>" />
+<title>CADA云数聚-菜单添加</title>
+<!--引入jauery文件-->
+<script src="static/global/js/jquery.1.11.3.min.js"></script>
+<!--引用框架样式文件-->
+<link href="static/global/plugins/Bootstrap/css/bootstrap.css" rel="stylesheet">
+<!--引入框架脚本文件-->
+<script src="static/global/plugins/Bootstrap/js/bootstrap.min.js"></script>
+<!--引入全局CSS文件-->
+<link href="static/admin/css/cada-admin-min.css" rel="stylesheet">
+<!--引入弹框脚本文件-->
+<script src="static/global/plugins/Layer/layer.js"></script>
+<!--引用字体样式文件-->
+<link href="static/global/plugins/FontAwesome/css/font-awesome.css" rel="stylesheet">
+</head>
+<!--内部脚本-->
+<script>
+/*获取二级菜单选项*/
+var U = $('base').attr('href');
+var error="";
+/**异步请求数据方法*/
+function Fa(url, data) {
+	var message;
+	$.ajax({type: "POST",url: U + 'index.php/' + url,async: false,
+		data: data,success: function(msg) {message = msg;}});
+	return message;
+}
+/**判断必填项是否完成*/
+function status(){
+	if($.trim($("#menu-type").val()).length <= 0){
+		layer.msg('请选择菜单类型', {icon:2,time: 2000});
+	   return false;
+	}
+	if($.trim($("#menu-id").val()).length <= 0){
+		layer.msg('请选择菜单父级', {icon:2,time: 2000});
+	    return false;
+	}
+	if($.trim($("#menu-name").val()).length <= 0){
+		layer.msg('请填写菜单标题', {icon:2,time: 2000});
+	   return false;
+	}
+	return true;
+}
+/**程序执行*/
+$(function(){
+   /**切换菜单*/
+	$('#menu-type').change(function(){
+		$("#menu-id").find('option').remove();
+		if($.trim($(this).val()).length>0&& $(this).val()!="1"){
+			var select = eval('(' + Fa('admin/MerchantNav/getMerchantNav', 'id='+$(this).val()) + ')'); 
+			$.each(select,function(x,item){
+				$("#menu-id").append('<option value="'+item.id+'">'+item.navTitle+'</option>');
+			});
+		}else{
+		    $("#menu-id").append('<option value="0">一级菜单</option>');
+		}
+	});
+	$('.layer_button').click(function(){
+	   status()  && $('#formx').submit();
+	});
+});
+</script>
+<body>
+<div id="cada-admin-menu" class="cada-admin-layer">
+<form class="layer_form" method="post" action="index.php/admin/MerchantNav/added" id="formx">
+<ul>
+<li>
+    <label for="menu-name" >菜单名称&nbsp;&nbsp;</label>
+    <input type="text" class="form-control titleAll" id="menu-name" placeholder="菜单名称" name="navTitle" maxlength="16">
+    <div class="clear"></div>
+</li>
+	<li>
+		<label for="menu-type">商户类型&nbsp;&nbsp;</label>
+		 <select class="form-control length-min" id="menu-types" name="merchantType">
+		  <option value="0">全体商户</option>
+		  <option value="1">仅门店</option>
+		  <option value="2">仅集团</option>
+		  <option value="3">仅厂家</option>
+		</select>
+		<div class="clear"></div>
+	</li>
+	<li>
+		<label for="menu-type">菜单类型&nbsp;&nbsp;</label>
+		 <select class="form-control length-min" id="menu-type">
+		  <option value="1">一级菜单</option>
+		  <option value="0">二级菜单</option>
+		</select>
+		<div class="clear"></div>
+	</li>
+	<li>
+		<label for="menu-id">菜单父级&nbsp;&nbsp;</label>
+		 <select class="form-control length-min" name="pId" id="menu-id">
+		  <option value="0">一级菜单</option>
+		</select>
+		<div class="clear"></div>
+	</li>
+<li>
+    <label for="menu-url" >菜单标志&nbsp;&nbsp;</label>
+    <input type="text" class="form-control length-min" id="menu-url" placeholder="菜单图标"  name="iconUrl" maxlength="16">
+    <div class="clear"></div>
+</li>
+<li>
+    <label for="menu-url" >菜单地址&nbsp;&nbsp;</label>
+    <input type="text" class="form-control titleAll" id="menu-url" placeholder="菜单地址"  name="navUrl" maxlength="50">
+    <div class="clear"></div>
+</li>
+<div class="clear"></div>
+</ul>
+<div class="playDiv"><button type="reset" class="btn btn-default" >输入重置</button><button type="button" class="btn btn-info layer_button" >保存信息</button></div>
+</form>
+</div>
+</body>
+</html>

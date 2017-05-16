@@ -1,0 +1,211 @@
+<?php  $this->load->view('admin/head.html');?>
+<!-- highchart插件 -->
+<script src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script>
+<script src="http://cdn.hcharts.cn/highcharts/modules/exporting.js"></script>
+<script src="static/merchant/js/height_one.js"></script>
+<script src="static/merchant/js/height_two.js"></script>
+
+   <!--引入js部分  -->
+<script src="static/merchant/js/groupbrand.js"></script>
+<!-- 本页css -->
+<link href="static/merchant/css/groupbrand.css" rel="stylesheet">
+<!-- 判断单双品牌 -->
+<!-- <script>
+	var type=<?php echo $type;?>;
+</script> -->
+<!-- 外层div -->
+<div class="type1">
+    <input type="hidden" name="type" class="type" value="<?php echo $type;?>">
+<!-- 搜索模块 -->
+<div class="search_model">
+	<!-- 总单双切换 -->
+<div class="store_choice">
+<button  class="btn btn-danger" id="one_brand">单品牌</button>
+<button  class="btn btn-danger" id="two_brand" style="background:#DADADA;border:1px solid #DADADA;color:#403636;">双品牌</button>
+</div>
+<form class="form-inline"  method="POST" action="index.php/admin/Provider/Seek?pa=2">
+		 <div class="form-group  choice_store" style="float:left;">
+	     <label for="menu-url" style="float:left;line-height:22px;">选择门店</label>
+		 <select class="form-control Cbas" style="width:186px;float:left;"  name="store_name;" >
+		 <option value="" >请选择</option>
+		</select>
+	    </div>
+		 <div class="form-group times">
+	      <input type="text"   class="form-control start" id="datemin" onfocus="WdatePicker({})"  placeholder="开始时间" name="start">
+	   - <input type="text" class="form-control end" id="datemax"  onfocus="WdatePicker({})" placeholder="结束时间" name="end">
+	 	 </div>
+		 &nbsp;&nbsp;<button  class="btn btn-danger butinfo" >查找</button>
+</form>
+</div>
+<!-- 双品牌切换 -->
+<div class="search_model_two">
+	<!-- 总单双切换 -->
+<div class="store_choice">
+<button  class="btn btn-danger" id="one_brand" style="background:#DADADA;border:1px solid #DADADA;color:#403636;">单品牌</button>
+<button  class="btn btn-danger" id="two_brand">双品牌</button>
+</div>
+<form class="form-inline"  method="POST" action="index.php/admin/Provider/Seek?pa=2">
+		 <div class="form-group  choice_store" style="float:left;">
+     <label for="menu-url" style="float:left;line-height:22px;">门店一</label>
+	 <select class="form-control Cbas" style="width:186px;float:left;"  name="store_one;" >
+	 <option value="" >请选择</option>
+	</select>
+    </div>
+    	 <div class="form-group  choice_store" style="float:left;">
+     <label for="menu-url" style="float:left;line-height:22px;">门店二</label>
+	 <select class="form-control Cbas" style="width:186px;float:left;"  name="store_two;" >
+	 <option value="" >请选择</option>
+	</select>
+    </div>
+		 <div class="form-group times">
+	   	<input type="text" class="form-control end" id="datemax"  onfocus="WdatePicker({})" placeholder="结束时间" name="date">
+	 	 </div>
+		 &nbsp;&nbsp;<button  class="btn btn-danger butinfo" >查找</button>
+</form>
+</div>
+
+
+<!-- 总体(高端)&行业(高端)/////////////// -->
+<div class="total">
+		<div class="top_model" style="float:left;">
+		<div class="top_tit">总分(高端)</div>
+		<div class="one_month" style="float:left;width:50%;">
+		<div class="top_score one"><span style="color:#FFB012;"></span>/100分</div>
+		<div id="top_Statistics0" style="width:100%;height:170px"></div>
+		</div>
+		 <div class="two_month" style="float:left;width:50%;">
+		<div class="top_score wto"><span style="color:#FFB012;"></span>/100分</div>
+		<div id="top_Statistics1" style="width:100%;height:170px"></div>
+		</div>
+		</div>
+		<div class="top_industry" style="float:left;">
+		<div class="top_tit">行业(高端)</div>
+ 		<div class="two_month" style="float:left;width:50%;">
+		<div class="top_score ind_one"><span style="color:#FFB012;"></span>/100分</div>
+		<div id="top_Statistics_ind0" style="width:100%;height:170px"></div>
+		</div>
+		<div class="two_month" style="float:left;width:50%;">
+		<div class="top_score ind_two"><span style="color:#FFB012;"></span>/100分</div>
+		<div id="top_Statistics_ind1" style="width:100%;height:170px"></div>
+		</div>
+		</div>
+</div>
+
+
+	<!-- 自己模块得分 -->
+<div class="modelss">
+	<div class="model0" style="float:left;"></div>
+	<div class="model1" style="float:left;"></div>
+	<div class="model2" style="float:left;"></div>
+	<div class="model3" style="float:left;"></div>
+	<div class="model4" style="float:left;"></div>
+</div>
+	<!-- 行业模块得分 -->
+<div class="ind_model"> 
+	<div class="model_ind0" style="float:left;"></div>
+	<div class="model_ind1" style="float:left;"></div>
+	<div class="model_ind2" style="float:left;"></div>
+	<div class="model_ind3" style="float:left;"></div>
+	<div class="model_ind4" style="float:left;"></div>
+</div>
+<!-- 点击<span>详情指标</span>（本集团高端） -->
+<div class="index">
+	<div class="top_fwgw_inbdex"style="float:left;"><span>详情指标</span></div>
+	<div class="top_fwss_inbdex"style="float:left;"><span>详情指标</span></div>
+	<div class="top_wxzl_inbdex"style="float:left;"><span>详情指标</span></div>
+	<div class="top_wxjg_inbdex"style="float:left;"><span>详情指标</span></div>
+	<div class="top_wxsj_inbdex"style="float:left;"><span>详情指标</span></div>
+</div>
+<div class="clear"></div>
+<!-- 各模块指标-->
+<div class="gw_model">
+	<div class="title" style="float:left;">服务顾问</div>
+	<!-- 最高指标开始 -->
+	<div class="top_index" style="float:left;">
+		<div class="top_tit">最高指标得分</div>
+		<div class="index_tit">
+		<ul class="tit_ul">
+		<li style="width:70%;">指标</li>
+		<li style="width:10%;">一月</li>
+		<li style="width:10%;">二月</li>
+		<li style="width:10%;">差值</li>
+		</ul>
+			<ul class="content_ul">
+		<li style="width:70%;">123333333331233311</li>
+		<li style="width:10%;">80</li>
+		<li style="width:10%;">90</li>
+		<li style="width:10%;">10</li>
+		</ul>
+		</div>
+	</div>
+	<!-- 最高指标结束 -->
+	<!-- 最低指标开始 -->
+	<div class="top_index" style="float:left;">
+		<div class="top_tit">最低指标得分</div>
+	<div class="index_tit">
+		<ul class="tit_ul">
+		<li style="width:70%;">指标</li>
+		<li style="width:10%;">一月</li>
+		<li style="width:10%;">二月</li>
+		<li style="width:10%;">差值</li>
+		</ul>
+			<ul class="content_ul">
+		<li style="width:70%;">123333333331233311</li>
+		<li style="width:10%;">50</li>
+		<li style="width:10%;">60</li>
+		<li style="width:10%;"><span style="font-weight:1000;font-size:14px;color:red;">↑</span>10</li>
+		</ul>
+		</div>
+	</div>
+	<!-- 最低指标结束 -->
+</div>
+
+<!-- 各模块指标-->
+<div class="gw_model">
+	<div class="title" style="float:left;">服务设施</div>
+	<!-- 最高指标开始 -->
+	<div class="top_index" style="float:left;">
+		<div class="top_tit">最高指标得分</div>
+		<div class="index_tit">
+		<ul class="tit_ul">
+		<li style="width:70%;">指标</li>
+		<li style="width:10%;">一月</li>
+		<li style="width:10%;">二月</li>
+		<li style="width:10%;">差值</li>
+		</ul>
+			<ul class="content_ul">
+		<li style="width:70%;">123333333331233311</li>
+		<li style="width:10%;">80</li>
+		<li style="width:10%;">90</li>
+		<li style="width:10%;">10</li>
+		</ul>
+		</div>
+	</div>
+	<!-- 最高指标结束 -->
+	<!-- 最低指标开始 -->
+	<div class="top_index" style="float:left;">
+		<div class="top_tit">最低指标得分</div>
+	<div class="index_tit">
+		<ul class="tit_ul">
+		<li style="width:70%;">指标</li>
+		<li style="width:10%;">一月</li>
+		<li style="width:10%;">二月</li>
+		<li style="width:10%;">差值</li>
+		</ul>
+			<ul class="content_ul">
+		<li style="width:70%;">123333333331233311</li>
+		<li style="width:10%;">50</li>
+		<li style="width:10%;">60</li>
+		<li style="width:10%;"><span style="font-weight:1000;font-size:14px;color:red;">↑</span>10</li>
+		</ul>
+		</div>
+	</div>
+	<!-- 最低指标结束 -->
+</div>
+
+</div>
+<!-- 时间插件 -->
+<script type="text/javascript" src="<?php echo base_url();?>static/global/js/My97DatePicker/WdatePicker.js"></script>
+
+</body>
+</html>

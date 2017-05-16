@@ -1,0 +1,29 @@
+<?php  $this->load->view('admin/head.html');?>
+    <!--引入js部分  -->
+	 <script src="static/admin/js/mould.js"></script> 
+	 <script src="static/global/js/bootstrap-select-js/bootstrap-select.js"></script> 
+    <script src="static/global/js/bootstrap-select-js/bootstrap-select.min.js"></script>
+	<link href="static/global/css/bootstrap-select-css/bootstrap-select.css" rel="stylesheet" type="text/css" />
+    <link href="static/global/css/bootstrap-select-css/bootstrap-select.min.css" rel="stylesheet" type="text/css" />
+    <!--页面内容开始  -->
+    <div id="cada-admin-menu" class="cada-admin-main">
+<form class="layer_form"  method="POST" action="index.php/admin/Provider/refInfoed?id=<?php echo $refid;?>" id="putbut">
+    <input type="hidden" name="id" value="<?php echo $list['id'];?>"/>
+ 		<textarea class="form-control " rows="3"  placeholder="拒绝信息" name="ref" style="resize: none;float:left;width:340px;height:69px;"></textarea>
+<div class="playDivs"></button><button type="button" id="putbutss" class="btn btn-info layer_button" >提交信息</button></div>
+    </form>
+    </div>
+    <!--页面内容结束  -->
+<?php  $this->load->view('admin/foot.html');?>
+
+
+
+
+
+
+
+
+
+
+
+
